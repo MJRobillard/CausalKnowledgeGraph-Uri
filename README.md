@@ -230,6 +230,7 @@ target are in the [`Makefile`](Makefile).
 │                  reads), raw/ (downloads, gitignored), answer_key/; provenance in data/README.md
 ├── results/       one folder per pipeline stage, with its reports, charts and GeoJSON
 ├── docs/          assumptions log, checkpoint, run history, extraction findings, dataset survey, TAMU cleaning log
+├── site/          static walkthrough page with an interactive graph explorer (`make site` refreshes its data)
 └── tests/         unit tests (no network, no API calls)
 ```
 

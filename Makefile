@@ -3,7 +3,7 @@
 
 PY := uv run python
 
-.PHONY: all test data extraction graph hypotheses spatial causal_ml grid maps event_study
+.PHONY: all test data extraction graph hypotheses spatial causal_ml grid maps event_study site
 
 all: graph hypotheses spatial causal_ml grid maps
 
@@ -59,3 +59,12 @@ maps:
 
 event_study:
 	$(PY) -m analysis.event_study
+
+# static walkthrough page (site/, served as-is; on Vercel set Root Directory to `site`): refresh its figures
+SITE_FIGS := results/07_maps/map_cold_vs_outages_daily.png results/07_maps/map_frequency_trips.png \
+	results/07_maps/map_gas_supply_chain.png results/07_maps/map_grid_congestion.png \
+	results/07_maps/map_cold_sensitivity.png results/04_hypotheses/hypothesis_lead.png \
+	results/06_grid/replay.png results/05_causal_ml/fuel_effects.png
+site:
+	mkdir -p site/assets && cp $(SITE_FIGS) site/assets/
+	$(PY) scripts/build_site_data.py

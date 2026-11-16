@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Winter Storm Uri, Settled</title>
+<meta name="description" content="The February 2021 Texas blackout left official reports that disagree. A tiered causal knowledge graph checks each claim against measured data, tests the causal claims, and replays the event on a grid model.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --surface-2: #f3f1ec;
+  --ink: #1c1b19;
+  --ink-2: #4a4843;
+  --ink-3: #75726b;
+  --line: #e2ded5;
+  --accent: #b4441f;
+  --accent-soft: #f6e4dc;
+  --cold: #2f6fb3;
+  --ok: #2e7d4f;
+  --warn: #a8641b;
+  --paper: #fcfcfa;
+  --shadow: 0 1px 2px rgba(28, 27, 25, .05), 0 6px 24px rgba(28, 27, 25, .06);
+  --measure: 720px;
+  --wide: 1120px;
+  --nav-h: 56px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141412;
+    --surface: #1c1c19;
+    --surface-2: #24231f;
+    --ink: #edebe6;
+    --ink-2: #c3c0b8;
+    --ink-3: #9a968d;
+    --line: #34332e;
+    --accent: #ec8a64;
+    --accent-soft: #3a2519;
+    --cold: #7fb2ea;
+    --ok: #74c69d;
+    --warn: #e0a85e;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px rgba(0, 0, 0, .35);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141412;
+  --surface: #1c1c19;
+  --surface-2: #24231f;
+  --ink: #edebe6;
+  --ink-2: #c3c0b8;
+  --ink-3: #9a968d;
+  --line: #34332e;
+  --accent: #ec8a64;
+  --accent-soft: #3a2519;
+  --cold: #7fb2ea;
+  --ok: #74c69d;
+  --warn: #e0a85e;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px rgba(0, 0, 0, .35);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 17px/1.65 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+h1, h2, h3 { font-family: "Source Serif 4", Georgia, serif; line-height: 1.2; letter-spacing: -.01em; margin: 0; }
+h2 { font-size: clamp(28px, 4vw, 38px); font-weight: 600; }
+h3 { font-size: 22px; font-weight: 600; margin-top: 40px; }
+p { margin: 16px 0; }
+strong { font-weight: 600; }
+code { font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--surface-2); padding: 1px 6px; border-radius: 4px; }
+
+/* nav */
+.nav {
+  position: sticky; top: 0; z-index: 10; height: var(--nav-h);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner { max-width: var(--wide); margin: 0 auto; height: 100%; padding: 0 16px; display: flex; align-items: center; gap: 20px; }
+.brand { font-family: "Source Serif 4", Georgia, serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.chapters { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; flex: 1; }
+.chapters::-webkit-scrollbar { display: none; }
+.chapters a {
+  font-size: 14px; font-weight: 500; color: var(--ink-3); text-decoration: none; white-space: nowrap;
+  padding: 6px 10px; border-radius: 999px;
+}
+.chapters a:hover { color: var(--ink); background: var(--surface-2); }
+.chapters a.active { color: var(--accent); background: var(--accent-soft); }
+.gh { font-size: 14px; font-weight: 600; color: var(--ink); text-decoration: none; border: 1px solid var(--line); padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+.gh:hover { border-color: var(--ink-3); }
+.progress { position: absolute; left: 0; bottom: -1px; height: 2px; background: var(--accent); width: 0; }
+
+/* layout */
+section { padding: 72px 16px; border-bottom: 1px solid var(--line); }
+.wrap { max-width: var(--measure); margin: 0 auto; }
+section > .wrap { max-width: var(--wide); }
+section > .wrap > * { max-width: var(--measure); }
+.wide { max-width: var(--wide); margin: 0 auto; }
+.kicker { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.lede { font-size: 19px; color: var(--ink-2); }
+
+/* hero */
+.hero { padding-top: 64px; }
+.hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 700; max-width: 900px; }
+.hero .lede { max-width: 680px; margin-top: 20px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 36px 0 8px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+.stat b { display: block; font-family: "Source Serif 4", Georgia, serif; font-size: 30px; font-weight: 700; line-height: 1.1; }
+.stat span { display: block; font-size: 14px; color: var(--ink-3); margin-top: 6px; line-height: 1.4; }
+.stat.hl b { color: var(--accent); }
+
+/* figures */
+figure { margin: 32px 0; }
+figure a { display: block; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 10px; box-shadow: var(--shadow); }
+figure img { display: block; width: 100%; height: auto; border-radius: 6px; }
+figcaption { font-size: 15px; color: var(--ink-3); margin-top: 12px; line-height: 1.55; }
+figcaption b { color: var(--ink-2); }
+.fig-mid { max-width: 880px; margin-left: auto; margin-right: auto; }
+
+/* tables */
+.table-wrap { overflow-x: auto; margin: 24px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.5; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 13px; font-weight: 600; color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em; background: var(--surface-2); }
+tr:last-child td { border-bottom: 0; }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.key td { background: var(--accent-soft); }
+.tag { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
+blockquote { margin: 0; font-family: "Source Serif 4", Georgia, serif; font-style: italic; color: var(--ink); }
+
+/* pipeline */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 32px; }
+.step { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+.step .n { display: inline-flex; width: 28px; height: 28px; border-radius: 50%; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: var(--accent-soft); color: var(--accent); }
+.step h4 { font-size: 17px; font-weight: 600; margin: 12px 0 6px; }
+.step p { font-size: 15px; color: var(--ink-2); margin: 0; line-height: 1.55; }
+
+/* callouts and lists */
+.settled { list-style: none; padding: 0; margin: 24px 0; display: grid; gap: 12px; }
+.settled li { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--ok); border-radius: 10px; padding: 14px 18px; font-size: 16px; }
+.settled li.open { border-left-color: var(--warn); }
+.callout { background: var(--accent-soft); border-radius: 12px; padding: 18px 22px; margin: 24px 0; font-size: 16px; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+.card h4 { margin: 0 0 8px; font-size: 16px; font-weight: 600; }
+.card p { margin: 0; font-size: 15px; color: var(--ink-2); }
+.limits { padding-left: 20px; }
+.limits li { margin: 8px 0; }
+
+pre { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; overflow-x: auto; font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; }
+pre .c { color: var(--ink-3); }
+footer { padding: 48px 16px 64px; color: var(--ink-3); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+@media (max-width: 860px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .cols { grid-template-columns: 1fr; }
+  .brand { display: none; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  section { padding: 56px 16px; }
+  .steps { grid-template-columns: 1fr; }
+  .stat b { font-size: 26px; }
+  th, td { padding: 10px 12px; }
+}
+/* knowledge-graph explorer */
+.kg {
+  --good: #0ca30c; --bad: #d03b3b; --serious: #ec835a; --acct: #2a78d6;
+  --lane: var(--surface-2); --lane-measured: #e8eff8; --node: var(--surface);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .kg { --acct: #3987e5; --lane-measured: #1d2633; }
+}
+:root[data-theme="dark"] .kg { --acct: #3987e5; --lane-measured: #1d2633; }
+.kg-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 28px 0 14px; }
+.kg-tabs button, .kg-filter button {
+  font: 600 14px/1 Inter, system-ui, sans-serif; color: var(--ink-2); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; cursor: pointer;
+}
+.kg-tabs button[aria-selected="true"], .kg-filter button[aria-pressed="true"] { color: var(--bg); background: var(--ink); border-color: var(--ink); }
+.kg-tabs button:focus-visible, .kg-filter button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.kg-intro { color: var(--ink-2); font-size: 16px; max-width: var(--measure); margin: 0 0 14px; }
+.kg-bar { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.kg-filter { display: flex; gap: 6px; }
+.kg-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-2); }
+.kg-legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.kg-legend svg { flex: none; }
+.kg-stage { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; }
+.kg-stage svg.kg-svg { display: block; width: 100%; min-width: 860px; height: auto; font-family: Inter, system-ui, sans-serif; }
+.kg-svg .lane-label { font-size: 12px; font-weight: 600; fill: var(--ink-2); }
+.kg-svg .lane-sub { font-size: 11px; fill: var(--ink-3); }
+.kg-svg .node rect { fill: var(--node); stroke: var(--line); stroke-width: 1; }
+.kg-svg .node.measured rect { stroke: var(--ink-3); }
+.kg-svg .node.held rect { stroke-dasharray: 4 3; fill: transparent; }
+.kg-svg .node .t1 { font-size: 12.5px; font-weight: 600; fill: var(--ink); }
+.kg-svg .node .t2 { font-size: 11px; fill: var(--ink-3); }
+.kg-svg .node { cursor: pointer; }
+.kg-svg .node:hover rect, .kg-svg .node.sel rect { stroke: var(--ink); stroke-width: 1.5; }
+.kg-svg .link { fill: none; stroke-linecap: round; transition: opacity .15s; }
+.kg-svg .hit { fill: none; stroke: transparent; stroke-width: 14; cursor: pointer; }
+.kg-svg .dim { opacity: .12; }
+.kg-svg .badge { font-size: 10.5px; font-weight: 600; fill: var(--ink-2); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; pointer-events: none; }
+.kg-svg .cnode rect { fill: var(--node); stroke: var(--ink-3); stroke-width: 1.2; }
+.kg-svg .cnode.m-text_derived rect { stroke-dasharray: 5 3; }
+.kg-svg .cnode.m-none rect { stroke-dasharray: 1.5 3; fill: var(--surface-2); }
+.kg-svg .cnode text { font-size: 12px; font-weight: 600; fill: var(--ink); pointer-events: none; }
+.kg-svg .cnode { cursor: pointer; }
+.kg-svg .cnode:hover rect, .kg-svg .cnode.sel rect { stroke: var(--ink); stroke-width: 2; }
+.kg-tip { position: absolute; pointer-events: none; z-index: 5; max-width: 300px; background: var(--ink); color: var(--bg);
+  font-size: 13px; line-height: 1.45; padding: 8px 10px; border-radius: 8px; opacity: 0; transition: opacity .1s; }
+.kg-panel { margin-top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; min-height: 92px; font-size: 15px; }
+.kg-panel h4 { margin: 0 0 6px; font-size: 16px; }
+.kg-panel .muted { color: var(--ink-3); }
+.kg-panel ul { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.kg-panel li { border-left: 3px solid var(--line); padding: 2px 0 2px 12px; }
+.kg-panel li.ok { border-left-color: var(--good); }
+.kg-panel li.no { border-left-color: var(--bad); }
+.kg-panel .q { font-family: "Source Serif 4", Georgia, serif; font-style: italic; }
+.kg-panel .v { font-size: 13.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); margin-right: 6px; }
+.kg details { margin-top: 12px; font-size: 14px; }
+.kg details summary { cursor: pointer; color: var(--ink-2); font-weight: 600; }
+.kg details .table-wrap { margin-top: 10px; }
+.kg-stats { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 14px; color: var(--ink-3); margin: 6px 0 0; }
+.kg-stats b { color: var(--ink); font-weight: 600; }
+.kg .lg-neutral { stroke: var(--ink-3); }
+.kg .lg-acct { stroke: var(--acct); }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Chapters">
+  <div class="nav-inner">
+    <a class="brand" href="#top">Uri, Settled</a>
+    <div class="chapters">
+      <a href="#problem">Problem</a>
+      <a href="#method">Method</a>
+      <a href="#graph">The graph</a>
+      <a href="#coal">Coal</a>
+      <a href="#settled">Settled</a>
+      <a href="#gas">Gas</a>
+      <a href="#grid">Grid &amp; plants</a>
+      <a href="#limits">Limits</a>
+      <a href="#run">Run it</a>
+    </div>
+    <a class="gh" href="https://github.com/MJRobillard/CausalKnowledgeGraph-Uri">GitHub</a>
+  </div>
+  <div class="progress" id="progress"></div>
+</nav>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wide">
+    <div class="kicker">Winter Storm Uri · Texas · February 2021</div>
+    <h1>Four reports, four stories. Measured data decides which ones hold.</h1>
+    <p class="lede">The 2021 Texas blackout left a stack of official reports that disagree on timing, magnitudes and causes.
+      This project turns those reports into a <strong>causal knowledge graph</strong>, checks each claim against measured
+      data, tests the causal claims, and replays the event on a grid model: what the data <strong>confirms</strong>,
+      where the sources are <strong>contested</strong>, and what is <strong>untestable</strong> until someone measures it.</p>
+
+    <div class="stats">
+      <div class="stat hl"><b>1,769 MW</b><span>coal tripped by the 01:55 frequency low, FERC's figure to the megawatt</span></div>
+      <div class="stat"><b>−29%</b><span>load shed with no coal outages at all, starting 2 hours later. The blackout still happens</span></div>
+      <div class="stat"><b>01:20</b><span>when load shed actually began, per ERCOT minute data (sources said 1:15 to 1:25)</span></div>
+      <div class="stat"><b>4,199</b><span>items extracted from 65 report sections, each tied to a verbatim quote</span></div>
+    </div>
+
+    <figure>
+      <a href="assets/map_cold_vs_outages_daily.png"><img src="assets/map_cold_vs_outages_daily.png" width="2107" height="1475" alt="Six daily maps of Texas, February 14 to 19, 2021: counties shaded by how far below freezing the daily low went, with plant dots sized by capacity and coloured by share of capacity out." loading="eager"></a>
+      <figcaption><b>Where the cold went, and which plants failed under it.</b> Counties are shaded by how far below freezing the
+        daily low went, interpolated from 758 weather stations. Dots are the 329 plant-fuel units in the causal-ML panel
+        (including 118 that never failed), sized by capacity and coloured by the share of capacity out that day. The cold
+        reaches the Gulf coast on Feb 15–16 as the large gas plants around Houston and Dallas–Fort Worth fail; by Feb 18 the
+        south has thawed, but many plants are still out.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="wrap">
+    <div class="kicker">01 · The problem</div>
+    <h2>The record of the blackout contradicts itself</h2>
+    <p>ERCOT, FERC and NERC, a university panel, an industry-funded consultant and the news all describe the same week.
+      They disagree on when load shedding began, how much generation each fuel lost, and what caused it. Some of
+      those disagreements are real. Others only look like disagreements: two numbers measured over different
+      regions, windows or denominators.</p>
+    <p>The approach here is to stop arguing from the text. Every claim becomes a node in a graph with its source, its
+      scope and a trust tier. Then the claims are checked against what was <em>measured</em>: ERCOT's minute-level outage
+      and frequency data, unit outage lists, EIA demand, and NOAA temperatures from 758 stations.</p>
+    <div class="callout"><strong>Example.</strong> ERCOT says fuel issues caused <strong>12%</strong> of outages; FERC says
+      <strong>31.4%</strong>. Not a conflict: ERCOT counts MW at the peak minute in ERCOT, FERC counts events across three
+      regions over 13 days. The graph links them as <em>different scope</em>, not as a contradiction.</div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section id="method">
+  <div class="wide">
+    <div class="wrap" style="margin-left:0">
+      <div class="kicker">02 · How it works</div>
+      <h2>From report text to tested causal claims</h2>
+      <p>A language model reads the reports, but it only extracts. Trust, contradictions, grounding and grades are all
+        assigned by deterministic code that the model never sees.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><h4>Bottom-up extraction</h4><p>DeepSeek read 65 report sections (about 72k words, $1.29) and extracted entities, events, causal relations and quantitative claims with their scope. Every item must quote its source verbatim, and every number must appear in its quote.</p></div>
+      <div class="step"><span class="n">2</span><h4>Trust tiers, by code</h4><p>Measurements, first-party reports, independent analysis and news get different tiers. Flags like "interested party" or "funded by an interested party" lower trust without changing tier.</p></div>
+      <div class="step"><span class="n">3</span><h4>Grounding</h4><p>Claims are matched to measured series by unit, region and time. Of 57 checkable ERCOT claims, 29 were checked: 24 agree, 5 disagree. Each document gets a reliability score.</p></div>
+      <div class="step"><span class="n">4</span><h4>Hypotheses, pre-registered</h4><p>Causal claims are grouped into 57 families. How each concept is measured was committed before any test ran. Models must beat weather-free baselines and placebos out of sample.</p></div>
+      <div class="step"><span class="n">5</span><h4>Causal ML</h4><p>EIA-860 plants matched to ERCOT's outage list (88% of outage energy). Double ML and causal forests with day fixed effects, using distance to basins, pipelines and the coast as confounders.</p></div>
+      <div class="step"><span class="n">6</span><h4>Grid replay</h4><p>TAMU's synthetic 2,000-bus Texas grid, replayed hour by hour with a DC optimal power flow. Scenarios remove specific outages and measure the change in load shed.</p></div>
+    </div>
+
+    <div class="wrap" style="margin-left:0">
+      <p><strong>Grades.</strong> G0 hedged · G1 asserted in text · G2 passed a test · G3 passed a test with an independent
+        source. Timing-only checks never pass.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GRAPH -->
+<section id="graph">
+  <div class="wide kg">
+    <div class="wrap" style="margin-left:0">
+      <div class="kicker">03 · The knowledge graph</div>
+      <h2>A graph with trust built into its layers</h2>
+      <p class="lede">Every extracted item hangs off the document that said it, and every document sits in a trust tier.
+        Measured data sits at the bottom. Claims are only as good as the measurements they survive.</p>
+      <p class="kg-stats" id="kg-stats"></p>
+    </div>
+
+    <div class="kg-tabs" role="tablist" aria-label="Graph views">
+      <button role="tab" id="tab-ev" aria-selected="true" aria-controls="view-ev">Evidence tiers</button>
+      <button role="tab" id="tab-ca" aria-selected="false" aria-controls="view-ca">Causal layer</button>
+    </div>
+
+    <div id="view-ev" role="tabpanel" aria-labelledby="tab-ev">
+      <p class="kg-intro">Documents are stacked by trust tier above the measured series. Each link is a group of claims
+        checked against a measurement: <strong>24 agree, 5 disagree</strong>. Select a document or a link to read the claims.</p>
+      <div class="kg-bar">
+        <div class="kg-legend" aria-label="Legend">
+          <span><svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" stroke="#0ca30c" stroke-width="3" stroke-linecap="round"/></svg>✓ agrees with the data</span>
+          <span><svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" stroke="#d03b3b" stroke-width="3" stroke-linecap="round"/></svg>✗ disagrees</span>
+          <span><svg width="26" height="14" aria-hidden="true"><rect x="1" y="1" width="24" height="12" rx="3" fill="none" stroke="currentColor" stroke-dasharray="4 3"/></svg>held out (answer key)</span>
+        </div>
+      </div>
+      <div class="kg-stage" id="ev-stage"><div class="kg-tip" id="ev-tip" role="status"></div></div>
+      <div class="kg-panel" id="ev-panel" aria-live="polite"></div>
+      <details><summary>Table view: the 29 checked claims</summary><div class="table-wrap" id="ev-table"></div></details>
+    </div>
+
+    <div id="view-ca" role="tabpanel" aria-labelledby="tab-ca" hidden>
+      <p class="kg-intro">Above the evidence, causal claims are grouped by concept: which kind of event the documents
+        say caused which. Each edge carries its grade and what testing it against measured data showed.
+        Select an edge or a concept.</p>
+      <div class="kg-bar">
+        <div class="kg-filter" role="group" aria-label="Which edges">
+          <button id="f-head" aria-pressed="true">Main edges</button>
+          <button id="f-all" aria-pressed="false">All edges</button>
+        </div>
+        <div class="kg-legend" aria-label="Legend">
+          <span><svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" stroke="#0ca30c" stroke-width="3" stroke-linecap="round"/></svg>✓ passed a test (G3)</span>
+          <span><svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" stroke="#0ca30c" stroke-width="3" stroke-dasharray="5 4"/></svg>passed; test only, no document claim</span>
+          <span><svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" stroke="#ec835a" stroke-width="3" stroke-linecap="round"/></svg>✗ tested, not supported</span>
+          <span><svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" class="lg-neutral" stroke-width="3" stroke-linecap="round"/></svg>timing only or inconclusive</span>
+          <span><svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" class="lg-neutral" stroke-width="2.5" stroke-dasharray="2 4" stroke-linecap="round"/></svg>untestable</span>
+          <span><svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" class="lg-acct" stroke-width="3" stroke-linecap="round"/></svg>accounting identity</span>
+        </div>
+      </div>
+      <div class="kg-stage" id="ca-stage"><div class="kg-tip" id="ca-tip" role="status"></div></div>
+      <div class="kg-panel" id="ca-panel" aria-live="polite"></div>
+      <details><summary>Table view: every causal edge</summary><div class="table-wrap" id="ca-table"></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- COAL -->
+<section id="coal">
+  <div class="wide">
+    <div class="wrap" style="margin-left:0">
+      <div class="kicker">04 · Headline finding</div>
+      <h2>The coal contradiction: four sources, four stories</h2>
+      <p class="lede">Did coal fail because of the cold, or because the grid's frequency collapsed? The sources pull in
+        different directions.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:26%">Source</th><th>What it says about coal</th></tr></thead>
+        <tbody>
+          <tr><td><strong>FERC/NERC final report</strong><br><span class="tag">Tier 2</span></td><td><blockquote>"a 933 MW coal unit tripped due to the rapidly-changing frequency, which affected the boiler controls, caused a high boiler pressure condition, and tripped the unit"</blockquote><blockquote style="margin-top:10px">"low frequency, or the rate of frequency change, also caused approximately 1,769 MW of coal generation and 2,190 MW of gas generation to trip or derate."</blockquote></td></tr>
+          <tr><td><strong>UT Austin timeline</strong><br><span class="tag">Tier 2 · held out</span></td><td><blockquote>"Grid frequency deviations were reported to be responsible for up to 1,800 MW of outages (8 total units), mostly coal, at 2 a.m. on February 15."</blockquote></td></tr>
+          <tr><td><strong>System time series</strong><br><span class="tag">our test</span></td><td>Cold explains coal outages: a fail-and-restart model with temperature beats weather-free baselines by 5.9× out of sample (grade G3).</td></tr>
+          <tr><td><strong>Plant cross-section</strong><br><span class="tag">our causal ML</span></td><td>Cold <em>at the plant</em> does not: −0.8 percentage points per °F across 11 coal units, with an interval that includes zero.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <a href="assets/map_frequency_trips.png"><img src="assets/map_frequency_trips.png" width="2254" height="1135" alt="Map of the units that tripped after the 01:55 frequency low, with a timeline showing coal units returning within hours while gas units stayed out for days." loading="lazy"></a>
+      <figcaption><b>The 01:55 frequency trips.</b> Coal came back within hours; gas stayed out for days.</figcaption>
+    </figure>
+
+    <div class="wrap" style="margin-left:0">
+      <h3>What the measured data settles</h3>
+      <ul class="settled">
+        <li><strong>The frequency trips were real, and FERC's numbers are exact.</strong> ERCOT's own unit outage list, read
+          independently of any report, has 1,769 MW of coal tripping in the minutes after the 01:55 frequency low
+          (Sandy Creek 933 MW and Limestone 836 MW): FERC's figure to the megawatt. It also has 2,153 MW of gas (FERC: 2,190).</li>
+        <li><strong>UT Austin's "mostly coal" doesn't hold.</strong> FERC's own figures and ERCOT's list (2 coal units,
+          10 gas units starting 01:50–02:30) both put more gas than coal in those trips. "Up to 1,800 MW" matches the coal part alone.</li>
+        <li><strong>The coal trips were brief; the gas ones were not.</strong> Both coal units were back by noon. The gas
+          units that tripped in the same minutes stayed out for a median of 42 hours.</li>
+        <li><strong>ERCOT's minute data confirms the mechanism.</strong> Coal MW out was flat at 2,340 MW for at least 30
+          minutes, then stepped up 933 MW four minutes after the 01:55 low (59.302 Hz): the 99.8th percentile of 15-minute changes.</li>
+        <li class="open"><strong>Still open:</strong> coal capacity that stayed out for days has no measured cause.
+          Plant-level cold doesn't explain it, which leaves FERC's frozen fuel handling, and no public series measures that.</li>
+      </ul>
+
+      <h3>Would removing coal have saved the grid?</h3>
+      <p>No. In the replay on a synthetic Texas grid, removing every coal outage for the whole week cuts load shed by 29%
+        and delays its start by two hours, but the blackout still happens.</p>
+    </div>
+    <div class="table-wrap" style="max-width:var(--measure)">
+      <table>
+        <thead><tr><th>Scenario</th><th>Load shed</th><th>Shed starts</th></tr></thead>
+        <tbody>
+          <tr><td>As it happened (replay)</td><td class="num">919 GWh</td><td class="num">Feb 15, 01:00</td></tr>
+          <tr><td>No 01:55 frequency trips (coal + gas)</td><td class="num">−94 GWh (coal 16, gas 78)</td><td class="num">01:00</td></tr>
+          <tr class="key"><td><strong>No coal outages at all</strong></td><td class="num"><strong>650 GWh (−29%)</strong></td><td class="num"><strong>03:00</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="wrap" style="margin-left:0">
+      <p style="font-size:15px;color:var(--ink-3)">The 29% is a counterfactual change in shed, not coal's share of outages.
+        Shed is roughly max(0, demand − available), so it depends on how close the system was to the line. The replay is hourly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SETTLED -->
+<section id="settled">
+  <div class="wrap">
+    <div class="kicker">05 · Other contradictions</div>
+    <h2>Settled by measured data</h2>
+  </div>
+  <div class="wrap">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:42%">Disagreement</th><th>Resolution</th></tr></thead>
+        <tbody>
+          <tr><td>When load shed began: FERC "1:15 a.m." vs UT Austin 1:20 vs Texas Tribune 1:25</td><td>ERCOT minute data: <strong>01:20</strong>. FERC's four other statements, Enverus and UT Austin are right; FERC's single 1:15 and the Tribune are 5 minutes off.</td></tr>
+          <tr><td>Fuel as a cause: ERCOT 12% vs FERC 31.4%</td><td>Not a conflict: MW at the peak minute in ERCOT, vs counts of events across three regions over 13 days.</td></tr>
+          <tr><td>ERCOT board deck: 52,277 MW peak "on February 17"</td><td>A PDF layout error caught by the data: the peak was <strong>2/16 07:36</strong>.</td></tr>
+          <tr><td>The 3/4 vs 3/12 unit lists: "138 units added"</td><td>135 of the 138 are <strong>redacted rows being disclosed</strong>, not new outages.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- GAS -->
+<section id="gas">
+  <div class="wide">
+    <div class="wrap" style="margin-left:0">
+      <div class="kicker">06 · Supply-chain intelligence</div>
+      <h2>The gas–power edges</h2>
+      <p class="lede">Gas plants need gas; gas production needs electricity. The graph sorts each link in that loop into
+        confirmed, contested or untestable.</p>
+    </div>
+    <figure>
+      <a href="assets/hypothesis_lead.png"><img src="assets/hypothesis_lead.png" width="2040" height="864" alt="Three panels: low frequency to coal outages, tested and confirmed; gas supply to gas-fired outages, documented and contested; loss of power at gas facilities to gas supply, documented but untestable." loading="lazy"></a>
+      <figcaption><b>Three edges from the documents.</b> What the data confirms, where the sources disagree, and which
+        measurement is missing.</figcaption>
+    </figure>
+    <div class="cols">
+      <div class="card"><h4>Gas supply → gas-plant outages: contested</h4>
+        <p>FERC: <em>"Going into February 15, ERCOT had approximately 2,300 MW of unplanned generating unit outages and
+        derates due to natural gas fuel supply issues."</em> Enverus, funded by the Texas Oil and Gas Association:
+        <em>"initial problems did not occur as a result of natural gas supply outages."</em> The models neither support nor
+        refute the edge.</p></div>
+      <div class="card"><h4>Power loss at gas facilities → gas supply: untestable</h4>
+        <p>The best-documented edge: 20 relations across FERC and Enverus (FERC: loss of power caused 18.1% of the
+        production decline on Feb 14, 21.6% on Feb 17, 23.5% over the event). No public series meters electricity to gas
+        facilities.</p></div>
+    </div>
+    <div class="wrap" style="margin-left:0">
+      <div class="callout"><strong>An open lead.</strong> The gas units tripped by low frequency stayed out for days while the
+        coal units came back within hours. Were they unable to restart because fuel wasn't available? Per-unit causes are
+        confidential, so this is a question, not a finding.</div>
+    </div>
+    <figure class="fig-mid">
+      <a href="assets/map_gas_supply_chain.png"><img src="assets/map_gas_supply_chain.png" width="1522" height="1323" alt="Map of Texas shale plays, gas pipelines, processing plants, and gas power plants coloured by share of capacity out." loading="lazy"></a>
+      <figcaption><b>Gas supply chain.</b> Plays, pipelines, processing plants, and gas plants by share of capacity out.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- GRID & PLANTS -->
+<section id="grid">
+  <div class="wide">
+    <div class="wrap" style="margin-left:0">
+      <div class="kicker">07 · Grid and plant findings</div>
+      <h2>What the cold did at each plant, and where the grid strained</h2>
+    </div>
+    <figure class="fig-mid">
+      <a href="assets/fuel_effects.png"><img src="assets/fuel_effects.png" width="1040" height="546" alt="Dot-and-interval chart of the effect of plant-level cold on outages by fuel: wind clearly positive, coal negative with an interval spanning zero, gas, solar and nuclear intervals spanning zero." loading="lazy"></a>
+      <figcaption><b>Cold at the plant, by fuel.</b> A clear effect for wind: 1.14 percentage points of capacity out per °F
+        below freezing. Not significant overall (0.70 pp per °F, 95% CI −0.00 to 1.41) or for gas. Intervals ignore spatial
+        correlation and are too narrow; interpolated temperatures bias effects toward zero.</figcaption>
+    </figure>
+    <figure>
+      <a href="assets/map_cold_sensitivity.png"><img src="assets/map_cold_sensitivity.png" width="2373" height="920" alt="Maps of cold sensitivity by plant and fuel from the causal forest, highest for Panhandle wind and Houston-coast gas." loading="lazy"></a>
+      <figcaption><b>Most cold-sensitive plants:</b> Panhandle wind and Houston-coast gas. One reading, still to be checked:
+        plants that rarely see freezing were the least winterized.</figcaption>
+    </figure>
+    <div class="wrap" style="margin-left:0">
+      <p><strong>Wind depends on the reference.</strong> It was 16.9 GW out (Feb 14–17 mean) against seasonal ratings,
+        which are about nameplate, but only about 6.1 GW below its own early-February output (10.3 → 4.2 GW). Gas was
+        20.6 GW out against seasonal ratings.</p>
+    </div>
+    <figure>
+      <a href="assets/replay.png"><img src="assets/replay.png" width="1430" height="598" alt="Line chart of load shed, Feb 14 to 19: ERCOT actual, the simulated replay, and the replay without the 01:55 frequency trips." loading="lazy"></a>
+      <figcaption><b>Grid replay vs ERCOT.</b> 919 vs 1,000 GWh of load shed, hourly r = 0.93. That match mostly confirms
+        the bookkeeping: shed is roughly demand minus available capacity, and the replay uses ERCOT's demand and outages.</figcaption>
+    </figure>
+    <figure class="fig-mid">
+      <a href="assets/map_grid_congestion.png"><img src="assets/map_grid_congestion.png" width="1535" height="1323" alt="Map of the synthetic Texas grid with lines coloured and buses sized by hours spent at thermal limit during the replay." loading="lazy"></a>
+      <figcaption><b>Where the grid strained.</b> Lines are coloured, and dots sized, by the hours each spent at its thermal
+        limit. The congestion is local (Odessa, Rockdale–Caldwell, a generator connection at Pasadena). During load shedding,
+        64% of hours had one shortage price statewide: <strong>the shortfall was generating capacity, not transmission.</strong>
+        This is a synthetic network that resembles ERCOT, not ERCOT's real lines.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- LIMITS -->
+<section id="limits">
+  <div class="wrap">
+    <div class="kicker">08 · Assumptions and limits</div>
+    <h2>What this can't tell you</h2>
+    <ul class="limits">
+      <li>One storm. The grid is synthetic (it resembles ERCOT; it is not its network), DC, hourly and steady-state, with no
+        frequency dynamics, so collapse risk is not modelled.</li>
+      <li>Outage MW is measured against seasonal ratings; for wind that is about nameplate, not expected output.</li>
+      <li>The outage list is self-reported and covers about 70% of measured gas MW out.</li>
+      <li>Plant matching is rule-based; 57 ambiguous units are excluded. Cold is interpolated.</li>
+      <li>FERC's daily gas production (Figure 35) was read off the chart by code, within 1 Bcf/d of FERC's stated totals.</li>
+      <li>Causal-ML intervals ignore spatial correlation.</li>
+      <li>Every assumption is logged as Verified, Assumed or Choice in
+        <a href="https://github.com/MJRobillard/CausalKnowledgeGraph-Uri/blob/main/docs/ASSUMPTIONS.md">docs/ASSUMPTIONS.md</a>.
+        Hand labels and mismatch reviews written by the model are disclosed and not yet checked by a person.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- RUN -->
+<section id="run">
+  <div class="wrap">
+    <div class="kicker">09 · Reproduce it</div>
+    <h2>Every number on this page comes from code</h2>
+    <p>Each stage writes its own folder in <code>results/</code>. Cached model responses replay for free, so no API key
+      is needed to rebuild the results.</p>
+<pre><span class="c"># Python ≥ 3.10, uv, make, pdftotext</span>
+git clone https://github.com/MJRobillard/CausalKnowledgeGraph-Uri
+cd CausalKnowledgeGraph-Uri
+uv sync
+make test   <span class="c"># 54 tests, no API calls</span>
+make data   <span class="c"># third-party documents, public downloads, the TAMU grid</span>
+make all    <span class="c"># every stage after extraction, about 15 minutes</span></pre>
+    <p>Sources, citations and terms for every dataset are in
+      <a href="https://github.com/MJRobillard/CausalKnowledgeGraph-Uri/blob/main/data/README.md">data/README.md</a>.
+      Copyrighted news articles and the Enverus and UT Austin reports are not redistributed; a script downloads them and
+      checks them against the copies used here.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Code under the MIT License. Grid model: Wu et al. (2021), <em>Advances in Applied Energy</em> 4, 100056.</span>
+    <a href="https://github.com/MJRobillard/CausalKnowledgeGraph-Uri">github.com/MJRobillard/CausalKnowledgeGraph-Uri</a>
+  </div>
+</footer>
+
+<script src="data/kg.js"></script>
+<script src="kg.js"></script>
+<script>
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('.chapters a'));
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) { a.classList.remove('active'); });
+        var a = byId[e.target.id];
+        if (a) {
+          a.classList.add('active');
+          var bar = a.parentNode;
+          var left = a.offsetLeft - bar.offsetLeft;
+          if (left < bar.scrollLeft || left + a.offsetWidth > bar.scrollLeft + bar.clientWidth) {
+            bar.scrollTo({ left: left - 16, behavior: 'smooth' });
+          }
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('main section[id]').forEach(function (s) { io.observe(s); });
+  }
+  var bar = document.getElementById('progress');
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>
