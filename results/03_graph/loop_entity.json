@@ -1,0 +1,42 @@
+{
+ "nodes": [
+  {
+   "id": "Cold"
+  },
+  {
+   "id": "GasProduction"
+  },
+  {
+   "id": "GasGeneration"
+  },
+  {
+   "id": "LoadShed"
+  }
+ ],
+ "edges": [
+  {
+   "src": "Cold",
+   "dst": "GasProduction",
+   "mechanism": "freeze-offs and wellhead freezing",
+   "lag_h": 1
+  },
+  {
+   "src": "GasProduction",
+   "dst": "GasGeneration",
+   "mechanism": "fuel supply to gas-fired units",
+   "lag_h": 1
+  },
+  {
+   "src": "GasGeneration",
+   "dst": "LoadShed",
+   "mechanism": "generation loss forces shedding",
+   "lag_h": 0
+  },
+  {
+   "src": "LoadShed",
+   "dst": "GasProduction",
+   "mechanism": "power_supply_loss: shed circuits feed gas facilities",
+   "lag_h": 1
+  }
+ ]
+}

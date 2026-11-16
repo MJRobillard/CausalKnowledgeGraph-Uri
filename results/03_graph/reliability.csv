@@ -1,0 +1,10 @@
+doc_id,tier,flags,items,anchored,agreed,disagreed,coverage,prior_mean,r
+ercot_board_2021_02_24,1,"interested_party,preliminary",189,2,0,2,0.010582010582010581,0.9,0.75
+ercot_causes_2021_04_27,1,"interested_party,self_reported",78,1,1,0,0.01282051282051282,0.9,0.9090909090909091
+enverus_txoga_2021_04,2,funded_by_interested_party,400,2,2,0,0.005,0.7,0.75
+ferc_final_2021_11,2,,2057,20,18,2,0.009722897423432183,0.7,0.8333333333333334
+news_abc13_2021_02_15,3,,15,2,2,0,0.13333333333333333,0.3,0.4166666666666667
+news_aljazeera_2021_02_15,3,,49,0,0,0,0.0,0.3,0.3
+news_ap_2021_02_15,3,,39,0,0,0,0.0,0.3,0.3
+news_ap_pbs_2021_02_16,3,,29,0,0,0,0.0,0.3,0.3
+news_txtrib_ksat_2021_02_15,3,,11,2,1,1,0.18181818181818182,0.3,0.3333333333333333

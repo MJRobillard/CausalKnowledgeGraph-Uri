@@ -1,0 +1,519 @@
+{
+  "eia_clock_check": {
+    "mae_by_lag_h": {
+      "-3": 6640.1,
+      "-2": 6565.9,
+      "-1": 6594.8,
+      "0": 6548.8,
+      "1": 6690.4,
+      "2": 6806.7,
+      "3": 6805.1
+    },
+    "first_two_hours": [
+      [
+        "2021-02-15 00:00:00",
+        "65255.0",
+        "65268.0"
+      ],
+      [
+        "2021-02-15 01:00:00",
+        "63395.0",
+        "63218.0"
+      ]
+    ]
+  },
+  "eia": {
+    "files": {
+      "eia/ercot_demand_by_subregion.csv": {
+        "source": "ERCOT Demand by Subregion/2021-02-01 to 2021-02-19.csv",
+        "rows": 433,
+        "first": "2021-01-30T23:00:00-06:00",
+        "last": "2021-02-17T23:00:00-06:00",
+        "duplicate_times": 0
+      },
+      "eia/ercot_demand_demand_forecast_and_net_interchange.csv": {
+        "source": "ERCOT Demand, Demand Forecast, and Net Interchange/2021-02-01 to 2020-02-19.csv",
+        "rows": 481,
+        "first": "2021-01-30T23:00:00-06:00",
+        "last": "2021-02-19T23:00:00-06:00",
+        "duplicate_times": 0
+      },
+      "eia/ercot_generation_by_source.csv": {
+        "source": "ERCOT Generation by Source/2021-02-01 to 2021-02-19.csv",
+        "rows": 457,
+        "first": "2021-01-30T23:00:00-06:00",
+        "last": "2021-02-18T23:00:00-06:00",
+        "duplicate_times": 0
+      },
+      "eia/ercot_interchange_with_neighboring_balancing_authorities.csv": {
+        "source": "ERCOT Interchange with Neighboring Balancing Authorities/2021-02-01 to 2021-02-19.csv",
+        "rows": 433,
+        "first": "2021-01-30T23:00:00-06:00",
+        "last": "2021-02-17T23:00:00-06:00",
+        "duplicate_times": 0
+      },
+      "eia/miso_demand_by_subregion.csv": {
+        "source": "MISO Demand by Subregion/2021-02-01 to 2021-02-19.json",
+        "rows": 456,
+        "first": "2021-01-30T23:00:00-06:00",
+        "last": "2021-02-18T22:00:00-06:00",
+        "duplicate_times": 0
+      },
+      "eia/miso_generation_by_source.csv": {
+        "source": "MISO Generation by Source/2021-02-01 to 2021-02-19.csv",
+        "rows": 456,
+        "first": "2021-01-30T23:00:00-06:00",
+        "last": "2021-02-18T22:00:00-06:00",
+        "duplicate_times": 0
+      },
+      "eia/miso_interchange_with_neighboring_balancing_authorities.csv": {
+        "source": "MISO Interchange with Neighboring Balancing Authorities/2021-02-01 to 202.csv",
+        "rows": 432,
+        "first": "2021-01-30T23:00:00-06:00",
+        "last": "2021-02-17T22:00:00-06:00",
+        "duplicate_times": 0
+      },
+      "eia/swpp_demand_by_subregion.csv": {
+        "source": "SWPP Demand by Subregion/2021-02-01 to 2020-02-19.csv",
+        "rows": 457,
+        "first": "2021-01-30T23:00:00-06:00",
+        "last": "2021-02-18T23:00:00-06:00",
+        "duplicate_times": 0
+      },
+      "eia/swpp_demand_demand_forecast_and_net_interchange.csv": {
+        "source": "SWPP Demand, Demand Forecast, and Net Interchange/2021-02-01 to 2020-02-19.csv",
+        "rows": 481,
+        "first": "2021-01-30T23:00:00-06:00",
+        "last": "2021-02-19T23:00:00-06:00",
+        "duplicate_times": 0
+      },
+      "eia/swpp_generation_by_source.csv": {
+        "source": "SWPP Generation by Source/2021-02-01 to 2020-02-19.csv",
+        "rows": 457,
+        "first": "2021-01-30T23:00:00-06:00",
+        "last": "2021-02-18T23:00:00-06:00",
+        "duplicate_times": 0
+      }
+    },
+    "skipped_empty": [
+      "MISO Demand, Demand Forecast, and Net Interchange/2021-02-01 to 2021-0.csv",
+      "SWPP Interchange with Neighboring Balancing Authorities/2021-02-01 to 2020-02-19.csv"
+    ]
+  },
+  "outputs": [
+    "eia/ercot_demand_by_subregion.csv",
+    "eia/ercot_demand_demand_forecast_and_net_interchange.csv",
+    "eia/ercot_generation_by_source.csv",
+    "eia/ercot_interchange_with_neighboring_balancing_authorities.csv",
+    "eia/miso_demand_by_subregion.csv",
+    "eia/miso_generation_by_source.csv",
+    "eia/miso_interchange_with_neighboring_balancing_authorities.csv",
+    "eia/swpp_demand_by_subregion.csv",
+    "eia/swpp_demand_demand_forecast_and_net_interchange.csv",
+    "eia/swpp_generation_by_source.csv",
+    "eia/ercot_demand_by_subregion_api_2019_2021.csv",
+    "bes_profiles/bes_demand_feb2021.csv",
+    "bes_profiles/bes_solar_feb2016_profile.csv",
+    "bes_profiles/bes_hydro_feb2016_profile.csv",
+    "bes_profiles/bes_wind_feb2021_v20210222.csv",
+    "bes_profiles/bes_wind_feb2021_v20210223.csv",
+    "bes_profiles/bes_wind_feb2021_v20210223b.csv",
+    "bes_profiles/bes_wind_feb2021_v20210224.csv",
+    "bes_outputs/pg.csv",
+    "bes_outputs/pf.csv",
+    "load_outage/txraw.csv",
+    "load_outage/raw_all_states.csv",
+    "load_outage/cty_outage.csv",
+    "load_outage/cty_total.csv",
+    "load_outage/cty_out_pct.csv",
+    "load_outage/cty_out_dist.csv",
+    "load_outage/cty_outage_all.csv",
+    "load_outage/cty_total_all.csv",
+    "load_outage/avg_out_and_ttl.csv",
+    "unit_outage/unit_outage_20210304.csv",
+    "unit_outage/coal_outage.csv",
+    "unit_outage/ng_outage.csv",
+    "unit_outage/pv_outage.csv",
+    "unit_outage/ng_derate_fac.csv",
+    "ercot_derived/load_shed_processed.csv",
+    "ercot_derived/capacity_out_processed.csv",
+    "ercot_derived/ercot_capacity.csv",
+    "ercot_derived/ercot_load_forecast.csv",
+    "ercot_derived/load_shed_simulated.csv"
+  ],
+  "eia_api": {
+    "rows": 15313,
+    "dst_duplicate_labels": [
+      "2019-11-03 01:00:00",
+      "2020-11-01 01:00:00"
+    ],
+    "first": "2019-05-27T00:00:00-05:00",
+    "last": "2021-02-22T23:00:00-06:00"
+  },
+  "bes": {
+    "demand": {
+      "rows": 432,
+      "rows_matched_to_eia": 432,
+      "label_minus_true": "-1826 days +01:00:00",
+      "first_label": "2/1/2016 0:00",
+      "first_true": "2021-01-30T23:00:00-06:00"
+    },
+    "solar": {
+      "rows": 432,
+      "first_label": "2/1/2016 0:00",
+      "first_out": "2021-02-01T00:00:00-06:00"
+    },
+    "hydro": {
+      "rows": 432,
+      "first_label": "2/1/2016 0:00",
+      "first_out": "2021-02-01T00:00:00-06:00"
+    },
+    "wind": {
+      "bes_profiles/bes_wind_feb2021_v20210222.csv": {
+        "rows": 480,
+        "first_out": "2021-01-31T18:00:00-06:00"
+      },
+      "bes_profiles/bes_wind_feb2021_v20210223.csv": {
+        "rows": 480,
+        "first_out": "2021-01-31T18:00:00-06:00"
+      },
+      "bes_profiles/bes_wind_feb2021_v20210223b.csv": {
+        "rows": 480,
+        "first_out": "2021-01-31T18:00:00-06:00"
+      },
+      "bes_profiles/bes_wind_feb2021_v20210224.csv": {
+        "rows": 480,
+        "first_out": "2021-01-31T18:00:00-06:00"
+      }
+    },
+    "wind_duplicate_skipped": {
+      "file": "data/BES_wind_20210224.csv",
+      "identical_to": "BES_wind_Feb2021_v20210224.csv",
+      "identical": true
+    },
+    "outputs": {
+      "PG": {
+        "rows": 432,
+        "first_label": "2016-01-01 00:00:00",
+        "last_label": "2016-01-18 23:00:00",
+        "code_copy_identical": true,
+        "pg_sum_over_demand_sum": [
+          1.0,
+          1.0
+        ]
+      },
+      "PF": {
+        "rows": 432,
+        "first_label": "2016-01-01 00:00:00",
+        "last_label": "2016-01-18 23:00:00",
+        "code_copy_identical": true
+      },
+      "LMP.pkl": "skipped: pickle only (loading a pickle runs code); no CSV copy exists"
+    }
+  },
+  "load_outage": {
+    "txraw": {
+      "rows": 120631,
+      "numeric_counties_mapped": 13,
+      "out_exceeds_tracked_rows": 317,
+      "first": "2021-02-13T18:03:40-06:00",
+      "last": "2021-02-26T17:55:57-06:00"
+    },
+    "raw_numeric_counties_other_states": 114,
+    "raw": {
+      "rows": 470193,
+      "numeric_counties_mapped": 13,
+      "out_exceeds_tracked_rows": 403,
+      "first": "2021-02-13T18:00:01-06:00",
+      "last": "2021-02-26T17:58:13.873000-06:00"
+    },
+    "clock_check": {
+      "first_10min_over_500k_customers_out_raw_label": "2021-02-15 08:20:00"
+    },
+    "cty_outage": {
+      "rows": 192,
+      "first": "2021-02-11T18:00:00-06:00"
+    },
+    "cty_total": {
+      "rows": 192,
+      "first": "2021-02-11T18:00:00-06:00"
+    },
+    "cty_out_pct": {
+      "rows": 192,
+      "cells_over_100pct": 46,
+      "max_before_cap": 57.070422535211264,
+      "counties_over_100pct": {
+        "Mitchell": 6,
+        "Runnels": 13,
+        "Kinney": 5,
+        "Bandera": 1,
+        "Colorado": 1,
+        "Austin": 2,
+        "Waller": 5,
+        "Galveston": 1,
+        "Liberty": 1,
+        "Wharton": 1,
+        "Brazoria": 8,
+        "Matagorda": 2
+      },
+      "rows_zero_by_construction": "first 48 rows (TAMU loop starts at hour 48)",
+      "first": "2021-02-11T18:00:00-06:00"
+    },
+    "cty_out_dist": {
+      "rows": 192,
+      "first": "2021-02-11T18:00:00-06:00"
+    },
+    "cty_outage_all": {
+      "rows": 192,
+      "dropped_col_abs_sum": 0.0,
+      "numeric_cols": 13,
+      "dropped_as_duplicate": [
+        "70->Edwards",
+        "226->Tom Green",
+        "164->Menard",
+        "218->Sutton",
+        "192->Reagan",
+        "119->Irion",
+        "186->Pecos",
+        "48->Concho",
+        "233->Val Verde",
+        "53->Crockett",
+        "231->Upton",
+        "207->Schleicher"
+      ],
+      "added_into_named": [
+        "222->Terrell"
+      ],
+      "renamed": {},
+      "first": "2021-02-11T18:00:00-06:00"
+    },
+    "cty_total_all": {
+      "rows": 192,
+      "dropped_col_abs_sum": 1417104.0,
+      "numeric_cols": 13,
+      "dropped_as_duplicate": [
+        "70->Edwards",
+        "226->Tom Green",
+        "164->Menard",
+        "218->Sutton",
+        "192->Reagan",
+        "119->Irion",
+        "186->Pecos",
+        "48->Concho",
+        "233->Val Verde",
+        "53->Crockett",
+        "231->Upton",
+        "207->Schleicher"
+      ],
+      "added_into_named": [
+        "222->Terrell"
+      ],
+      "renamed": {},
+      "first": "2021-02-11T18:00:00-06:00"
+    },
+    "avg_out_and_ttl": {
+      "dropped_as_duplicate": [
+        "70->Edwards",
+        "226->Tom Green",
+        "164->Menard",
+        "218->Sutton",
+        "192->Reagan",
+        "119->Irion",
+        "186->Pecos",
+        "48->Concho",
+        "233->Val Verde",
+        "53->Crockett",
+        "231->Upton",
+        "207->Schleicher"
+      ],
+      "added_into_named": [
+        "222->Terrell"
+      ]
+    }
+  },
+  "county_map": {
+    "utility": "Southwest Texas Electric Cooperative",
+    "rows": [
+      {
+        "code": "119",
+        "mapped_to": "Irion",
+        "fips": 48235,
+        "how": "tracked-count match",
+        "tracked": 431,
+        "named_tracked": 431,
+        "alphabetical_index_says": "Jack"
+      },
+      {
+        "code": "164",
+        "mapped_to": "Menard",
+        "fips": 48327,
+        "how": "tracked-count match",
+        "tracked": 725,
+        "named_tracked": 726,
+        "alphabetical_index_says": "Menard"
+      },
+      {
+        "code": "186",
+        "mapped_to": "Pecos",
+        "fips": 48371,
+        "how": "tracked-count match",
+        "tracked": 586,
+        "named_tracked": 586,
+        "alphabetical_index_says": "Pecos"
+      },
+      {
+        "code": "192",
+        "mapped_to": "Reagan",
+        "fips": 48383,
+        "how": "tracked-count match",
+        "tracked": 1263,
+        "named_tracked": 1267,
+        "alphabetical_index_says": "Reagan"
+      },
+      {
+        "code": "207",
+        "mapped_to": "Schleicher",
+        "fips": 48413,
+        "how": "tracked-count match",
+        "tracked": 2235,
+        "named_tracked": 2236,
+        "alphabetical_index_says": "Schleicher"
+      },
+      {
+        "code": "218",
+        "mapped_to": "Sutton",
+        "fips": 48435,
+        "how": "tracked-count match",
+        "tracked": 1356,
+        "named_tracked": 1356,
+        "alphabetical_index_says": "Sutton"
+      },
+      {
+        "code": "222",
+        "mapped_to": "Terrell",
+        "fips": 48443,
+        "how": "alphabetical-index FIPS only",
+        "tracked": 9,
+        "named_tracked": -1,
+        "alphabetical_index_says": "Terrell"
+      },
+      {
+        "code": "226",
+        "mapped_to": "Tom Green",
+        "fips": 48451,
+        "how": "tracked-count match",
+        "tracked": 210,
+        "named_tracked": 210,
+        "alphabetical_index_says": "Tom Green"
+      },
+      {
+        "code": "231",
+        "mapped_to": "Upton",
+        "fips": 48461,
+        "how": "tracked-count match",
+        "tracked": 88,
+        "named_tracked": 88,
+        "alphabetical_index_says": "Upton"
+      },
+      {
+        "code": "233",
+        "mapped_to": "Val Verde",
+        "fips": 48465,
+        "how": "tracked-count match",
+        "tracked": 271,
+        "named_tracked": 271,
+        "alphabetical_index_says": "Val Verde"
+      },
+      {
+        "code": "48",
+        "mapped_to": "Concho",
+        "fips": 48095,
+        "how": "tracked-count match",
+        "tracked": 4,
+        "named_tracked": 4,
+        "alphabetical_index_says": "Concho"
+      },
+      {
+        "code": "53",
+        "mapped_to": "Crockett",
+        "fips": 48105,
+        "how": "tracked-count match",
+        "tracked": 2665,
+        "named_tracked": 2665,
+        "alphabetical_index_says": "Crockett"
+      },
+      {
+        "code": "70",
+        "mapped_to": "Edwards",
+        "fips": 48137,
+        "how": "tracked-count match",
+        "tracked": 7,
+        "named_tracked": 7,
+        "alphabetical_index_says": "Ellis"
+      }
+    ]
+  },
+  "unit_outage": {
+    "rows_in": 1796,
+    "blank_rows_dropped": 135,
+    "partially_blank_rows": 0,
+    "rows_out": 1661,
+    "ercot_0304_rows": 1796,
+    "ercot_0304_blank_rows": 135,
+    "blank_rows_whose_times_match_a_named_0312_row": 135,
+    "coal_outage": {
+      "rows": 192,
+      "shift_applied_h": 0
+    },
+    "ng_outage": {
+      "rows": 192,
+      "shift_applied_h": 0,
+      "first_nonzero_label": "2021-02-14 00:00:00",
+      "earliest_ng_start_central": "2021-02-14T00:00:00-06:00"
+    },
+    "pv_outage": {
+      "rows": 192,
+      "shift_applied_h": 0
+    },
+    "ng_derate_fac": {
+      "rows": 192,
+      "shift_applied_h": 0
+    }
+  },
+  "ercot_derived": {
+    "load_shed_processed": {
+      "rows": 864,
+      "mae_vs_ercot_by_shift_min": {
+        "-60": 414.0,
+        "-10": 101.8,
+        "0": 49.9,
+        "10": 63.3,
+        "60": 380.7
+      }
+    },
+    "capacity_out_processed": {
+      "rows": 864,
+      "ng_mae_vs_board_deck_by_shift_min": {
+        "-60": 405.1,
+        "-10": 127.6,
+        "0": 59.6,
+        "10": 57.0,
+        "60": 357.4
+      }
+    },
+    "ercot_capacity": {
+      "rows": 168,
+      "times_reconstructed": 167
+    },
+    "ercot_load_forecast": {
+      "rows": 1344
+    },
+    "load_shed_simulated": {
+      "rows": 73
+    },
+    "skipped": {
+      "capacity_out_copied.xlsx": "one timestamp ('2/12 00\uff1a00') for 48 rows; step unknown and not used by TAMU code",
+      "*.mat, *.pkl": "binary/pickle; same data as the CSVs except LMP.pkl"
+    }
+  }
+}

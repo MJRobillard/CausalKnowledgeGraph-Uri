@@ -1,0 +1,420 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Uri extraction v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "entities",
+    "events",
+    "relations",
+    "quant_claims",
+    "other"
+  ],
+  "$defs": {
+    "quote": {
+      "type": "string",
+      "description": "Exact text copied from the chunk, at most 40 words."
+    },
+    "time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "time_text",
+        "time_resolved",
+        "precision"
+      ],
+      "properties": {
+        "time_text": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Time as written, e.g. 'early Monday'."
+        },
+        "time_resolved": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "ISO 8601 in US Central time, or null if it cannot be resolved."
+        },
+        "time_end": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "precision": {
+          "enum": [
+            "minute",
+            "hour",
+            "day",
+            "range",
+            "unknown"
+          ]
+        }
+      }
+    }
+  },
+  "properties": {
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "local_id",
+          "type",
+          "name",
+          "quote"
+        ],
+        "properties": {
+          "local_id": {
+            "type": "string",
+            "description": "e.g. E1, unique within this chunk"
+          },
+          "type": {
+            "enum": [
+              "GasProductionSite",
+              "GasProcessingPlant",
+              "GasMidstream",
+              "GasStorage",
+              "Generator",
+              "LoadZone",
+              "Region",
+              "IndustrialCustomer",
+              "Organization"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "attrs": {
+            "type": "object"
+          },
+          "quote": {
+            "$ref": "#/$defs/quote"
+          }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "local_id",
+          "type",
+          "summary",
+          "time",
+          "modality",
+          "quote"
+        ],
+        "properties": {
+          "local_id": {
+            "type": "string",
+            "description": "e.g. V1"
+          },
+          "type": {
+            "enum": [
+              "WeatherCondition",
+              "GenerationOutage",
+              "GasSupplyDisruption",
+              "LoadShed",
+              "GridEmergency",
+              "Demand",
+              "WaterServiceDisruption",
+              "MarketAction",
+              "FacilityShutdown",
+              "Restoration",
+              "InstitutionalAction"
+            ]
+          },
+          "summary": {
+            "type": "string",
+            "description": "One plain sentence, no interpretation."
+          },
+          "time": {
+            "$ref": "#/$defs/time"
+          },
+          "region": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "attrs": {
+            "type": "object"
+          },
+          "modality": {
+            "enum": [
+              "asserted",
+              "hedged",
+              "denied"
+            ]
+          },
+          "quote": {
+            "$ref": "#/$defs/quote"
+          }
+        }
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "subject",
+          "predicate",
+          "object",
+          "modality",
+          "quote"
+        ],
+        "properties": {
+          "subject": {
+            "type": "string",
+            "description": "local_id of an entity or event"
+          },
+          "predicate": {
+            "enum": [
+              "located_in",
+              "part_of",
+              "operated_by",
+              "supplies_fuel_to",
+              "requires_power_from",
+              "ordered",
+              "caused",
+              "contributed_to",
+              "preceded",
+              "associated_with",
+              "affected"
+            ]
+          },
+          "object": {
+            "type": "string"
+          },
+          "modality": {
+            "enum": [
+              "asserted",
+              "hedged",
+              "denied"
+            ]
+          },
+          "quote": {
+            "$ref": "#/$defs/quote"
+          }
+        }
+      }
+    },
+    "quant_claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "about",
+          "value",
+          "value_low",
+          "value_high",
+          "approximate",
+          "unit",
+          "metric",
+          "denominator",
+          "region",
+          "window_start",
+          "window_end",
+          "as_of",
+          "cause_category",
+          "cause_label_raw",
+          "scope_source",
+          "modality",
+          "quote"
+        ],
+        "properties": {
+          "about": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "local_id of the event or entity the number describes"
+          },
+          "value": {
+            "type": "number",
+            "description": "The number. For a range, the midpoint."
+          },
+          "value_low": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Low end of a range ('52 to 60 percent' -> 52), else null."
+          },
+          "value_high": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "High end of a range (-> 60), else null."
+          },
+          "approximate": {
+            "type": "boolean",
+            "description": "True for 'about', 'nearly', 'roughly', 'more than', 'over'. Not the same as hedged."
+          },
+          "unit": {
+            "type": "string",
+            "description": "percent, MW, GW, $/MWh, degF, mph, Hz, Bcf/d, count, hours"
+          },
+          "metric": {
+            "enum": [
+              "share_of_events",
+              "share_of_mw",
+              "share_of_units",
+              "share_of_volume",
+              "share_of_energy",
+              "share_of_responses",
+              "mw",
+              "mw_peak",
+              "energy_mwh",
+              "count",
+              "pct_change",
+              "price",
+              "temperature",
+              "wind_speed",
+              "frequency",
+              "volume",
+              "duration"
+            ]
+          },
+          "denominator": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "What a share is a share of, e.g. 'all outages, derates and failures to start'. Null if not a share."
+          },
+          "region": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "window_start": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "window_end": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "as_of": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A point in time the number refers to, e.g. 'peak' or an ISO time"
+          },
+          "cause_category": {
+            "enum": [
+              "freezing",
+              "fuel_supply",
+              "mechanical_electrical",
+              "weather_general",
+              "preexisting_outage",
+              "transmission",
+              "frequency_trip",
+              "power_supply_loss",
+              "other",
+              "unknown",
+              "not_a_cause"
+            ]
+          },
+          "cause_label_raw": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The category name exactly as the document uses it"
+          },
+          "scope_source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "denominator",
+              "region",
+              "window"
+            ],
+            "properties": {
+              "denominator": {
+                "enum": [
+                  "sentence",
+                  "previous_sentence",
+                  "section_default",
+                  "document_default",
+                  "missing"
+                ]
+              },
+              "region": {
+                "enum": [
+                  "sentence",
+                  "previous_sentence",
+                  "section_default",
+                  "document_default",
+                  "missing"
+                ]
+              },
+              "window": {
+                "enum": [
+                  "sentence",
+                  "previous_sentence",
+                  "section_default",
+                  "document_default",
+                  "missing"
+                ]
+              }
+            }
+          },
+          "modality": {
+            "enum": [
+              "asserted",
+              "hedged",
+              "denied"
+            ]
+          },
+          "quote": {
+            "$ref": "#/$defs/quote"
+          }
+        }
+      }
+    },
+    "other": {
+      "type": "array",
+      "description": "Statements worth keeping that fit no type above. Used to find gaps in the ontology.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "suggested_type",
+          "summary",
+          "quote"
+        ],
+        "properties": {
+          "suggested_type": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "quote": {
+            "$ref": "#/$defs/quote"
+          }
+        }
+      }
+    }
+  }
+}

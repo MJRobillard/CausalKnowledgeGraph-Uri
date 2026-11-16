@@ -1,0 +1,12 @@
+   cell  date_rule  metric  denominator  region  window  all4  found  n
+   A0B0      False      18           19      13      17    11     20 20
+   A0B0       True      18           19      13      17    11     20 20
+   A0B1      False      19           20      15      20    15     20 20
+   A0B1       True      19           20      15      20    15     20 20
+   A1B0      False      18           20      15      20    15     20 20
+   A1B0       True      18           20      15      20    15     20 20
+   A1B1      False      20           20      15      20    15     20 20
+   A1B1       True      20           20      15      20    15     20 20
+run1_v0      False      17           19      13      16     9     20 20
+run1_v0       True      17           19      13      18    10     20 20
+{'calls': 69, 'prompt_tokens': 318522, 'prompt_cache_hit': 122752, 'completion_tokens': 1006933}

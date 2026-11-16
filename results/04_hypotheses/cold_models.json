@@ -1,0 +1,492 @@
+{
+ "edge_tests": [
+  {
+   "src_class": "WeatherCondition",
+   "dst_class": "GenerationOutage:gas",
+   "passed": false,
+   "method": "M3 fail-restart (temperature) vs weather-free tent and hours drivers",
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "noaa_zone_temp_hourly",
+    "unit_outage_2021_03_12"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ],
+   "rmse_test": 1164.4286223948477,
+   "margins": {
+    "M3 tent (no weather)": 1.1053198187485618,
+    "M3 hours (no weather)": 11.554502088003579
+   },
+   "placebo_ratio": {
+    "-5": 3.90459724792623,
+    "5": 17.44274133594366
+   },
+   "chart": "cold_baselines_gas.png",
+   "link": "results/04_hypotheses/cold_baselines.md"
+  },
+  {
+   "src_class": "WeatherCondition",
+   "dst_class": "GenerationOutage:coal",
+   "passed": true,
+   "method": "M3 fail-restart (temperature) vs weather-free tent and hours drivers",
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "noaa_zone_temp_hourly",
+    "unit_outage_2021_03_12"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ],
+   "rmse_test": 307.9269866049993,
+   "margins": {
+    "M3 tent (no weather)": 5.881659453696878,
+    "M3 hours (no weather)": 11.15587152135372
+   },
+   "placebo_ratio": {
+    "-5": 4.976459130557037,
+    "5": 19.393356198358564
+   },
+   "chart": "cold_baselines_coal.png",
+   "link": "results/04_hypotheses/cold_baselines.md"
+  },
+  {
+   "src_class": "WeatherCondition",
+   "dst_class": "GenerationOutage:wind",
+   "passed": false,
+   "method": "M3 fail-restart (temperature) vs weather-free tent and hours drivers",
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "noaa_zone_temp_hourly",
+    "unit_outage_2021_03_12"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ],
+   "rmse_test": 2366.6200478245237,
+   "margins": {
+    "M3 tent (no weather)": 1.17406921147454,
+    "M3 hours (no weather)": 3.28668849648784
+   },
+   "placebo_ratio": {
+    "-5": 1.773077388637309,
+    "5": 3.557273114144237
+   },
+   "chart": "cold_baselines_wind.png",
+   "link": "results/04_hypotheses/cold_baselines.md"
+  },
+  {
+   "src_class": "WeatherCondition",
+   "dst_class": "GenerationOutage:solar",
+   "passed": false,
+   "method": "M3 fail-restart (temperature) vs weather-free tent and hours drivers",
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "noaa_zone_temp_hourly",
+    "unit_outage_2021_03_12"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ],
+   "rmse_test": 211.0549286218999,
+   "margins": {
+    "M3 tent (no weather)": 2.285675035547878,
+    "M3 hours (no weather)": 4.319228145543496
+   },
+   "placebo_ratio": {
+    "-5": 1.172852966129166,
+    "5": 4.503193584252203
+   },
+   "chart": "cold_baselines_solar.png",
+   "link": "results/04_hypotheses/cold_baselines.md"
+  },
+  {
+   "src_class": "WeatherCondition",
+   "dst_class": "GenerationOutage",
+   "passed": false,
+   "method": "M3 fail-restart (temperature) vs weather-free tent and hours drivers",
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "noaa_zone_temp_hourly",
+    "unit_outage_2021_03_12"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ],
+   "rmse_test": 4106.446116412846,
+   "margins": {
+    "M3 tent (no weather)": 1.1356322559298413,
+    "M3 hours (no weather)": 7.288396914259903
+   },
+   "placebo_ratio": {
+    "-5": 2.6761179415595504,
+    "5": 9.48470674052487
+   },
+   "chart": "cold_baselines_total.png",
+   "link": "results/04_hypotheses/cold_baselines.md"
+  }
+ ],
+ "margin_threshold": 1.25,
+ "results": {
+  "gas": {
+   "target": "gas",
+   "C": 41333.0,
+   "placebo_ratio": {
+    "-5": 3.90459724792623,
+    "5": 17.44274133594366
+   },
+   "placebo_pass": true,
+   "margins": {
+    "M3 tent (no weather)": 1.1053198187485618,
+    "M3 hours (no weather)": 11.554502088003579
+   },
+   "margin_pass": false,
+   "passed": false,
+   "models": {
+    "M1 instantaneous": {
+     "params": {
+      "a": 24330.679453661636,
+      "b": -170.93892250320232
+     },
+     "rmse_train": 5543.445259161002,
+     "r2_train": 0.042396926874396,
+     "rmse_test": 2037.9898311377485,
+     "r2_test": -0.18999210236152364
+    },
+    "M2 cumulative": {
+     "params": {
+      "a": 12313.303359039714,
+      "b": 12.465244105672175
+     },
+     "rmse_train": 3497.9802799266786,
+     "r2_train": 0.6187053443125471,
+     "rmse_test": 9411.041541002478,
+     "r2_test": -24.37554827499222
+    },
+    "M3 temperature": {
+     "params": {
+      "alpha": 0.001697336212164434,
+      "rho": 0.012504311862893172,
+      "C": 41333.0
+     },
+     "rmse_train": 2021.3238987859334,
+     "r2_train": 0.8726796492884838,
+     "rmse_test": 1164.4286223948477,
+     "r2_test": 0.6115225646143572
+    },
+    "M3 tent (no weather)": {
+     "params": {
+      "alpha": 0.003293093007395919,
+      "rho": 0.04209481965547985,
+      "peak_h": 36,
+      "end_h": 160,
+      "peak_time": "2021-02-15 12:00:00",
+      "end_time": "2021-02-20 16:00:00"
+     },
+     "rmse_train": 1569.524582437288,
+     "r2_train": 0.92323517770646,
+     "rmse_test": 1287.0660338511107,
+     "r2_test": 0.5253847240916296
+    },
+    "M3 hours (no weather)": {
+     "params": {
+      "alpha": 0.0267202538147624,
+      "rho": 0.16336520291533033
+     },
+     "rmse_train": 4070.382670424537,
+     "r2_train": 0.48370670398387894,
+     "rmse_test": 13454.3929487924,
+     "r2_test": -50.86426991479817
+    }
+   }
+  },
+  "coal": {
+   "target": "coal",
+   "C": 9201.0,
+   "placebo_ratio": {
+    "-5": 4.976459130557037,
+    "5": 19.393356198358564
+   },
+   "placebo_pass": true,
+   "margins": {
+    "M3 tent (no weather)": 5.881659453696878,
+    "M3 hours (no weather)": 11.15587152135372
+   },
+   "margin_pass": true,
+   "passed": true,
+   "models": {
+    "M1 instantaneous": {
+     "params": {
+      "a": 5291.3277655449265,
+      "b": -66.11100954708542
+     },
+     "rmse_train": 1217.607114547502,
+     "r2_train": 0.12805972736490379,
+     "rmse_test": 646.4354796641724,
+     "r2_test": -8.389971507228289
+    },
+    "M2 cumulative": {
+     "params": {
+      "a": 2152.4488814149527,
+      "b": 3.198083845691348
+     },
+     "rmse_train": 864.387592592038,
+     "r2_train": 0.5605702744353639,
+     "rmse_test": 2376.9875953530714,
+     "r2_test": -125.96024027171404
+    },
+    "M3 temperature": {
+     "params": {
+      "alpha": 0.0020104131835411974,
+      "rho": 0.01910628892890689,
+      "C": 9201.0
+     },
+     "rmse_train": 379.8319322437546,
+     "r2_train": 0.915149319715275,
+     "rmse_test": 307.9269866049993,
+     "r2_test": -1.1306367272685414
+    },
+    "M3 tent (no weather)": {
+     "params": {
+      "alpha": 0.005702199638152976,
+      "rho": 0.0875226030996986,
+      "peak_h": 52,
+      "end_h": 112,
+      "peak_time": "2021-02-16 04:00:00",
+      "end_time": "2021-02-18 16:00:00"
+     },
+     "rmse_train": 421.58218551618614,
+     "r2_train": 0.8954709785317166,
+     "rmse_test": 1811.1216718136861,
+     "r2_test": -72.70707208019903
+    },
+    "M3 hours (no weather)": {
+     "params": {
+      "alpha": 0.07725845989407423,
+      "rho": 0.7121394262974865
+     },
+     "rmse_train": 1000.6251826625978,
+     "r2_train": 0.4111356808620714,
+     "rmse_test": 3435.19390052298,
+     "r2_test": -264.16513274165777
+    }
+   }
+  },
+  "wind": {
+   "target": "wind",
+   "C": 28778.0,
+   "placebo_ratio": {
+    "-5": 1.773077388637309,
+    "5": 3.557273114144237
+   },
+   "placebo_pass": true,
+   "margins": {
+    "M3 tent (no weather)": 1.17406921147454,
+    "M3 hours (no weather)": 3.28668849648784
+   },
+   "margin_pass": false,
+   "passed": false,
+   "models": {
+    "M1 instantaneous": {
+     "params": {
+      "a": 18019.785076946977,
+      "b": -63.389769345442176
+     },
+     "rmse_train": 1242.6259038752391,
+     "r2_train": 0.10593168252503427,
+     "rmse_test": 3396.8697801003163,
+     "r2_test": -1.6240261289511753
+    },
+    "M2 cumulative": {
+     "params": {
+      "a": 15018.658216836317,
+      "b": 1.5251182653036832
+     },
+     "rmse_train": 1103.1904590426086,
+     "r2_train": 0.2953217059501769,
+     "rmse_test": 5266.862441175641,
+     "r2_test": -5.308328632718525
+    },
+    "M3 temperature": {
+     "params": {
+      "alpha": 0.0010253493543064764,
+      "rho": 0.00997717225853648,
+      "C": 28778.0
+     },
+     "rmse_train": 611.807343408394,
+     "r2_train": 0.783269880329397,
+     "rmse_test": 2366.6200478245237,
+     "r2_test": -0.2737008444193234
+    },
+    "M3 tent (no weather)": {
+     "params": {
+      "alpha": 0.0007557454672625692,
+      "rho": 0.0020336450346288455,
+      "peak_h": 28,
+      "end_h": 40,
+      "peak_time": "2021-02-15 04:00:00",
+      "end_time": "2021-02-15 16:00:00"
+     },
+     "rmse_train": 393.6628263419944,
+     "r2_train": 0.9102697841742812,
+     "rmse_test": 2778.5757334091763,
+     "r2_test": -0.7557182984116555
+    },
+    "M3 hours (no weather)": {
+     "params": {
+      "alpha": 0.000395642533785352,
+      "rho": 1.6655186751064368e-19
+     },
+     "rmse_train": 1705.7022327768495,
+     "r2_train": -0.6845982136380913,
+     "rmse_test": 7778.342886742364,
+     "r2_test": -12.7589257270395
+    }
+   }
+  },
+  "solar": {
+   "target": "solar",
+   "C": 3101.0,
+   "placebo_ratio": {
+    "-5": 1.172852966129166,
+    "5": 4.503193584252203
+   },
+   "placebo_pass": false,
+   "margins": {
+    "M3 tent (no weather)": 2.285675035547878,
+    "M3 hours (no weather)": 4.319228145543496
+   },
+   "margin_pass": true,
+   "passed": false,
+   "models": {
+    "M1 instantaneous": {
+     "params": {
+      "a": 1124.73723572857,
+      "b": -17.561305863602893
+     },
+     "rmse_train": 257.6145618553641,
+     "r2_train": 0.18572167814466067,
+     "rmse_test": 190.25986016118202,
+     "r2_test": -0.3132468277102738
+    },
+    "M2 cumulative": {
+     "params": {
+      "a": 640.1155398171196,
+      "b": 0.1419420879094411
+     },
+     "rmse_train": 275.4117263919938,
+     "r2_train": 0.06932743502865879,
+     "rmse_test": 458.7274897061402,
+     "r2_test": -6.634165080564487
+    },
+    "M3 temperature": {
+     "params": {
+      "alpha": 0.001066454125233032,
+      "rho": 0.04241245398917483,
+      "C": 3101.0
+     },
+     "rmse_train": 131.92751550876895,
+     "r2_train": 0.7864484027416558,
+     "rmse_test": 211.0549286218999,
+     "r2_test": -0.6160061556901679
+    },
+    "M3 tent (no weather)": {
+     "params": {
+      "alpha": 0.0022004372346757723,
+      "rho": 0.09432376475405849,
+      "peak_h": 28,
+      "end_h": 112,
+      "peak_time": "2021-02-15 04:00:00",
+      "end_time": "2021-02-18 16:00:00"
+     },
+     "rmse_train": 110.58182369111188,
+     "r2_train": 0.8499625921297859,
+     "rmse_test": 482.4029814804159,
+     "r2_test": -7.442517714128865
+    },
+    "M3 hours (no weather)": {
+     "params": {
+      "alpha": 0.03526320898261094,
+      "rho": 0.9999999999772943
+     },
+     "rmse_train": 419.13118424953797,
+     "r2_train": -1.1554204820746907,
+     "rmse_test": 911.5943879593838,
+     "r2_test": -29.147777384484918
+    }
+   }
+  },
+  "total": {
+   "target": "total",
+   "C": 83938.0,
+   "placebo_ratio": {
+    "-5": 2.6761179415595504,
+    "5": 9.48470674052487
+   },
+   "placebo_pass": true,
+   "margins": {
+    "M3 tent (no weather)": 1.1356322559298413,
+    "M3 hours (no weather)": 7.288396914259903
+   },
+   "margin_pass": false,
+   "passed": false,
+   "models": {
+    "M1 instantaneous": {
+     "params": {
+      "a": 48921.38755200101,
+      "b": -275.94296487933667
+     },
+     "rmse_train": 8681.074008177664,
+     "r2_train": 0.04333197728512883,
+     "rmse_test": 6610.428605731946,
+     "r2_test": -1.9271667557091972
+    },
+    "M2 cumulative": {
+     "params": {
+      "a": 28999.841432299178,
+      "b": 17.330952753290862
+     },
+     "rmse_train": 5775.325158949593,
+     "r2_train": 0.5765840424715369,
+     "rmse_test": 19650.873018990365,
+     "r2_test": -24.86734911863862
+    },
+    "M3 temperature": {
+     "params": {
+      "alpha": 0.00148175750947872,
+      "rho": 0.012678526049211108,
+      "C": 83938.0
+     },
+     "rmse_train": 2827.8218860540146,
+     "r2_train": 0.8984877525535679,
+     "rmse_test": 4106.446116412846,
+     "r2_test": -0.129589073962453
+    },
+    "M3 tent (no weather)": {
+     "params": {
+      "alpha": 0.002796445699427408,
+      "rho": 0.033444304264883144,
+      "peak_h": 32,
+      "end_h": 140,
+      "peak_time": "2021-02-15 08:00:00",
+      "end_time": "2021-02-19 20:00:00"
+     },
+     "rmse_train": 2023.2079479861325,
+     "r2_train": 0.9480368601714839,
+     "rmse_test": 4663.412667036256,
+     "r2_test": -0.45678654627173176
+    },
+    "M3 hours (no weather)": {
+     "params": {
+      "alpha": 0.02373825514706884,
+      "rho": 0.13554651773882426
+     },
+     "rmse_train": 9201.53252678591,
+     "r2_train": -0.0748173579654614,
+     "rmse_test": 29929.40920343795,
+     "r2_test": -59.004595734248575
+    }
+   }
+  }
+ }
+}

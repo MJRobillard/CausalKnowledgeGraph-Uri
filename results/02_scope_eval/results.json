@@ -1,0 +1,120 @@
+{
+ "summary": [
+  {
+   "cell": "A0B0",
+   "date_rule": false,
+   "metric": 18,
+   "denominator": 19,
+   "region": 18,
+   "window": 17,
+   "all4": 12,
+   "found": 20,
+   "n": 20
+  },
+  {
+   "cell": "A0B0",
+   "date_rule": true,
+   "metric": 18,
+   "denominator": 19,
+   "region": 18,
+   "window": 17,
+   "all4": 12,
+   "found": 20,
+   "n": 20
+  },
+  {
+   "cell": "A0B1",
+   "date_rule": false,
+   "metric": 19,
+   "denominator": 20,
+   "region": 17,
+   "window": 20,
+   "all4": 16,
+   "found": 20,
+   "n": 20
+  },
+  {
+   "cell": "A0B1",
+   "date_rule": true,
+   "metric": 19,
+   "denominator": 20,
+   "region": 17,
+   "window": 20,
+   "all4": 16,
+   "found": 20,
+   "n": 20
+  },
+  {
+   "cell": "A1B0",
+   "date_rule": false,
+   "metric": 18,
+   "denominator": 20,
+   "region": 18,
+   "window": 20,
+   "all4": 16,
+   "found": 20,
+   "n": 20
+  },
+  {
+   "cell": "A1B0",
+   "date_rule": true,
+   "metric": 18,
+   "denominator": 20,
+   "region": 18,
+   "window": 20,
+   "all4": 16,
+   "found": 20,
+   "n": 20
+  },
+  {
+   "cell": "A1B1",
+   "date_rule": false,
+   "metric": 20,
+   "denominator": 20,
+   "region": 18,
+   "window": 20,
+   "all4": 18,
+   "found": 20,
+   "n": 20
+  },
+  {
+   "cell": "A1B1",
+   "date_rule": true,
+   "metric": 20,
+   "denominator": 20,
+   "region": 18,
+   "window": 20,
+   "all4": 18,
+   "found": 20,
+   "n": 20
+  },
+  {
+   "cell": "run1_v0",
+   "date_rule": false,
+   "metric": 17,
+   "denominator": 19,
+   "region": 18,
+   "window": 16,
+   "all4": 12,
+   "found": 20,
+   "n": 20
+  },
+  {
+   "cell": "run1_v0",
+   "date_rule": true,
+   "metric": 17,
+   "denominator": 19,
+   "region": 18,
+   "window": 18,
+   "all4": 13,
+   "found": 20,
+   "n": 20
+  }
+ ],
+ "usage": {
+  "calls": 69,
+  "prompt_tokens": 318522,
+  "prompt_cache_hit": 122752,
+  "completion_tokens": 1006933
+ }
+}

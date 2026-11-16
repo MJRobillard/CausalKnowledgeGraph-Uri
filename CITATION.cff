@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use this software or its results, please cite it as below, and cite the data sources listed in data/README.md."
+title: "causal-kg: settling Winter Storm Uri's contradictions with a tiered causal knowledge graph"
+type: software
+authors:
+  - family-names: Robillard
+    given-names: Matthew
+license: MIT
+version: 0.1.0
+date-released: 2026-11-16
+keywords:
+  - Winter Storm Uri
+  - ERCOT
+  - causal inference
+  - knowledge graph
+  - power systems
+  - natural gas
+references:
+  - type: article
+    title: "An open-source extendable model and corrective measure assessment of the 2021 Texas power outage"
+    authors:
+      - family-names: Wu
+        given-names: Dongqi
+      - family-names: Zheng
+        given-names: Xiangtian
+      - family-names: Xu
+        given-names: Yixing
+      - family-names: Olsen
+        given-names: Daniel
+      - family-names: Xia
+        given-names: Bainan
+      - family-names: Singh
+        given-names: Chanan
+      - family-names: Xie
+        given-names: Le
+    journal: "Advances in Applied Energy"
+    volume: 4
+    start: 100056
+    year: 2021
+    doi: 10.1016/j.adapen.2021.100056
+  - type: report
+    title: "The February 2021 Cold Weather Outages in Texas and the South Central United States"
+    authors:
+      - name: "FERC, NERC and Regional Entity Staff"
+    year: 2021
+    url: "https://www.nerc.com/pa/rrm/ea/Documents/February_2021_Cold_Weather_Report.pdf"

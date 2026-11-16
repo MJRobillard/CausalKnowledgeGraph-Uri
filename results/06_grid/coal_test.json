@@ -1,0 +1,258 @@
+{
+ "coal": {
+  "hazard": {
+   "events": 11,
+   "unit_hours": 601,
+   "units": 9,
+   "odds_ratio_per_F_cold": 1.081157414491656,
+   "or_cold_ci": [
+    0.973431020758927,
+    1.2008055321669933
+   ],
+   "odds_ratio_per_GW_reserve": 1.0284061089900307,
+   "or_reserve_ci": [
+    0.7368490258264669,
+    1.4353267602162667
+   ],
+   "p_cold": 0.14508270225137418,
+   "p_reserve": 0.8692018888719388
+  },
+  "profile": {
+   "median_cold_at_starts_f": 14.0,
+   "median_cold_at_risk_f": 5.0,
+   "median_reserve_at_starts_gw": 3.0512945475260422,
+   "median_reserve_at_risk_gw": 4.474603971354169,
+   "mean_percentile_of_cold_at_starts": 0.6033882922402057,
+   "mean_percentile_of_reserve_at_starts": 0.4084102253819392
+  }
+ },
+ "gas": {
+  "hazard": {
+   "events": 305,
+   "unit_hours": 16754,
+   "units": 248,
+   "odds_ratio_per_F_cold": 1.0054852602127982,
+   "or_cold_ci": [
+    0.9922550070749026,
+    1.018891919210926
+   ],
+   "odds_ratio_per_GW_reserve": 0.7881451618462296,
+   "or_reserve_ci": [
+    0.7458127843893766,
+    0.8328803275344705
+   ],
+   "p_cold": 0.4182548222615229,
+   "p_reserve": 2.8639084633815735e-17
+  },
+  "profile": {
+   "median_cold_at_starts_f": 12.100000000000001,
+   "median_cold_at_risk_f": 6.5,
+   "median_reserve_at_starts_gw": 2.5023277343749943,
+   "median_reserve_at_risk_gw": 4.285515543619789,
+   "mean_percentile_of_cold_at_starts": 0.585008718250792,
+   "mean_percentile_of_reserve_at_starts": 0.3317068397661826
+  }
+ },
+ "reserve_margin_gw": {
+  "min": 0.307854248046875,
+  "at_first_shed": 0.307854248046875
+ },
+ "kg_coal_claims": [
+  {
+   "doc": "ferc_final_2021_11",
+   "modality": "asserted",
+   "cause_type": "WeatherCondition",
+   "cause": "Frozen equipment, transmitters, sensing lines, valves, and inlet air systems contributed to freeze-related events.",
+   "quote": "Frozen equipment, transmitters, sensing lines, valves, and inlet air systems all contributed to the freeze-related events."
+  },
+  {
+   "doc": "ferc_final_2021_11",
+   "modality": "asserted",
+   "cause_type": "WeatherCondition",
+   "cause": "Freezing of two out of three furnace flow instruments occurred at an SPP coal unit.",
+   "quote": "Freezing of two out of three furnace flow instruments caused a 650 MW coal unit to trip."
+  },
+  {
+   "doc": "ferc_final_2021_11",
+   "modality": "asserted",
+   "cause_type": "GridEmergency",
+   "cause": "ERCOT experienced a low frequency excursion on February 15 that most threatened BES reliability during the Event.",
+   "quote": "several generators tripped offline due to the lower frequency level or rapid rate of frequency change"
+  },
+  {
+   "doc": "ferc_final_2021_11",
+   "modality": "asserted",
+   "cause_type": "GridEmergency",
+   "cause": "ERCOT experienced a low frequency excursion on February 15 that most threatened BES reliability during the Event.",
+   "quote": "a 933 MW coal unit tripped due to the rapidly-changing frequency"
+  },
+  {
+   "doc": "ferc_final_2021_11",
+   "modality": "asserted",
+   "cause_type": "GridEmergency",
+   "cause": "A low frequency disturbance occurred on the ERCOT system on February 15 shortly before 2 a.m.",
+   "quote": "low frequency, or the rate of frequency change, also caused approximately 1,769 MW of coal generation and 2,190 MW of gas generation to trip or derate."
+  },
+  {
+   "doc": "ferc_final_2021_11",
+   "modality": "asserted",
+   "cause_type": "GridEmergency",
+   "cause": "A low frequency disturbance occurred on the ERCOT system on February 15 shortly before 2 a.m.",
+   "quote": "a 933 MW coal unit tripped due to the rapidly-changing frequency on the grid"
+  }
+ ],
+ "frequency_counterfactual": {
+  "units": 12,
+  "mw_by_fuel": {
+   "coal": 1769,
+   "gas": 2153
+  },
+  "ferc_mw": {
+   "coal": 1769,
+   "gas": 2190
+  },
+  "median_hours_out": 42.0,
+  "units_detail": [
+   {
+    "station": "DECKER",
+    "unit": "DPG2",
+    "fuel": "gas",
+    "county": "TRAVIS",
+    "mw_out": "428",
+    "start": "2021-02-15 01:51:00",
+    "end": "2021-02-15 07:07:00"
+   },
+   {
+    "station": "SCES",
+    "unit": "UNIT1",
+    "fuel": "coal",
+    "county": "MCLENNAN",
+    "mw_out": "933",
+    "start": "2021-02-15 01:58:00",
+    "end": "2021-02-15 12:00:00"
+   },
+   {
+    "station": "CBECII",
+    "unit": "CT7",
+    "fuel": "gas",
+    "county": "WHARTON",
+    "mw_out": "360",
+    "start": "2021-02-15 02:08:00",
+    "end": "2021-02-16 04:06:00"
+   },
+   {
+    "station": "CBECII",
+    "unit": "CT8",
+    "fuel": "gas",
+    "county": "WHARTON",
+    "mw_out": "360",
+    "start": "2021-02-15 02:08:00",
+    "end": "2021-02-16 01:14:00"
+   },
+   {
+    "station": "JACKCNTY",
+    "unit": "CT1",
+    "fuel": "gas",
+    "county": "JACK",
+    "mw_out": "160",
+    "start": "2021-02-15 02:15:00",
+    "end": "2021-02-17 12:17:00"
+   },
+   {
+    "station": "CCEC",
+    "unit": "GT1",
+    "fuel": "gas",
+    "county": "NUECES",
+    "mw_out": "141",
+    "start": "2021-02-15 02:18:00",
+    "end": "2021-02-18 11:16:00"
+   },
+   {
+    "station": "CCEC",
+    "unit": "GT2",
+    "fuel": "gas",
+    "county": "NUECES",
+    "mw_out": "141",
+    "start": "2021-02-15 02:18:00",
+    "end": "2021-02-18 02:26:00"
+   },
+   {
+    "station": "CCEC",
+    "unit": "ST1",
+    "fuel": "gas",
+    "county": "NUECES",
+    "mw_out": "139",
+    "start": "2021-02-15 02:18:00",
+    "end": "2021-02-18 02:24:00"
+   },
+   {
+    "station": "LEG",
+    "unit": "LEG_G2",
+    "fuel": "coal",
+    "county": "LIMESTONE",
+    "mw_out": "836",
+    "start": "2021-02-15 02:20:00",
+    "end": "2021-02-15 12:06:00"
+   },
+   {
+    "station": "JACKCNTY",
+    "unit": "CT2",
+    "fuel": "gas",
+    "county": "JACK",
+    "mw_out": "160",
+    "start": "2021-02-15 02:22:00",
+    "end": "2021-02-15 20:10:00"
+   },
+   {
+    "station": "DOWGEN",
+    "unit": "DOW_GT96",
+    "fuel": "gas",
+    "county": "BRAZORIA",
+    "mw_out": "189",
+    "start": "2021-02-15 02:27:00",
+    "end": "2021-02-21 10:00:00"
+   },
+   {
+    "station": "SL",
+    "unit": "SL_G2",
+    "fuel": "gas",
+    "county": "HARRIS",
+    "mw_out": "75",
+    "start": "2021-02-15 02:30:00",
+    "end": "2021-02-26 23:59:00"
+   }
+  ],
+  "by_fuel": {
+   "coal": {
+    "shed_mwh_avoided": 16374.827995811149,
+    "peak_mw_avoided": 1752.2836463956796,
+    "hours": 10,
+    "mwh_tripped_capacity": 17526.033333333333
+   },
+   "gas": {
+    "shed_mwh_avoided": 78277.62033652203,
+    "peak_mw_avoided": 2151.3644173270313,
+    "hours": 77,
+    "mwh_tripped_capacity": 88353.91666666667
+   }
+  },
+  "shed_mwh_avoided": 93931.69816532751,
+  "peak_hour_shed_avoided_mw": 3903.70556279788,
+  "hours_with_less_shed": 77,
+  "first_shed_hour_with_trips": "2021-02-15 01:00:00",
+  "first_shed_hour_without": "2021-02-15 01:00:00"
+ },
+ "no_coal_counterfactual": {
+  "shed_gwh_replay": 919.0606687655587,
+  "shed_gwh_no_coal_outages": 650.3361374391058,
+  "share_avoided": 0.29239041606185995,
+  "peak_shed_replay_mw": 24320.12299482498,
+  "peak_shed_no_coal_mw": 19515.745344023333,
+  "shed_hours_replay": 78,
+  "shed_hours_no_coal": 74,
+  "first_shed_replay": "2021-02-15 01:00:00",
+  "first_shed_no_coal": "2021-02-15 03:00:00",
+  "coal_mw_restored_mean": 3460.296279173489,
+  "coal_mw_restored_max": 5607.49022412209
+ }
+}

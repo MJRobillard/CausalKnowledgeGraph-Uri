@@ -1,0 +1,17 @@
+{
+ "model": "deepseek-flash",
+ "effort": "high",
+ "docs": [
+  "enverus_txoga_2021_04",
+  "ercot_board_2021_02_24",
+  "ercot_causes_2021_04_27",
+  "ferc_final_2021_11",
+  "news_abc13_2021_02_15",
+  "news_aljazeera_2021_02_15",
+  "news_ap_2021_02_15",
+  "news_ap_pbs_2021_02_16",
+  "news_txtrib_ksat_2021_02_15"
+ ],
+ "n_chunks": 65,
+ "date": "2026-11-14"
+}

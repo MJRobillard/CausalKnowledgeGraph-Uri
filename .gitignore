@@ -1,0 +1,31 @@
+# secrets and environments
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.vscode/
+.idea/
+.cursorindexingignore
+**/.specstory/
+
+# third-party documents that may not be redistributed (scripts/fetch_sources.py downloads them;
+# config/documents.yaml has their citations and checksums)
+data/sources/news/
+data/sources/other/
+
+# TAMU 2021TXPowerOutage repository (git clone; see data/README.md). Cleaned copies are in data/external/tamu/
+2021TXPowerOutage/
+
+# public downloads (scripts/fetch_spatial.py rebuilds them; the manifest with checksums is committed)
+data/raw/*
+!data/raw/manifest.json
+
+# single files over 20 MB (rebuilt by scripts/clean_tamu.py)
+data/external/tamu/load_outage/raw_all_states.csv
+
+# LLM response caches (rebuildable, but each rebuild costs money; kept on disk)
+results/*/cache/
+
+# logs
+*.log

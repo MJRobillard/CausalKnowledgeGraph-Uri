@@ -1,0 +1,167 @@
+# Ontology v0.2 — Winter Storm Uri demo
+# Principle: the LLM extracts; deterministic rules assign trust.
+# Tier and claim_status come from documents.yaml, never from the model.
+
+version: 0.2
+# v0.2 (2026-11-15), from the run-1 hand checks: Region, WaterServiceDisruption, Demand,
+# associated_with, power_supply_loss, share_of_energy, share_of_responses, wind_speed,
+# value_low/value_high and approximate on quant_claims, generic roles skipped.
+
+# ---------------------------------------------------------------------------
+# Trust rules (applied in code, after extraction)
+# ---------------------------------------------------------------------------
+tiers:
+  "0a": "Exogenous measurements (NOAA temperature). Datasets, not documents."
+  "0b": "Measured outcomes (ERCOT minute data, outage lists). Datasets."
+  "1":  "First-party records and reports by an organization about its own operations."
+  "2":  "Independent analysis: regulators, academics, commissioned studies."
+  "3":  "News and commentary."
+
+tier_rules:            # evaluated top to bottom, first match wins
+  - {if: {doc_type: dataset, measured: true, exogenous: true}, then: {tier: "0a"}}
+  - {if: {doc_type: dataset, measured: true}, then: {tier: "0b"}}
+  - {if: {publisher_role: news},              then: {tier: "3"}}
+  - {if: {first_party: true},                 then: {tier: "1"}}
+  - {if: {publisher_role: [regulator, academic, consultant, industry_association]},
+     then: {tier: "2"}}
+
+flags:                 # lower the reliability prior; never change the tier
+  interested_party: "Publisher is a subject of the investigation (e.g. ERCOT on ERCOT)."
+  funded_by_interested_party: "Analysis paid for by a party with a stake (e.g. Enverus for TXOGA)."
+  preliminary: "Later superseded by a revised version; keep both, link with supersedes."
+  self_reported: "Figures reported by the entities being assessed (e.g. generator-reported causes)."
+
+claim_status_rules:    # from doc_type, not from wording
+  complaint: alleged
+  filing_by_party_in_dispute: contested
+  ruling: adjudicated
+  default: asserted
+
+# ---------------------------------------------------------------------------
+# Entities (the spine; things that persist)
+# ---------------------------------------------------------------------------
+entity_types:
+  GasProductionSite:   {attrs: [basin, county]}
+  GasProcessingPlant:  {attrs: [county, capacity_mmcfd]}
+  GasMidstream:        {attrs: [kind],  note: "pipelines, gathering, compressor stations"}
+  GasStorage:          {attrs: [county, capacity_bcf]}
+  Generator:           {attrs: [fuel, capacity_mw, county, winter_rating_f]}
+  LoadZone:            {attrs: [iso, zone_name], note: "8 ERCOT weather zones"}
+  Region:              {attrs: [kind], kinds: [iso_footprint, iso_subregion, state, basin, multi_area, other],
+                        note: "named areas beyond ERCOT's load zones: SPP, MISO South, Texas, Permian Basin, the Event Area"}
+  IndustrialCustomer:  {attrs: [sector, county], note: "e.g. Austin fabs"}
+  Organization:        {attrs: [role], roles: [grid_operator, regulator, utility, generator_owner,
+                                               gas_company, court, legislature, academic,
+                                               industry_association, news, manufacturer]}
+
+# Not entities: generic roles and classes ("Balancing Authorities", "generators", "TOPs",
+# "natural gas producers"). Only named, specific things are entities. post.py drops these
+# names if the model extracts them anyway, and counts the drops.
+generic_role_names: [balancing authority, balancing authorities, ba, bas, transmission operator,
+                     transmission operators, top, tops, generator owner, generator owners,
+                     generator operator, generator operators, go, gos, gop, gops, go/gop, gos/gops,
+                     reliability coordinator, reliability coordinators, rc, rcs,
+                     transmission owner, transmission owners, utilities, utility, generators,
+                     generating units, natural gas producers, producers, operators,
+                     market participants, load serving entities, lses, qualified scheduling entities, qses]
+
+fuel_values: [gas, coal, nuclear, wind, solar, hydro, storage, other, unknown]
+
+# ---------------------------------------------------------------------------
+# Events (things that happen in time; causal edges connect these)
+# ---------------------------------------------------------------------------
+event_types:
+  WeatherCondition:     {attrs: [temperature_f, precipitation], note: "text claim; anchored to NOAA (0a)"}
+  GenerationOutage:     {attrs: [fuel, mw, outage_kind, cause_category, cause_label_raw, cause_scheme]}
+  GasSupplyDisruption:  {attrs: [volume, volume_unit, pct_drop, cause_category, cause_label_raw, cause_scheme]}
+  LoadShed:             {attrs: [mw, zone, customers_affected]}
+  GridEmergency:        {attrs: [eea_level, frequency_hz]}
+  Demand:               {attrs: [mw, demand_kind], demand_kinds: [actual, forecast, record, estimated_without_shed],
+                         note: "load levels, peaks and records, including forecasts"}
+  WaterServiceDisruption: {attrs: [system, customers_affected, kind], kinds: [outage, low_pressure, boil_water_notice],
+                         note: "water systems losing pressure or service, often from power loss"}
+  MarketAction:         {attrs: [action, price, price_unit], note: "price cap, price set, settlement"}
+  FacilityShutdown:     {attrs: [reason], note: "industrial customers, e.g. fabs"}
+  Restoration:          {attrs: [what, mw]}
+  InstitutionalAction:  {attrs: [action], actions: [report_published, ruling, lawsuit_filed,
+                                                   allegation, law_passed, order_issued, recommendation]}
+
+outage_kind_values: [outage, derate, failure_to_start, unknown]
+
+# Each report has its own cause taxonomy. Map to the common vocabulary,
+# but always keep cause_label_raw and cause_scheme: categories from
+# different schemes are not directly comparable.
+cause_category_values:
+  - freezing
+  - fuel_supply
+  - mechanical_electrical
+  - weather_general        # ERCOT used a broad "weather" bucket
+  - preexisting_outage
+  - transmission
+  - frequency_trip
+  - power_supply_loss      # facility lost its electricity supply (the evidence for requires_power_from)
+  - other
+  - unknown
+  - not_a_cause            # for numbers that aren't cause shares (MW, prices, temps)
+cause_schemes: [ferc_nerc_2021_11, ercot_2021_04_06, ercot_2021_04_27, other]
+
+# ---------------------------------------------------------------------------
+# Relations
+# ---------------------------------------------------------------------------
+predicates:
+  located_in:          {from: [Entity], to: [LoadZone, Region, Organization]}
+  part_of:             {from: [Entity], to: [Entity]}
+  operated_by:         {from: [Entity], to: [Organization]}
+  supplies_fuel_to:    {from: [GasProductionSite, GasProcessingPlant, GasMidstream, GasStorage],
+                        to: [Generator, GasProcessingPlant, GasMidstream]}
+  requires_power_from: {from: [GasProductionSite, GasProcessingPlant, GasMidstream, IndustrialCustomer],
+                        to: [LoadZone, Organization], note: "the edge the optimizer needs"}
+  ordered:             {from: [Organization], to: [Event]}
+  caused:              {from: [Event], to: [Event], note: "text asserts direct causation"}
+  contributed_to:      {from: [Event], to: [Event], note: "text asserts partial causation"}
+  preceded:            {from: [Event], to: [Event], note: "time order only, no causal claim"}
+  associated_with:     {from: [Event], to: [Event], note: "text reports a correlation or co-occurrence, no causal claim"}
+  affected:            {from: [Event], to: [Entity]}
+
+# ---------------------------------------------------------------------------
+# Quantitative claims: where the tier system lives or dies.
+# Two numbers can only be compared if metric, denominator, region and
+# window all match. Otherwise they are different measurements, not a conflict.
+# ---------------------------------------------------------------------------
+quant_claim:
+  required: [value, unit, metric, quote_span]
+  value_fields:
+    value: "the number; for a range, the midpoint"
+    value_low: "low end of a range ('52 to 60 percent' -> 52), else null"
+    value_high: "high end of a range (-> 60), else null"
+    approximate: "true for 'about', 'nearly', 'roughly', 'more than', 'over'. Approximate is not hedged."
+  scope:    [denominator, region, window_start, window_end, as_of, cause_scheme]
+  scope_source_values: [sentence, previous_sentence, section_default, document_default, missing,
+                        date_rule]   # date_rule is set in code (kg/scope.py), never by the model
+  metric_values:
+    - share_of_events      # % of outage events (FERC/NERC style)
+    - share_of_mw          # % of MW out (ERCOT style)
+    - share_of_units
+    - share_of_volume      # % of gas production drop
+    - share_of_energy      # % of MWh (e.g. generation mix by energy)
+    - share_of_responses   # % of survey or questionnaire responses
+    - mw
+    - mw_peak
+    - energy_mwh
+    - count
+    - pct_change
+    - price
+    - temperature
+    - wind_speed
+    - frequency
+    - volume
+    - duration
+  modality_values: [asserted, hedged, denied]
+
+comparability_rule: >
+  Two quant_claims are comparable only if metric, denominator, region and
+  cause_scheme are equal and their windows overlap. If any differ, store both
+  and link them with `different_scope`, never with `contradicts`.
+  Comparable values agree if their ranges overlap (value_low..value_high, or the value
+  itself) within rounding tolerance. Approximate values get no extra tolerance: a
+  difference is still a `conflict`, and the link records `approximate: true`.

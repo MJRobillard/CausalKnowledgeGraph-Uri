@@ -1,0 +1,13 @@
+# canonical name: [aliases]. Matched after lowercasing and stripping punctuation.
+ERCOT: [Electric Reliability Council of Texas, "Electric Reliability Council of Texas, Inc.", the grid operator, Texas grid operator]
+FERC: [Federal Energy Regulatory Commission, the Commission]
+NERC: [North American Electric Reliability Corporation]
+PUCT: [Public Utility Commission of Texas, PUC, Texas PUC, PUC of Texas]
+Railroad Commission of Texas: [RRC, Texas Railroad Commission]
+SPP: [Southwest Power Pool, SWPP]
+MISO: [Midcontinent Independent System Operator, Midcontinent ISO]
+South Texas Project: [STP, STNP, South Texas Nuclear Project, South Texas Project Electric Generating Station]
+CenterPoint Energy: [CenterPoint]
+Oncor: [Oncor Electric Delivery]
+TXOGA: [Texas Oil and Gas Association]
+Enverus: []

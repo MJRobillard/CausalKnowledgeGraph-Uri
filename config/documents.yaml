@@ -1,0 +1,384 @@
+# Document registry: trust metadata assigned by hand, once per document.
+# `file` is relative to data/sources/; `url` is where the file was downloaded from.
+# `redistribute: false` marks third-party copyrighted documents that are kept out of git; get them with
+# scripts/fetch_sources.py, which checks each against `sha256`.
+# `scope` is the document-level default passed to the extractor so that a
+# sentence like "fuel issues caused 31.4%" inherits the report's region and window.
+
+documents:
+  - id: ferc_final_2021_11
+    file: federal/FERC_NERC_Feb2021_Cold_Weather_Final_Report_2021-11.pdf
+    url: https://www.nerc.com/pa/rrm/ea/Documents/February_2021_Cold_Weather_Report.pdf
+    publisher: FERC, NERC and Regional Entities staff
+    publisher_role: regulator
+    doc_type: final_report
+    published_at: 2021-11-16
+    first_party: false
+    flags: []
+    scope: {region: "ERCOT+SPP+MISO", window: ["2021-02-08", "2021-02-20"],
+            cause_scheme: ferc_nerc_2021_11, cause_metric_default: share_of_events}
+
+  - id: ferc_prelim_2021_09
+    file: federal/FERC_NERC_Preliminary_Findings_Slides_2021-09-23.pdf
+    url: https://www.ferc.gov/sites/default/files/2021-09/February%202021%20Cold%20Weather%20Grid%20Operations_Preliminary%20Findings%20and%20Recommendations-09-23-21_Full%20Presentation.pdf
+    publisher: FERC, NERC and Regional Entities staff
+    publisher_role: regulator
+    doc_type: presentation
+    published_at: 2021-09-23
+    first_party: false
+    flags: [preliminary]
+    superseded_by: ferc_final_2021_11
+    scope: {region: "ERCOT+SPP+MISO", window: ["2021-02-08", "2021-02-20"],
+            cause_scheme: ferc_nerc_2021_11, cause_metric_default: share_of_events}
+
+  - id: ferc_rec_status_2022_12
+    file: federal/FERC_Recommendation_Status_2022-12.pdf
+    url: https://www.ferc.gov/sites/default/files/2022-12/A-3%20-%20The%20February%202021%20Cold%20Weather%20Outages%20in%20Texas%20and%20the%20South%20Central%20United%20States.pdf
+    publisher: FERC
+    publisher_role: regulator
+    doc_type: status_report
+    published_at: 2022-12   # PDF says "December 2022"; no day given
+    first_party: false
+    flags: []
+    scope: {region: "ERCOT+SPP+MISO", window: null}
+
+  - id: ercot_board_2021_02_24
+    file: ercot/ERCOT_Board_Review_2021-02-24.pdf
+    url: https://www.ercot.com/files/docs/2021/02/24/2.2_REVISED_ERCOT_Presentation.pdf
+    publisher: ERCOT
+    publisher_role: grid_operator
+    doc_type: presentation
+    published_at: 2021-02-24
+    first_party: true
+    flags: [interested_party, preliminary]
+    scope: {region: "ERCOT", window: ["2021-02-14", "2021-02-19"]}
+
+  - id: ercot_causes_2021_04_06
+    file: ercot/51878_ERCOT_Letter_re_Preliminary_Report_on_Outage_Causes.pdf
+    url: https://www.ercot.com/files/docs/2021/04/06/51878_ERCOT_Letter_re_Preliminary_Report_on_Outage_Causes.pdf
+    publisher: ERCOT
+    publisher_role: grid_operator
+    doc_type: preliminary_report
+    published_at: 2021-04-06
+    first_party: true
+    flags: [interested_party, preliminary, self_reported]
+    superseded_by: ercot_causes_2021_04_27
+    scope: {region: "ERCOT", window: ["2021-02-14", "2021-02-19"],
+            cause_scheme: ercot_2021_04_06, cause_metric_default: share_of_mw}
+
+  - id: ercot_causes_2021_04_27
+    file: ercot/ERCOT_Outages_By_Cause_Updated_2021-04-27.pdf
+    url: https://www.ercot.com/files/docs/2021/04/28/ERCOT_Winter_Storm_Generator_Outages_By_Cause_Updated_Report_4.27.21.pdf
+    publisher: ERCOT
+    publisher_role: grid_operator
+    doc_type: report
+    published_at: 2021-04-27
+    first_party: true
+    flags: [interested_party, self_reported]
+    scope: {region: "ERCOT", window: ["2021-02-14", "2021-02-19"], as_of: "peak (52,037 MW)",
+            cause_scheme: ercot_2021_04_27, cause_metric_default: share_of_mw}
+
+  - id: ercot_qa
+    file: ercot/ERCOT_Responses_to_Preliminary_Outage_Report_Questions.pdf
+    url: https://www.ercot.com/files/docs/2021/04/28/ERCOT_Responses_to_Preliminary_Outage_Report_Questions.pdf
+    publisher: ERCOT
+    publisher_role: grid_operator
+    doc_type: faq
+    first_party: true
+    flags: [interested_party]
+    scope: {region: "ERCOT"}
+
+  - id: puct_51878_26
+    file: ercot/PUCT_51878_26_ERCOT_filing.pdf
+    url: https://interchange.puc.texas.gov/Documents/51878_26_1125764.PDF
+    duplicate_of: ercot_causes_2021_04_27    # scanned copy; do not extract
+    skip: true
+
+  - id: ercot_gen_list_2021_02_14
+    file: ercot/Resource_list_021421_2100.pdf
+    url: https://www.ercot.com/files/docs/2021/02/15/Resource_list_021421_2100.pdf
+    publisher: ERCOT
+    publisher_role: grid_operator
+    doc_type: dataset
+    measured: false          # a list of units, not measurements
+    first_party: true
+    flags: []
+    scope: {region: "ERCOT", as_of: "2021-02-14"}
+
+  - id: ercot_eea_levels
+    file: ercot/EEA_OnePager_updated_9-4-20.pdf
+    url: https://www.ercot.com/files/docs/2021/03/03/EEA_OnePager_updated_9-4-20.pdf
+    publisher: ERCOT
+    publisher_role: grid_operator
+    doc_type: procedure
+    first_party: true
+    flags: []
+    note: "Definitions only. Use to map EEA levels, not as event evidence."
+
+  - id: ut_austin_timeline_2021_07
+    file: other/UTAustin_Timeline_Feb2021_Blackouts_2021-07.pdf
+    url: https://energy.utexas.edu/sites/default/files/UTAustin%20(2021)%20EventsFebruary2021TexasBlackout%2020210714.pdf
+    redistribute: false     # third-party copyright: not in git; scripts/fetch_sources.py
+    sha256: 5be918fc8c3a4d9c8c63fcf43091ef4876dd9c7d70b54083993619e07866a08f
+    publisher: University of Texas at Austin
+    publisher_role: academic
+    doc_type: report
+    published_at: 2021-07
+    first_party: false
+    flags: []
+    held_out: true           # answer key for timeline recall; never extract from it in the test
+    scope: {region: "ERCOT", window: ["2021-02-07", "2021-02-20"]}
+
+  - id: enverus_txoga_2021_04
+    file: other/Enverus_TXOGA_Uri_NatGas_Analysis_2021-04.pdf
+    url: https://www.txoga.org/wp-content/uploads/2021/12/2644-4-22-21-enverus_txoga_winter-storm-uri-natural-gas-analysis.pdf
+    redistribute: false     # third-party copyright: not in git; scripts/fetch_sources.py
+    sha256: ca5d110d48dac838cab64de634128189772b6fa00f8e5e0d5372e2d35fab98ae
+    publisher: Enverus
+    publisher_role: consultant
+    funded_by: Texas Oil and Gas Association
+    doc_type: analysis
+    published_at: 2021-04-22
+    first_party: false
+    flags: [funded_by_interested_party]
+    scope: {region: "Texas", window: ["2021-02-08", "2021-02-28"]}
+
+  # Tier 3: add ~5 news articles for the slice test, e.g.
+  # - id: news_<outlet>_<date>
+  #   publisher_role: news
+  #   doc_type: news
+  #   published_at: ...
+  #   scope: {region: "ERCOT"}
+
+  # ---- Tier 3: news for the slice test (added 2026-11-14; article text saved from the URL by scripts/fetch_sources.py)
+  - id: news_ap_2021_02_15
+    file: news/ap_krgv_2021-02-15.txt
+    redistribute: false     # third-party copyright: not in git; scripts/fetch_sources.py
+    sha256: 30a5c1f6ee9f9cb9cfa7cc31e31c8cc53214b8501bc3e8e25c66fb57f35e45b6
+    title: "Power cut across Texas as snow, ice blanket southern Plains"
+    publisher: Associated Press (via KRGV)
+    publisher_role: news
+    doc_type: news
+    published_at: 2021-02-15
+    first_party: false
+    flags: []
+    url: https://www.krgv.com/news/power-cut-across-texas-as-snow-ice-blanket-southern-plains/
+    scope: {region: "ERCOT"}
+
+  - id: news_txtrib_ksat_2021_02_15
+    file: news/ksat_2021-02-15.txt
+    redistribute: false     # third-party copyright: not in git; scripts/fetch_sources.py
+    sha256: ddf2d3e5b724f0cc6be10e215dca54334004d62684f801ab005e49f4894c3b2c
+    title: "Rolling power blackouts in effect across Texas as massive winter storm drives demand for electricity"
+    publisher: Texas Tribune (republished by KSAT)
+    publisher_role: news
+    doc_type: news
+    published_at: 2021-02-15T08:56-06:00
+    first_party: false
+    flags: []
+    url: https://www.ksat.com/news/texas/2021/02/15/rolling-power-blackouts-in-effect-across-texas-as-massive-winter-storm-drives-demand-for-electricity/
+    scope: {region: "ERCOT"}
+
+  - id: news_abc13_2021_02_15
+    file: news/abc13_2021-02-15.txt
+    redistribute: false     # third-party copyright: not in git; scripts/fetch_sources.py
+    sha256: fcfe4aa7a773923fef8d19fec3f9d2610af568b6bdaee1044544844576b3b56b
+    title: "Massive power failure leaves Houston-area residents frustrated"
+    publisher: ABC13 Houston (KTRK)
+    publisher_role: news
+    doc_type: news
+    published_at: 2021-02-15T09:42-06:00
+    first_party: false
+    flags: []
+    url: https://abc13.com/post/power-failure-electricity-widespread-outage-ercot/10341469/
+    scope: {region: "ERCOT"}
+
+  - id: news_aljazeera_2021_02_15
+    file: news/aljazeera_2021-02-15.txt
+    redistribute: false     # third-party copyright: not in git; scripts/fetch_sources.py
+    sha256: 1e9f2bf09a17a36fdf8929ba296803582ae28d1a04604bb92999cf66b2f78c50
+    title: "Millions in Texas lose power as winter storm drops temps to -22C"
+    publisher: Al Jazeera
+    publisher_role: news
+    doc_type: news
+    published_at: 2021-02-15T09:00-06:00
+    first_party: false
+    flags: []
+    url: https://www.aljazeera.com/news/2021/2/15/millions-in-texas-lose-power-as-winter-storm-drops-temps-to-23c
+    scope: {region: "ERCOT"}
+
+  - id: news_ap_pbs_2021_02_16
+    file: news/ap_pbs_2021-02-16.txt
+    redistribute: false     # third-party copyright: not in git; scripts/fetch_sources.py
+    sha256: d49c36f5153d6072b9de5c3493abcaf64d46d43c90a9e1ffb8ce51c9c170ed73
+    title: "Anger grows over Texas outages a full day after historic snowfall"
+    publisher: Associated Press (via PBS NewsHour)
+    publisher_role: news
+    doc_type: news
+    published_at: 2021-02-16T15:42-06:00
+    first_party: false
+    flags: []
+    url: https://www.pbs.org/newshour/nation/anger-grows-over-texas-outages-a-full-day-after-historic-snowfall
+    scope: {region: "ERCOT"}
+
+  # ---- Tier 0 datasets (added 2026-11-15). Tier comes from tier_rules: measured datasets are 0b,
+  # exogenous measured datasets (weather) are 0a. Never extracted; used to anchor text claims.
+  # `published_at` is the version date (recorded time). Paths are relative to data/sources/.
+  - id: noaa_zone_temp_hourly
+    file: ../external/noaa/ercot_zone_temp_hourly_utc_F_2021-02-01_26.csv
+    publisher: NOAA NCEI (global-hourly, one station per ERCOT weather zone)
+    publisher_role: government_data
+    doc_type: dataset
+    measured: true
+    exogenous: true
+    first_party: false
+    flags: []
+    version: "downloaded 2026-11-14 (2/1-21); 2/22-26 added 2026-11-15 by scripts/extend_zone_temps.py"
+    published_at: 2026-11-14
+    resolution: hour
+    clock: "UTC, hour-start labels (T4); converted to Central in kg/series.py"
+    variables: [Coast, East, Far West, North, North Central, South Central, South Central (extra), Southern, West]
+    unit: degF
+    scope: {region: "ERCOT weather zones", window: ["2021-02-01", "2021-02-26"]}
+
+  - id: ercot_mw_out_by_fuel
+    file: ercot/data/Data_for_Graphs_in_Board_Deck_-_Generation_Capacity_Out_by_Fuel_Type_Chart_and_Frequency_Chart.xlsx
+    url: https://www.ercot.com/files/docs/2021/03/24/Data_for_Graphs_in_Board_Deck_-_Generation_Capacity_Out_by_Fuel_Type_Chart_and_Frequency_Chart.xlsx
+    sheet: GRAPH - GEN OUT BY FUEL TYPE
+    source_document: ercot_board_2021_02_24   # published as the data behind the board deck's charts
+    publisher: ERCOT
+    publisher_role: grid_operator
+    doc_type: dataset
+    measured: true
+    first_party: true
+    flags: []
+    version: "data for the 2/24 board deck"
+    published_at: 2021-02-24
+    resolution: minute
+    clock: "Central; labels are minute-ending (first 00:01, last 2/20 00:00)"
+    variables: [gas, coal, solar, wind, hydro, storage, nuclear, total]
+    unit: MW
+    scope: {region: "ERCOT", window: ["2021-02-14", "2021-02-20"]}
+
+  - id: ercot_frequency
+    file: ercot/data/Data_for_Graphs_in_Board_Deck_-_Generation_Capacity_Out_by_Fuel_Type_Chart_and_Frequency_Chart.xlsx
+    url: https://www.ercot.com/files/docs/2021/03/24/Data_for_Graphs_in_Board_Deck_-_Generation_Capacity_Out_by_Fuel_Type_Chart_and_Frequency_Chart.xlsx
+    sheet: GRAPH - FREQUENCY
+    source_document: ercot_board_2021_02_24   # published as the data behind the board deck's charts
+    publisher: ERCOT
+    publisher_role: grid_operator
+    doc_type: dataset
+    measured: true
+    first_party: true
+    flags: []
+    version: "data for the 2/24 board deck"
+    published_at: 2021-02-24
+    resolution: second
+    clock: "Central (T3)"
+    variables: [frequency]
+    unit: Hz
+    scope: {region: "ERCOT", window: ["2021-02-15T01:23", "2021-02-15T02:05"]}
+
+  - id: ercot_gen_load_shed
+    file: ercot/data/Available_Generation_and_Estimated_Load_without_Load_Shed_Data.xlsx
+    url: https://www.ercot.com/files/docs/2021/03/18/Available_Generation_and_Estimated_Load_without_Load_Shed_Data.xlsx
+    publisher: ERCOT
+    publisher_role: grid_operator
+    doc_type: dataset
+    measured: true
+    first_party: true
+    flags: []
+    version: "ERCOT public release"
+    published_at: 2021-03
+    resolution: "15 s (available generation), minute (load shed), hour (estimated load without shed)"
+    clock: "Central; minute labels are minute-ending; hourly labels assumed hour-ending like ERCOT HE convention, checked in kg/series.py"
+    variables: [available_generation, load_shed, estimated_load_without_shed]
+    unit: MW
+    scope: {region: "ERCOT", window: ["2021-02-14", "2021-02-20"]}
+
+  - id: unit_outage_2021_03_04
+    file: ercot/data/Unit_Outage_Data_20210304__Public_.xlsx
+    url: https://www.ercot.com/files/docs/2021/03/04/Unit_Outage_Data_20210304__Public_.xlsx
+    publisher: ERCOT
+    publisher_role: grid_operator
+    doc_type: dataset
+    measured: true
+    first_party: true
+    flags: [self_reported]
+    version: "2021-03-04"
+    published_at: 2021-03-04
+    resolution: event
+    clock: "Central (T9)"
+    variables: [unit_outages]
+    unit: MW
+    superseded_by: unit_outage_2021_03_12
+    scope: {region: "ERCOT", window: ["2021-02-14", "2021-02-19"]}
+
+  - id: unit_outage_2021_03_12
+    file: ercot/data/Unit_Outage_Data_20210312.xlsx
+    url: https://www.ercot.com/files/docs/2021/03/12/Unit_Outage_Data_20210312.xlsx
+    publisher: ERCOT
+    publisher_role: grid_operator
+    doc_type: dataset
+    measured: true
+    first_party: true
+    flags: [self_reported]
+    version: "2021-03-12"
+    published_at: 2021-03-12
+    resolution: event
+    clock: "Central (T9)"
+    variables: [unit_outages]
+    unit: MW
+    revises: unit_outage_2021_03_04
+    scope: {region: "ERCOT", window: ["2021-02-10", "2021-02-19"]}
+
+  - id: eia_ercot_hourly
+    file: ../external/tamu/eia/ercot_demand_demand_forecast_and_net_interchange.csv
+    url: https://github.com/tamu-engineering-research/2021TXPowerOutage
+    publisher: EIA Hourly Electric Grid Monitor (from ERCOT)
+    publisher_role: government_data
+    doc_type: dataset
+    measured: true
+    first_party: false
+    flags: []
+    version: "TAMU copy, cleaned 2026-11-15"
+    published_at: 2021-02-19
+    resolution: hour
+    clock: "Central; cleaned to hour-start labels (T2, T5)"
+    variables: [demand, demand_forecast, net_generation, total_interchange]
+    unit: MWh
+    scope: {region: "ERCOT", window: ["2021-01-30", "2021-02-19"]}
+
+  - id: noaa_ghcnd_daily
+    file: ../external/noaa/noaa_ghcnd_daily.csv
+    publisher: NOAA NCEI (GHCN-Daily, the same 9 airport stations)
+    publisher_role: government_data
+    doc_type: dataset
+    measured: true
+    exogenous: true
+    first_party: false
+    flags: []
+    version: "downloaded 2026-11-14"
+    published_at: 2026-11-14
+    resolution: day
+    clock: "local standard time days (midnight to midnight CST)"
+    variables: [TMIN, TMAX]
+    unit: degF
+    note: "Daily max/min thermometer values. The hourly METAR file misses the true extremes (DFW 2/16: hourly low -0.9 F, TMIN -2 F)."
+    scope: {region: "ERCOT weather zones", window: ["2021-02-01", "2021-02-21"]}
+
+  # ---- values read off a chart in a document (Tier 2 via the document's publisher; not measurements)
+  - id: ferc_fig35_daily_production
+    file: ../processed/chart_reads/ferc_fig35_daily_production.csv
+    publisher: FERC, NERC and Regional Entities staff (data from IHS)
+    publisher_role: regulator
+    doc_type: chart_read
+    derived_from: ferc_final_2021_11
+    first_party: false
+    flags: []
+    published_at: 2021-11-16
+    method: "pixel-read from Figure 35 (raster) by scripts/digitize_fig35.py; axes fitted to gridlines and date labels; checked against FERC's stated totals (90.8 Bcf/d on 2/8, 65.4 on 2/17) within 1 Bcf/d"
+    resolution: day
+    variables: [texas, oklahoma, louisiana, rest_of_lower48, total_lower48]
+    unit: Bcf/d
+    scope: {region: "Texas", window: ["2021-01-01", "2021-02-28"]}

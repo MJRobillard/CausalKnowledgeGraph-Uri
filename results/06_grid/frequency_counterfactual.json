@@ -1,0 +1,141 @@
+{
+ "units": 12,
+ "mw_by_fuel": {
+  "coal": 1769,
+  "gas": 2153
+ },
+ "ferc_mw": {
+  "coal": 1769,
+  "gas": 2190
+ },
+ "median_hours_out": 42.0,
+ "units_detail": [
+  {
+   "station": "DECKER",
+   "unit": "DPG2",
+   "fuel": "gas",
+   "county": "TRAVIS",
+   "mw_out": "428",
+   "start": "2021-02-15 01:51:00",
+   "end": "2021-02-15 07:07:00"
+  },
+  {
+   "station": "SCES",
+   "unit": "UNIT1",
+   "fuel": "coal",
+   "county": "MCLENNAN",
+   "mw_out": "933",
+   "start": "2021-02-15 01:58:00",
+   "end": "2021-02-15 12:00:00"
+  },
+  {
+   "station": "CBECII",
+   "unit": "CT7",
+   "fuel": "gas",
+   "county": "WHARTON",
+   "mw_out": "360",
+   "start": "2021-02-15 02:08:00",
+   "end": "2021-02-16 04:06:00"
+  },
+  {
+   "station": "CBECII",
+   "unit": "CT8",
+   "fuel": "gas",
+   "county": "WHARTON",
+   "mw_out": "360",
+   "start": "2021-02-15 02:08:00",
+   "end": "2021-02-16 01:14:00"
+  },
+  {
+   "station": "JACKCNTY",
+   "unit": "CT1",
+   "fuel": "gas",
+   "county": "JACK",
+   "mw_out": "160",
+   "start": "2021-02-15 02:15:00",
+   "end": "2021-02-17 12:17:00"
+  },
+  {
+   "station": "CCEC",
+   "unit": "GT1",
+   "fuel": "gas",
+   "county": "NUECES",
+   "mw_out": "141",
+   "start": "2021-02-15 02:18:00",
+   "end": "2021-02-18 11:16:00"
+  },
+  {
+   "station": "CCEC",
+   "unit": "GT2",
+   "fuel": "gas",
+   "county": "NUECES",
+   "mw_out": "141",
+   "start": "2021-02-15 02:18:00",
+   "end": "2021-02-18 02:26:00"
+  },
+  {
+   "station": "CCEC",
+   "unit": "ST1",
+   "fuel": "gas",
+   "county": "NUECES",
+   "mw_out": "139",
+   "start": "2021-02-15 02:18:00",
+   "end": "2021-02-18 02:24:00"
+  },
+  {
+   "station": "LEG",
+   "unit": "LEG_G2",
+   "fuel": "coal",
+   "county": "LIMESTONE",
+   "mw_out": "836",
+   "start": "2021-02-15 02:20:00",
+   "end": "2021-02-15 12:06:00"
+  },
+  {
+   "station": "JACKCNTY",
+   "unit": "CT2",
+   "fuel": "gas",
+   "county": "JACK",
+   "mw_out": "160",
+   "start": "2021-02-15 02:22:00",
+   "end": "2021-02-15 20:10:00"
+  },
+  {
+   "station": "DOWGEN",
+   "unit": "DOW_GT96",
+   "fuel": "gas",
+   "county": "BRAZORIA",
+   "mw_out": "189",
+   "start": "2021-02-15 02:27:00",
+   "end": "2021-02-21 10:00:00"
+  },
+  {
+   "station": "SL",
+   "unit": "SL_G2",
+   "fuel": "gas",
+   "county": "HARRIS",
+   "mw_out": "75",
+   "start": "2021-02-15 02:30:00",
+   "end": "2021-02-26 23:59:00"
+  }
+ ],
+ "by_fuel": {
+  "coal": {
+   "shed_mwh_avoided": 16374.827995811149,
+   "peak_mw_avoided": 1752.2836463956796,
+   "hours": 10,
+   "mwh_tripped_capacity": 17526.033333333333
+  },
+  "gas": {
+   "shed_mwh_avoided": 78277.62033652203,
+   "peak_mw_avoided": 2151.3644173270313,
+   "hours": 77,
+   "mwh_tripped_capacity": 88353.91666666667
+  }
+ },
+ "shed_mwh_avoided": 93931.69816532751,
+ "peak_hour_shed_avoided_mw": 3903.70556279788,
+ "hours_with_less_shed": 77,
+ "first_shed_hour_with_trips": "2021-02-15 01:00:00",
+ "first_shed_hour_without": "2021-02-15 01:00:00"
+}

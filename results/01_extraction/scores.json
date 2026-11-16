@@ -1,0 +1,183 @@
+{
+ "run": "01_extraction",
+ "model": "deepseek-flash",
+ "effort": "high",
+ "date": "2026-11-14",
+ "1_coverage": {
+  "other_share": 0.06914893617021277,
+  "pass": true,
+  "counts": {
+   "events": 948,
+   "relations": 458,
+   "quant_claims": 1919,
+   "other": 247
+  },
+  "top_other_types": [
+   [
+    "recommendation",
+    11
+   ],
+   [
+    "mechanism",
+    8
+   ],
+   [
+    "definition",
+    4
+   ],
+   [
+    "outagecausecategory",
+    4
+   ],
+   [
+    "methodologynote",
+    3
+   ],
+   [
+    "regulatory_requirement",
+    3
+   ],
+   [
+    "reportfinding",
+    3
+   ],
+   [
+    "finding",
+    3
+   ],
+   [
+    "transportationdisruption",
+    3
+   ],
+   [
+    "demandpeak",
+    2
+   ],
+   [
+    "planningassumption",
+    2
+   ],
+   [
+    "pipelineflowchange",
+    2
+   ],
+   [
+    "cause_breakdown",
+    2
+   ],
+   [
+    "peakloadrecord",
+    2
+   ],
+   [
+    "regulatorygap",
+    2
+   ]
+  ]
+ },
+ "2_recall": {
+  "in_slice": {
+   "n": 11,
+   "hits": 8,
+   "recall": 0.7272727272727273
+  },
+  "all": {
+   "n": 16,
+   "hits": 11,
+   "recall": 0.6875
+  },
+  "pass": true,
+  "answer_key_rows_unverified": 16,
+  "misses": [
+   {
+    "time": "2021-02-15T02:00",
+    "type": "WeatherCondition",
+    "in_slice": true,
+    "summary": "Temperature at the South Texas Project reached 0\u00b0C",
+    "matched": null
+   },
+   {
+    "time": "2021-02-15T05:27",
+    "type": "GenerationOutage",
+    "in_slice": true,
+    "summary": "South Texas Project unit 1 (nuclear) went offline",
+    "matched": null
+   },
+   {
+    "time": "2021-02-15T12:00",
+    "type": "GenerationOutage",
+    "in_slice": true,
+    "summary": "Offline capacity by noon Feb 15: wind 18,300 MW, gas 25,000 MW, weather-related 30,000 MW, equipment 5,600 MW",
+    "matched": null
+   }
+  ]
+ },
+ "3_scope": {
+  "n_shares": 286,
+  "all_three_filled": 0.951048951048951,
+  "scope_source_counts": {
+   "denominator:sentence": 256,
+   "region:sentence": 131,
+   "window:document_default": 221,
+   "region:document_default": 155,
+   "denominator:missing": 5,
+   "window:sentence": 65,
+   "denominator:document_default": 25
+  },
+  "review_file": "results/01_extraction/review_scope.csv",
+  "hand_checked": 20,
+  "correct": 0.2,
+  "pass": false
+ },
+ "4_12_vs_31_4": {
+  "ercot_12_found": 1,
+  "ferc_31_4_found": 3,
+  "label": "different_scope",
+  "differs_on": [
+   "metric",
+   "denominator",
+   "region",
+   "cause_scheme"
+  ],
+  "ercot": {
+   "metric": "share_of_mw",
+   "region": "ERCOT",
+   "window_start": "2021-02-14",
+   "window_end": "2021-02-19",
+   "denominator": "Total: 52,037 MW",
+   "cause_label_raw": "Fuel Limitations",
+   "quote": "Fuel Limitations (6,130 MW, 12%)"
+  },
+  "ferc": {
+   "metric": "share_of_events",
+   "region": "Event Area",
+   "window_start": "2021-02-08",
+   "window_end": "2021-02-20",
+   "denominator": "outages, derates, and failures to start",
+   "cause_label_raw": "fuel issues",
+   "quote": "fuel issues (31.4 percent)"
+  },
+  "pass": true
+ },
+ "precision": {
+  "review_file": "results/01_extraction/review_precision.csv",
+  "hand_checked": 40,
+  "stated": 0.775,
+  "type_ok": 0.6,
+  "fields_ok": 0.6,
+  "all_three": 0.475
+ },
+ "quote_check": {
+  "fail_rate": 0.019766611097880447,
+  "pass": true,
+  "fails_by_kind": {
+   "events": 20,
+   "quant_claims": 49,
+   "entities": 9,
+   "relations": 5
+  }
+ },
+ "chunk_errors": [
+  "ferc_final_2021_11:c031bb"
+ ]
+}

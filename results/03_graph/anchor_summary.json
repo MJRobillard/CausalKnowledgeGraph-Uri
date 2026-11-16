@@ -1,0 +1,14 @@
+{
+ "items": 2867,
+ "anchored": 29,
+ "coverage": 0.010115102895012208,
+ "ok": 24,
+ "mismatch": 5,
+ "reasons": {
+  "no_series": 1926,
+  "region": 466,
+  "metric_mismatch": 320,
+  "time_unresolved": 126
+ },
+ "first_shed": "2021-02-15 01:20:00"
+}

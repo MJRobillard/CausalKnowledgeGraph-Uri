@@ -1,0 +1,88 @@
+# Hypothesis families (kg/hypotheses.py). Hand-written rules; every one is logged in ASSUMPTIONS.md (H-items).
+
+predicates:
+  causal: [caused, contributed_to]
+  correlational: [associated_with]      # run 1 (v0 vocabulary) has none
+  ignored: [preceded]
+
+# Region classes, checked top to bottom on the lowercased region string; first match wins.
+# Fallback order for a relation: effect event's region, then cause event's, then the document's default scope.
+region_classes:
+  - class: multi-region
+    any: ["+", "event area", "lower 48", "united states", "u.s.", "south central", "midcontinent",
+          "eastern interconnection", "western interconnection", "southwest", "multiple"]
+  - class: multi-region
+    two_of: [ercot, spp, miso, texas, oklahoma, louisiana, arkansas, mississippi, kansas]
+  - class: gas_basin
+    any: [permian, eagle ford, haynesville, anadarko, barnett, basin, wellhead, west texas, fort worth basin]
+  - class: ERCOT
+    any: [ercot]
+  - class: ERCOT
+    texas_as_ercot: true                # A2: Texas read as ERCOT, flagged region_approx
+    any: [texas, houston, dallas, austin, san antonio, fort worth, el paso, corpus christi, midland, abilene,
+          tyler, wichita falls, waco, lubbock]
+  - class: SPP
+    any: [spp, southwest power pool, oklahoma, kansas, nebraska]
+  - class: MISO
+    any: [miso, louisiana, arkansas, mississippi, lake charles, little rock, jackson, entergy]
+  - class: other
+    any: [""]
+
+in_scope: [ERCOT, gas_basin, multi-region]
+headline_min_support: 2
+
+concept_labels:
+  WeatherCondition: cold weather
+  GenerationOutage: generation outages
+  "GenerationOutage:gas": gas-fired generation outages
+  "GenerationOutage:coal": coal generation outages
+  "GenerationOutage:wind": wind generation outages
+  "GenerationOutage:solar": solar generation outages
+  "GenerationOutage:nuclear": nuclear generation outages
+  GasSupplyDisruption: gas supply disruption
+  LoadShed: load shed
+  GridEmergency: grid emergencies (EEA, low frequency)
+  FacilityShutdown: facility shutdowns
+  InstitutionalAction: institutional actions
+  MarketAction: market actions (prices, caps)
+  Restoration: restoration
+  Demand: electricity demand
+  WaterServiceDisruption: water service disruption
+  PowerLoss: loss of power at gas facilities
+  "WeatherCondition:warming": warming weather
+  "GasSupplyDisruption:production": gas production loss
+  "GasSupplyDisruption:processing": gas processing loss
+  "GasSupplyDisruption:pipeline": pipeline and midstream disruption
+  "GasSupplyDisruption:delivery": gas delivery shortfall
+  "GasSupplyDisruption:unspecified": gas supply disruption
+
+region_labels: {ERCOT: ERCOT, gas_basin: Texas gas basins, multi-region: "ERCOT, SPP and MISO together",
+                SPP: SPP, MISO: MISO, other: other}
+
+# The step-3 gas-power skeleton (kg.invariants.LOOP_EDGES), keyed like families.
+skeleton:
+  - {cause: WeatherCondition, effect: GasSupplyDisruption, region: gas_basin, mechanism: freeze-offs and wellhead freezing}
+  - {cause: GasSupplyDisruption, effect: "GenerationOutage:gas", region: ERCOT, mechanism: fuel supply to gas-fired units}
+  - {cause: "GenerationOutage:gas", effect: LoadShed, region: ERCOT, mechanism: generation loss forces shedding}
+  - {cause: LoadShed, effect: PowerLoss, region: ERCOT, mechanism: "shed circuits feed gas facilities"}
+  - {cause: PowerLoss, effect: GasSupplyDisruption, region: ERCOT, mechanism: "power_supply_loss: wells, plants and compressors stop without power"}
+
+# ---------------------------------------------------------------- amendment 2 (2026-11-16), from the hypotheses review
+# Deterministic reclassification of extracted events, applied before grouping. Patterns are matched on the event's
+# summary plus quote (lowercase). The extracted type is kept in each support row as `cause_type_raw` / `effect_type_raw`.
+reclassify:
+  exclude_before: "2021-01-01"     # relations with a cause or effect dated before 2021 are historical (e.g. 2011)
+  power_loss: '(loss of|lost|lose|losing) (power|electric|electricity)|power (outage|loss|supply)|electrical power loss|de-energi|blackouts?\b'
+  gas_facility: 'natural gas|wellhead|well site|\bwells?\b|midstream|upstream|processing|compressor|pipeline|gathering|shut-in|freeze.?off|production'
+  # 1. a FacilityShutdown at a gas facility is gas supply disruption, or PowerLoss if its text says power was lost
+  # 2. a cause whose text says power was lost becomes PowerLoss when the effect is gas supply or PowerLoss
+  # 3. LoadShed -> gas supply is read as PowerLoss -> gas supply (the shed acts through power loss); `via: LoadShed`
+  warming: 'warming|warmer|rose above freezing|temperatures rose|rising temperatures|moderating temperatures|(?<!freeze-)thaw|\bmelt'
+  stages:                           # checked in this order; only used to split gas -> gas families
+    processing: 'processing'
+    delivery: 'deliver|receive natural gas|to natural gas-fired|to generat|shipper'
+    pipeline: 'pipeline|compressor|midstream|force majeure|curtail|storage|transport|gathering'
+    production: 'production|wellhead|\bwells?\b|freeze.?off|upstream|shut-in|supply'
+  direction:
+    falling: 'reduc|decreas|declin|restor|return|recover|lifted|ended|eased|improv'
+    rising: 'increas|\brose\b|rising|surge|spike|began|start|grew|climb'

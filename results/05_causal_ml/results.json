@@ -1,0 +1,188 @@
+{
+ "panel": {
+  "plant_fuel_units": 329,
+  "rows": 3290,
+  "units_by_fuel": {
+   "wind": 142,
+   "gas": 104,
+   "solar": 70,
+   "coal": 11,
+   "nuclear": 2
+  },
+  "units_with_any_outage": 211,
+  "excluded_for_unmatched_station": 57,
+  "excluded_capacity_mw": 10290.300000000001
+ },
+ "ate": {
+  "ate": 0.007005354977062635,
+  "se_cluster": 0.003598619180344708,
+  "ci95": [
+   -4.780901048804208e-05,
+   0.014058518964613312
+  ],
+  "n": 3290,
+  "clusters": 328
+ },
+ "placebo": {
+  "n": 20,
+  "mean": -0.00022592979218445875,
+  "sd": 0.0007427610409598566
+ },
+ "placebo_z": 9.73568128977556,
+ "fuel_effects": [
+  {
+   "fuel": "gas",
+   "effect_share_per_F": 0.00716773479692432,
+   "ci_low": -0.0021957209101152245,
+   "ci_high": 0.01653119050396386,
+   "fleet_capacity_mw": 53039.9,
+   "mw_per_F_fleet": 380.1759368553863
+  },
+  {
+   "fuel": "coal",
+   "effect_share_per_F": -0.008111446756995783,
+   "ci_low": -0.02386681781837942,
+   "ci_high": 0.007643924304387848,
+   "fleet_capacity_mw": 14474.6,
+   "mw_per_F_fleet": -117.40994722881116
+  },
+  {
+   "fuel": "wind",
+   "effect_share_per_F": 0.01135635267471676,
+   "ci_low": 0.00012097853659386731,
+   "ci_high": 0.02259172681283965,
+   "fleet_capacity_mw": 26144.4,
+   "mw_per_F_fleet": 296.90502686886487
+  },
+  {
+   "fuel": "solar",
+   "effect_share_per_F": 0.003902289508835314,
+   "ci_low": -0.0015689337599756022,
+   "ci_high": 0.00937351277764623,
+   "fleet_capacity_mw": 4206.7,
+   "mw_per_F_fleet": 16.415761276817513
+  },
+  {
+   "fuel": "nuclear",
+   "effect_share_per_F": 0.0015544637599820088,
+   "ci_low": -0.015549320306722658,
+   "ci_high": 0.018658247826686673,
+   "fleet_capacity_mw": 5120.0,
+   "mw_per_F_fleet": 7.958854451107885
+  }
+ ],
+ "cate_by_fuel": {
+  "coal": {
+   "count": 11.0,
+   "mean": 0.52,
+   "50%": 1.39,
+   "max": 19.62
+  },
+  "gas": {
+   "count": 104.0,
+   "mean": 1.66,
+   "50%": 0.57,
+   "max": 15.69
+  },
+  "nuclear": {
+   "count": 2.0,
+   "mean": 1.57,
+   "50%": 1.57,
+   "max": 22.25
+  },
+  "solar": {
+   "count": 70.0,
+   "mean": 0.37,
+   "50%": 0.03,
+   "max": 2.91
+  },
+  "wind": {
+   "count": 142.0,
+   "mean": 2.12,
+   "50%": 1.42,
+   "max": 10.33
+  }
+ },
+ "warmer_peak_day": {
+  "5": {
+   "mw_avoided": 2537.0,
+   "mw_avoided_low": -4142.0,
+   "mw_avoided_high": 9215.0,
+   "mw_out_actual": 36535.0
+  },
+  "10": {
+   "mw_avoided": 5041.0,
+   "mw_avoided_low": -8296.0,
+   "mw_avoided_high": 18378.0,
+   "mw_out_actual": 36535.0
+  }
+ },
+ "winterization": {
+  "coal": {
+   "units_in_top_quarter": 3,
+   "q75": 0.003190296101005238,
+   "median": 0.001493236340555145,
+   "mw_saved_peak_day": 689.673831231552,
+   "actual_mw_out_peak_day": 4581.208333333333
+  },
+  "gas": {
+   "units_in_top_quarter": 26,
+   "q75": 0.006958178010010773,
+   "median": 0.002834396943281305,
+   "mw_saved_peak_day": 2145.5783192183444,
+   "actual_mw_out_peak_day": 15500.708333333334
+  },
+  "nuclear": {
+   "units_in_top_quarter": 1,
+   "q75": 0.004330933817324709,
+   "median": 0.00029851333907474466,
+   "mw_saved_peak_day": 394.30114171758487,
+   "actual_mw_out_peak_day": 1353.0
+  },
+  "solar": {
+   "units_in_top_quarter": 18,
+   "q75": 0.006254553045371794,
+   "median": 0.0033469880280943883,
+   "mw_saved_peak_day": 371.34526374236066,
+   "actual_mw_out_peak_day": 803.0833333333334
+  },
+  "wind": {
+   "units_in_top_quarter": 36,
+   "q75": 0.015672124974762856,
+   "median": 0.009230448393126294,
+   "mw_saved_peak_day": 4313.136615821569,
+   "actual_mw_out_peak_day": 14296.958333333334
+  }
+ },
+ "gas_supply_vs_plant": {
+  "effect_share_per_F": {
+   "plant_cold": 0.009911455194428355,
+   "basin_cold": -0.0052483933240612835
+  },
+  "ci95": {
+   "plant_cold": [
+    -0.0001494716781750751,
+    0.019972382067031783
+   ],
+   "basin_cold": [
+    -0.010363346337936662,
+    -0.0001334403101859059
+   ]
+  },
+  "residual_treatment_correlation": 0.10026692082500223,
+  "storm_mwh_attributed": {
+   "plant_cold": 2550.018663969659,
+   "basin_cold": -1306.9128945967377
+  },
+  "share_attributed_to_basin_cold": -0.33884783143067,
+  "units": 104,
+  "basins": {
+   "eagle_ford": 520,
+   "barnett": 320,
+   "haynesville": 110,
+   "permian": 80,
+   "anadarko": 10
+  }
+ },
+ "forest_ate": 0.006688984891410102
+}

@@ -1,0 +1,3794 @@
+[
+ {
+  "id": "WeatherCondition->GenerationOutage@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_direct",
+  "cap": "G3",
+  "needs": [],
+  "test": {
+   "test": "cold_outage",
+   "ran": true,
+   "passed": false,
+   "summary": "fail-restart with temperature: test RMSE 4,106 MW; tent 4,663 (1.14\u00d7), hours 29,929 (7.29\u00d7); placebo 2.68 / 9.48. Needs \u2265 1.25 on all four.",
+   "metrics": {
+    "rmse_test": {
+     "M1 instantaneous": 6610.428605731946,
+     "M2 cumulative": 19650.873018990365,
+     "M3 temperature": 4106.446116412846,
+     "M3 tent (no weather)": 4663.412667036256,
+     "M3 hours (no weather)": 29929.40920343795
+    },
+    "margins": {
+     "M3 tent (no weather)": 1.1356322559298413,
+     "M3 hours (no weather)": 7.288396914259903
+    },
+    "placebo_ratio": {
+     "-5": 2.6761179415595504,
+     "5": 9.48470674052487
+    }
+   },
+   "chart": "cold_baselines_total.png",
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "noaa_zone_temp_hourly",
+    "unit_outage_2021_03_12"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->GenerationOutage@ERCOT",
+    "description": "GridEmergency is also claimed to cause GenerationOutage (4 dated cause events in the window)",
+    "n_events": 4
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->GenerationOutage:coal@ERCOT",
+    "description": "GridEmergency is also claimed to cause GenerationOutage:coal (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->GenerationOutage:gas@ERCOT",
+    "description": "LoadShed is also claimed to cause GenerationOutage:gas (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GasSupplyDisruption",
+    "n_events": 6,
+    "description": "6 GasSupplyDisruption events in the window (graph)",
+    "examples": [
+     "2/15-2/23: lack of supply volumes",
+     "Limited gas availability for gas-fired power plants",
+     "which resulted in curtailment of natural gas deliveries"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GridEmergency",
+    "n_events": 31,
+    "description": "31 GridEmergency events in the window (graph)",
+    "examples": [
+     "February 15: ERCOT enters Emergency Operations Level 3 at 01:20 AM",
+     "ERCOT entered Emergency Operations Level 3 at 01:20 AM Monday, Feb. 15 and did not return to normal operations until 10:",
+     "12:15 am EMERGENCY OPERATIONS LEVEL 1: Reserves Below 2,300"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "LoadShed",
+    "n_events": 28,
+    "description": "28 LoadShed events in the window (graph)",
+    "examples": [
+     "At least 4.5 million customers were without power and more than 13 million customers had water service interruptions.",
+     "ERCOT ordered firm-load shed, cutting off customers\u2019 power from 01:20 AM Monday, Feb. 15 through the evening of Thursday",
+     "20,000 MW peak load shed"
+    ]
+   },
+   {
+    "type": "named_confounder",
+    "description": "South Texas Project unit 1 trip (1,353 MW nuclear)",
+    "start": "2021-02-15 05:27",
+    "end": "2021-02-17 21:07"
+   },
+   {
+    "type": "named_confounder",
+    "description": "frequency-related trips (FERC: up to 1,800 MW, mostly coal)",
+    "start": "2021-02-15 01:50",
+    "end": "2021-02-15 02:10"
+   }
+  ],
+  "independent_docs": [
+   "enverus_txoga_2021_04",
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "WeatherCondition->GenerationOutage@multi-region",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GenerationOutage->GridEmergency@ERCOT",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "ercot_frequency/frequency covering Feb 14-19 (has 2021-02-15 01:23 to 02:05 only)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04",
+   "ercot_board_2021_02_24",
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GridEmergency->GenerationOutage@ERCOT",
+  "cause_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_direct",
+  "cap": "G3",
+  "needs": [],
+  "test": {
+   "test": "frequency_to_coal",
+   "ran": true,
+   "passed": true,
+   "summary": "total MW out rose +1,653 MW in the 15 min after the frequency low (59.302 Hz at 01:54:58), first moving after 4 min; that is above the 99th percentile of 15-minute changes (1,185 MW; percentile 99.5%). +3,038 MW within 30 min, against the text's 'up to 1,800 MW, mostly coal'.",
+   "metrics": {
+    "t_low": "2021-02-15 01:54:58",
+    "freq_low": 59.301998138427734,
+    "change_15min": 1653.0,
+    "change_30min": 3038.0,
+    "delay_min": 4.0,
+    "p99_15min": 1185.0,
+    "percentile": 0.9953623188405797
+   },
+   "chart": "hyp_frequency_to_total.png",
+   "data_sources": [
+    "ercot_frequency",
+    "ercot_mw_out_by_fuel"
+   ],
+   "window": [
+    "2021-02-15 01:24:00",
+    "2021-02-15 02:24:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "confounder_events",
+    "event_type": "LoadShed",
+    "n_events": 4,
+    "description": "4 LoadShed events in the window (graph)",
+    "examples": [
+     "by shedding firm load as needed, to a cumulative total of 10,500 MW by 2 a.m.",
+     "At 1:45 a.m., ERCOT instructed TOPs to shed an additional 1,000 MW of firm load (2,000 MW of firm load had been shed by ",
+     "having ordered a total of 10,500 MW of firm load shed"
+    ]
+   },
+   {
+    "type": "named_confounder",
+    "description": "frequency-related trips (FERC: up to 1,800 MW, mostly coal)",
+    "start": "2021-02-15 01:50",
+    "end": "2021-02-15 02:10"
+   },
+   {
+    "type": "pretrend",
+    "description": "effect moved +7,712 in the 3 h before the cause's onset (31% of its storm range)",
+    "change": 7712.0,
+    "share_of_range": 0.3062140162795315
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G3",
+  "grade": "G3"
+ },
+ {
+  "id": "LoadShed->LoadShed@ERCOT",
+  "cause_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "event-level data that separates cause and effect (both ends are the same series)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "WeatherCondition->GenerationOutage:wind@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/wind",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute -> hourly mean",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_direct",
+  "cap": "G3",
+  "needs": [],
+  "test": {
+   "test": "cold_outage",
+   "ran": true,
+   "passed": false,
+   "summary": "fail-restart with temperature: test RMSE 2,367 MW; tent 2,779 (1.17\u00d7), hours 7,778 (3.29\u00d7); placebo 1.77 / 3.56. Needs \u2265 1.25 on all four.",
+   "metrics": {
+    "rmse_test": {
+     "M1 instantaneous": 3396.8697801003163,
+     "M2 cumulative": 5266.862441175641,
+     "M3 temperature": 2366.6200478245237,
+     "M3 tent (no weather)": 2778.5757334091763,
+     "M3 hours (no weather)": 7778.342886742364
+    },
+    "margins": {
+     "M3 tent (no weather)": 1.17406921147454,
+     "M3 hours (no weather)": 3.28668849648784
+    },
+    "placebo_ratio": {
+     "-5": 1.773077388637309,
+     "5": 3.557273114144237
+    }
+   },
+   "chart": "cold_baselines_wind.png",
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "noaa_zone_temp_hourly",
+    "unit_outage_2021_03_12"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->GenerationOutage@ERCOT",
+    "description": "GridEmergency is also claimed to cause GenerationOutage (4 dated cause events in the window)",
+    "n_events": 4
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->GenerationOutage:coal@ERCOT",
+    "description": "GridEmergency is also claimed to cause GenerationOutage:coal (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->GenerationOutage:gas@ERCOT",
+    "description": "LoadShed is also claimed to cause GenerationOutage:gas (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GasSupplyDisruption",
+    "n_events": 6,
+    "description": "6 GasSupplyDisruption events in the window (graph)",
+    "examples": [
+     "2/15-2/23: lack of supply volumes",
+     "Limited gas availability for gas-fired power plants",
+     "which resulted in curtailment of natural gas deliveries"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GridEmergency",
+    "n_events": 31,
+    "description": "31 GridEmergency events in the window (graph)",
+    "examples": [
+     "February 15: ERCOT enters Emergency Operations Level 3 at 01:20 AM",
+     "ERCOT entered Emergency Operations Level 3 at 01:20 AM Monday, Feb. 15 and did not return to normal operations until 10:",
+     "12:15 am EMERGENCY OPERATIONS LEVEL 1: Reserves Below 2,300"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "LoadShed",
+    "n_events": 28,
+    "description": "28 LoadShed events in the window (graph)",
+    "examples": [
+     "At least 4.5 million customers were without power and more than 13 million customers had water service interruptions.",
+     "ERCOT ordered firm-load shed, cutting off customers\u2019 power from 01:20 AM Monday, Feb. 15 through the evening of Thursday",
+     "20,000 MW peak load shed"
+    ]
+   },
+   {
+    "type": "named_confounder",
+    "description": "South Texas Project unit 1 trip (1,353 MW nuclear)",
+    "start": "2021-02-15 05:27",
+    "end": "2021-02-17 21:07"
+   },
+   {
+    "type": "named_confounder",
+    "description": "frequency-related trips (FERC: up to 1,800 MW, mostly coal)",
+    "start": "2021-02-15 01:50",
+    "end": "2021-02-15 02:10"
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "FacilityShutdown->GasSupplyDisruption@ERCOT",
+  "cause_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "facility shutdown records (e.g. RRC, plant operators)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GasSupplyDisruption->GasSupplyDisruption@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "event-level data that separates cause and effect (both ends are the same series)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04",
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GasSupplyDisruption->GenerationOutage:gas@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/gas",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute -> hourly mean",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_proxy",
+  "cap": "G2",
+  "needs": [],
+  "test": {
+   "test": "gas_supply_to_gas_outage",
+   "ran": true,
+   "passed": false,
+   "summary": "(a) not run: needs FERC Fig. 35 daily production. (b) fail-restart with Permian cold: test RMSE 6,282 MW vs plant cold 1,164; weather-free margins 0.20 (tent) / 2.14 (hours). Drivers correlate r = 0.78 (Feb 10\u201319), so the comparison rests on timing.",
+   "metrics": {
+    "rmse_test": {
+     "permian": 6282.010702240298,
+     "plants": 1164.4286223948477,
+     "tent": 1287.0660338511107,
+     "hours": 13454.3929487924
+    },
+    "rmse_train": {
+     "permian": 2619.547076671227,
+     "plants": 2021.3238987859334
+    },
+    "margins": {
+     "tent": 0.20488122272572945,
+     "hours": 2.1417335287242154
+    },
+    "driver_correlation": 0.7843757687955978,
+    "timing": {
+     "permian": {
+      "first_below_32": "2021-02-10 07:00:00",
+      "peak": "2021-02-15 04:00:00",
+      "hours_below_32_feb14_19": 133
+     },
+     "plants": {
+      "first_below_32": "2021-02-12 00:00:00",
+      "peak": "2021-02-16 06:00:00",
+      "hours_below_32_feb14_19": 125
+     }
+    },
+    "params": {
+     "Permian (MAF)": {
+      "alpha": 0.0006766834903605421,
+      "rho": 0.006358363319005269
+     },
+     "gas plants": {
+      "alpha": 0.001697336212164434,
+      "rho": 0.012504311862893172
+     }
+    },
+    "part_a": "blocked: needs FERC Fig. 35 daily production (chart reading)"
+   },
+   "chart": "hyp_gas_supply_gas.png",
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "noaa_zone_temp_hourly",
+    "unit_outage_2021_03_12"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->GenerationOutage@ERCOT",
+    "description": "WeatherCondition is also claimed to cause GenerationOutage (2 dated cause events in the window)",
+    "n_events": 2
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->GenerationOutage@ERCOT",
+    "description": "GridEmergency is also claimed to cause GenerationOutage (4 dated cause events in the window)",
+    "n_events": 4
+   },
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->GenerationOutage:wind@ERCOT",
+    "description": "WeatherCondition is also claimed to cause GenerationOutage:wind (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->GenerationOutage:coal@ERCOT",
+    "description": "GridEmergency is also claimed to cause GenerationOutage:coal (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->GenerationOutage:gas@ERCOT",
+    "description": "LoadShed is also claimed to cause GenerationOutage:gas (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->GenerationOutage:gas@multi-region",
+    "description": "WeatherCondition is also claimed to cause GenerationOutage:gas (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GridEmergency",
+    "n_events": 31,
+    "description": "31 GridEmergency events in the window (graph)",
+    "examples": [
+     "February 15: ERCOT enters Emergency Operations Level 3 at 01:20 AM",
+     "ERCOT entered Emergency Operations Level 3 at 01:20 AM Monday, Feb. 15 and did not return to normal operations until 10:",
+     "12:15 am EMERGENCY OPERATIONS LEVEL 1: Reserves Below 2,300"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "LoadShed",
+    "n_events": 28,
+    "description": "28 LoadShed events in the window (graph)",
+    "examples": [
+     "At least 4.5 million customers were without power and more than 13 million customers had water service interruptions.",
+     "ERCOT ordered firm-load shed, cutting off customers\u2019 power from 01:20 AM Monday, Feb. 15 through the evening of Thursday",
+     "20,000 MW peak load shed"
+    ]
+   },
+   {
+    "type": "named_confounder",
+    "description": "South Texas Project unit 1 trip (1,353 MW nuclear)",
+    "start": "2021-02-15 05:27",
+    "end": "2021-02-17 21:07"
+   },
+   {
+    "type": "named_confounder",
+    "description": "frequency-related trips (FERC: up to 1,800 MW, mostly coal)",
+    "start": "2021-02-15 01:50",
+    "end": "2021-02-15 02:10"
+   },
+   {
+    "type": "named_confounder",
+    "description": "firm load shed in progress",
+    "start": "2021-02-15 01:20",
+    "end": "2021-02-18 23:59"
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GasSupplyDisruption->GenerationOutage@multi-region",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GenerationOutage->GridEmergency@multi-region",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GridEmergency->GasSupplyDisruption@ERCOT",
+  "cause_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "ercot_frequency/frequency covering Feb 14-19 (has 2021-02-15 01:23 to 02:05 only)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GridEmergency->LoadShed@ERCOT",
+  "cause_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "ercot_frequency/frequency covering Feb 14-19 (has 2021-02-15 01:23 to 02:05 only)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04",
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "WeatherCondition->GasSupplyDisruption@multi-region",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "FacilityShutdown->GasSupplyDisruption@multi-region",
+  "cause_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "facility shutdown records (e.g. RRC, plant operators)",
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04",
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GasSupplyDisruption->GasSupplyDisruption@multi-region",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "InstitutionalAction->GasSupplyDisruption@ERCOT",
+  "cause_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "orders, rulings and reports are decisions, not measured quantities",
+   "needs": "not measurable as a series"
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "not measurable as a series"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "WeatherCondition->LoadShed@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_direct",
+  "cap": "G3",
+  "needs": [],
+  "test": {
+   "test": "generic_timing",
+   "ran": true,
+   "passed": true,
+   "summary": "cause onset 02/14 06:00 vs effect onset 02/15 02:00 (first hour \u2265 10% of the storm range from the Feb 14 00:00 value): timing evidence only, capped at G2.",
+   "metrics": {
+    "cause_onset": "2021-02-14 06:00:00",
+    "effect_onset": "2021-02-15 02:00:00"
+   },
+   "chart": null,
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "ercot_gen_load_shed",
+    "noaa_zone_temp_hourly"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->LoadShed@ERCOT",
+    "description": "LoadShed is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->LoadShed@ERCOT",
+    "description": "GridEmergency is also claimed to cause LoadShed (2 dated cause events in the window)",
+    "n_events": 2
+   },
+   {
+    "type": "competing_cause",
+    "family": "GenerationOutage->LoadShed@ERCOT",
+    "description": "GenerationOutage is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GenerationOutage",
+    "n_events": 40,
+    "description": "40 GenerationOutage events in the window (graph)",
+    "examples": [
+     "February 14: As early as 1:00 AM, power generation reported output limitations or significant capacity was forced offlin",
+     "as early as 01:00 AM on Saturday, Feb. 14, a cascade of power generation reported output limitations or were forced offl",
+     "As early as 01:00 on 2/14/2021, two units at NRG\u2019s WA Parish Power Plant reported output restrictions (capacity derates)"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GridEmergency",
+    "n_events": 31,
+    "description": "31 GridEmergency events in the window (graph)",
+    "examples": [
+     "February 15: ERCOT enters Emergency Operations Level 3 at 01:20 AM",
+     "ERCOT entered Emergency Operations Level 3 at 01:20 AM Monday, Feb. 15 and did not return to normal operations until 10:",
+     "12:15 am EMERGENCY OPERATIONS LEVEL 1: Reserves Below 2,300"
+    ]
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G3",
+  "grade": "G3"
+ },
+ {
+  "id": "GasSupplyDisruption->FacilityShutdown@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "facility shutdown records (e.g. RRC, plant operators)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04",
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GasSupplyDisruption->GenerationOutage:gas@multi-region",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/gas",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute -> hourly mean",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GasSupplyDisruption->GenerationOutage@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_proxy",
+  "cap": "G2",
+  "needs": [],
+  "test": {
+   "test": "gas_supply_to_gas_outage",
+   "ran": true,
+   "passed": false,
+   "summary": "(a) not run: needs FERC Fig. 35 daily production. (b) fail-restart with Permian cold: test RMSE 12,359 MW vs plant cold 4,106; weather-free margins 0.38 (tent) / 2.42 (hours). Drivers correlate r = 0.85 (Feb 10\u201319), so the comparison rests on timing.",
+   "metrics": {
+    "rmse_test": {
+     "permian": 12358.789388890247,
+     "plants": 4106.446116412846,
+     "tent": 4663.412667036256,
+     "hours": 29929.40920343795
+    },
+    "rmse_train": {
+     "permian": 3775.9114509994074,
+     "plants": 2827.8218860540146
+    },
+    "margins": {
+     "tent": 0.3773357179489087,
+     "hours": 2.4217104330900368
+    },
+    "driver_correlation": 0.8503142804181063,
+    "timing": {
+     "permian": {
+      "first_below_32": "2021-02-10 07:00:00",
+      "peak": "2021-02-15 04:00:00",
+      "hours_below_32_feb14_19": 133
+     },
+     "plants": {
+      "first_below_32": "2021-02-11 06:00:00",
+      "peak": "2021-02-16 06:00:00",
+      "hours_below_32_feb14_19": 130
+     }
+    },
+    "params": {
+     "Permian (MAF)": {
+      "alpha": 0.0007072553113714598,
+      "rho": 0.007772877521823977
+     },
+     "total plants": {
+      "alpha": 0.00148175750947872,
+      "rho": 0.012678526049211108
+     }
+    },
+    "part_a": "blocked: needs FERC Fig. 35 daily production (chart reading)"
+   },
+   "chart": "hyp_gas_supply_total.png",
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "noaa_zone_temp_hourly",
+    "unit_outage_2021_03_12"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->GenerationOutage@ERCOT",
+    "description": "WeatherCondition is also claimed to cause GenerationOutage (2 dated cause events in the window)",
+    "n_events": 2
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->GenerationOutage@ERCOT",
+    "description": "GridEmergency is also claimed to cause GenerationOutage (4 dated cause events in the window)",
+    "n_events": 4
+   },
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->GenerationOutage:wind@ERCOT",
+    "description": "WeatherCondition is also claimed to cause GenerationOutage:wind (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->GenerationOutage:coal@ERCOT",
+    "description": "GridEmergency is also claimed to cause GenerationOutage:coal (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->GenerationOutage:gas@ERCOT",
+    "description": "LoadShed is also claimed to cause GenerationOutage:gas (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->GenerationOutage:gas@multi-region",
+    "description": "WeatherCondition is also claimed to cause GenerationOutage:gas (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GridEmergency",
+    "n_events": 31,
+    "description": "31 GridEmergency events in the window (graph)",
+    "examples": [
+     "February 15: ERCOT enters Emergency Operations Level 3 at 01:20 AM",
+     "ERCOT entered Emergency Operations Level 3 at 01:20 AM Monday, Feb. 15 and did not return to normal operations until 10:",
+     "12:15 am EMERGENCY OPERATIONS LEVEL 1: Reserves Below 2,300"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "LoadShed",
+    "n_events": 28,
+    "description": "28 LoadShed events in the window (graph)",
+    "examples": [
+     "At least 4.5 million customers were without power and more than 13 million customers had water service interruptions.",
+     "ERCOT ordered firm-load shed, cutting off customers\u2019 power from 01:20 AM Monday, Feb. 15 through the evening of Thursday",
+     "20,000 MW peak load shed"
+    ]
+   },
+   {
+    "type": "named_confounder",
+    "description": "South Texas Project unit 1 trip (1,353 MW nuclear)",
+    "start": "2021-02-15 05:27",
+    "end": "2021-02-17 21:07"
+   },
+   {
+    "type": "named_confounder",
+    "description": "frequency-related trips (FERC: up to 1,800 MW, mostly coal)",
+    "start": "2021-02-15 01:50",
+    "end": "2021-02-15 02:10"
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GenerationOutage->GenerationOutage@multi-region",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GenerationOutage->LoadShed@ERCOT",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_direct",
+  "cap": "G3",
+  "needs": [],
+  "test": {
+   "test": "outage_to_shed",
+   "ran": true,
+   "passed": true,
+   "summary": "Accounting relationship plus timing, not an estimated effect. MW out (total) was 2,000 MW above its Feb 14 morning level from 02/14 15:35, 10 h before the first shed (02/15 01:20); hourly changes correlate most at lag +0 h (r = 0.61). Shed \u2248 max(0, load \u2212 available generation): R\u00b2 0.79, RMSE 3,590 MW.",
+   "metrics": {
+    "cause_onset": "2021-02-14 15:35:00",
+    "shed_onset": "2021-02-15 01:20:00",
+    "lead_hours": 9.75,
+    "xcorr": {
+     "-6": 0.14711130789311058,
+     "-5": 0.15975835498871677,
+     "-4": 0.23498024694125427,
+     "-3": 0.3226645874235262,
+     "-2": 0.23790148052854895,
+     "-1": 0.2737056141866609,
+     "0": 0.6139572843096176,
+     "1": 0.42758392754598895,
+     "2": 0.3694271011820062,
+     "3": 0.34651160645969653,
+     "4": 0.24800664565920394,
+     "5": 0.21961814712245878,
+     "6": 0.22376024402623743
+    },
+    "peak_lag_h": 0,
+    "accounting_r2": 0.7869063487696941,
+    "accounting_rmse": 3590.1186207658257,
+    "baseline_mw": 28051.149773071105
+   },
+   "chart": "hyp_outage_to_shed_total.png",
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "ercot_gen_load_shed"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-16 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->LoadShed@ERCOT",
+    "description": "LoadShed is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->LoadShed@ERCOT",
+    "description": "GridEmergency is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->LoadShed@ERCOT",
+    "description": "WeatherCondition is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GridEmergency",
+    "n_events": 27,
+    "description": "27 GridEmergency events in the window (graph)",
+    "examples": [
+     "February 15: ERCOT enters Emergency Operations Level 3 at 01:20 AM",
+     "ERCOT entered Emergency Operations Level 3 at 01:20 AM Monday, Feb. 15 and did not return to normal operations until 10:",
+     "12:15 am EMERGENCY OPERATIONS LEVEL 1: Reserves Below 2,300"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "WeatherCondition",
+    "n_events": 6,
+    "description": "6 WeatherCondition events in the window (graph)",
+    "examples": [
+     "Temperatures in Dallas fell to four degrees by the morning of February 15",
+     "primarily resulted from by freezing precipitation",
+     "the low temperature on February 15 was 13 degrees lower than the next-day temperature forecasted"
+    ]
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G3",
+  "grade": "G3"
+ },
+ {
+  "id": "GenerationOutage:gas->GasSupplyDisruption@multi-region",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/gas",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute -> hourly mean",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GridEmergency->FacilityShutdown@ERCOT",
+  "cause_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "facility shutdown records (e.g. RRC, plant operators)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GridEmergency->GenerationOutage:coal@ERCOT",
+  "cause_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/coal",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute (for timing tests) or hourly mean",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_direct",
+  "cap": "G3",
+  "needs": [],
+  "test": {
+   "test": "frequency_to_coal",
+   "ran": true,
+   "passed": true,
+   "summary": "coal MW out rose +933 MW in the 15 min after the frequency low (59.302 Hz at 01:54:58), first moving after 4 min; that is above the 99th percentile of 15-minute changes (584 MW; percentile 99.8%). +1,575 MW within 30 min, against the text's 'up to 1,800 MW, mostly coal'.",
+   "metrics": {
+    "t_low": "2021-02-15 01:54:58",
+    "freq_low": 59.301998138427734,
+    "change_15min": 933.0,
+    "change_30min": 1575.0,
+    "delay_min": 4.0,
+    "p99_15min": 584.0,
+    "percentile": 0.9981449275362319
+   },
+   "chart": "hyp_frequency_to_coal.png",
+   "data_sources": [
+    "ercot_frequency",
+    "ercot_mw_out_by_fuel"
+   ],
+   "window": [
+    "2021-02-15 01:24:00",
+    "2021-02-15 02:24:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "named_confounder",
+    "description": "frequency-related trips (FERC: up to 1,800 MW, mostly coal)",
+    "start": "2021-02-15 01:50",
+    "end": "2021-02-15 02:10"
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G3",
+  "grade": "G3"
+ },
+ {
+  "id": "LoadShed->FacilityShutdown@multi-region",
+  "cause_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "facility shutdown records (e.g. RRC, plant operators)",
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "LoadShed->GasSupplyDisruption@ERCOT",
+  "cause_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "the claim is that shed circuits cut power to gas facilities (power_supply_loss); no public series measures electricity delivered to gas facilities, and FERC says the extent is unknown",
+   "needs": "metered load at gas production and processing facilities, by hour",
+   "override": "LoadShed->GasSupplyDisruption"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "metered load at gas production and processing facilities, by hour"
+  ],
+  "test": {
+   "test": "none",
+   "ran": false,
+   "passed": null,
+   "summary": "Untestable with Tier 0: nothing measures power delivered to gas facilities. Text evidence: FERC puts loss of power at 18.1% of the gas production decline on Feb 14 (before any firm load shed) and 21.6% on Feb 17 (the day of maximum losses), a small rise after shedding began. The earlier event study (shed jump at 2/15 01:59 vs gas outages) was inconclusive because gas outages were already climbing before the shock (the design check's pretrend)."
+  },
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04",
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "LoadShed->GasSupplyDisruption@multi-region",
+  "cause_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "the claim is that shed circuits cut power to gas facilities (power_supply_loss); no public series measures electricity delivered to gas facilities, and FERC says the extent is unknown",
+   "needs": "metered load at gas production and processing facilities, by hour",
+   "override": "LoadShed->GasSupplyDisruption"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "metered load at gas production and processing facilities, by hour",
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [],
+  "earned": "G0",
+  "grade": "G0"
+ },
+ {
+  "id": "WeatherCondition->FacilityShutdown@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "facility shutdown records (e.g. RRC, plant operators)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "WeatherCondition->FacilityShutdown@multi-region",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "facility shutdown records (e.g. RRC, plant operators)",
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "WeatherCondition->GasSupplyDisruption@gas_basin",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "tested_proxy",
+  "cap": "G2",
+  "needs": [],
+  "test": {
+   "test": "generic_timing",
+   "ran": true,
+   "passed": false,
+   "summary": "cause onset 02/14 06:00 vs effect onset 02/14 05:00 (first hour \u2265 10% of the storm range from the Feb 14 00:00 value): timing evidence only, capped at G2.",
+   "metrics": {
+    "cause_onset": "2021-02-14 06:00:00",
+    "effect_onset": "2021-02-14 05:00:00"
+   },
+   "chart": null,
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "ercot_gen_load_shed",
+    "noaa_zone_temp_hourly"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "InstitutionalAction->GasSupplyDisruption@ERCOT",
+    "description": "InstitutionalAction is also claimed to cause GasSupplyDisruption (2 dated cause events in the window)",
+    "n_events": 2
+   },
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->GasSupplyDisruption@ERCOT",
+    "description": "LoadShed is also claimed to cause GasSupplyDisruption (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "LoadShed",
+    "n_events": 28,
+    "description": "28 LoadShed events in the window (graph)",
+    "examples": [
+     "At least 4.5 million customers were without power and more than 13 million customers had water service interruptions.",
+     "ERCOT ordered firm-load shed, cutting off customers\u2019 power from 01:20 AM Monday, Feb. 15 through the evening of Thursday",
+     "20,000 MW peak load shed"
+    ]
+   },
+   {
+    "type": "named_confounder",
+    "description": "firm load shed in progress",
+    "start": "2021-02-15 01:20",
+    "end": "2021-02-18 23:59"
+   },
+   {
+    "type": "pretrend",
+    "description": "effect moved +4 in the 3 h before the cause's onset (10% of its storm range)",
+    "change": 3.5,
+    "share_of_range": 0.10294117647058823
+   }
+  ],
+  "independent_docs": [
+   "enverus_txoga_2021_04",
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "WeatherCondition->GridEmergency@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "ercot_frequency/frequency covering Feb 14-19 (has 2021-02-15 01:23 to 02:05 only)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "WeatherCondition->Restoration@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "decrease in MW out (or in load shed)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_direct",
+  "cap": "G3",
+  "needs": [],
+  "test": {
+   "test": "generic_timing",
+   "ran": true,
+   "passed": true,
+   "summary": "cause onset 02/14 06:00 vs effect onset 02/14 23:00 (first hour \u2265 10% of the storm range from the Feb 14 00:00 value): timing evidence only, capped at G2.",
+   "metrics": {
+    "cause_onset": "2021-02-14 06:00:00",
+    "effect_onset": "2021-02-14 23:00:00"
+   },
+   "chart": null,
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "ercot_gen_load_shed",
+    "noaa_zone_temp_hourly"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->Restoration@ERCOT",
+    "description": "GridEmergency is also claimed to cause Restoration (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->Restoration@ERCOT",
+    "description": "LoadShed is also claimed to cause Restoration (1 dated cause events in the window)",
+    "n_events": 1
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G3",
+  "grade": "G3"
+ },
+ {
+  "id": "FacilityShutdown->InstitutionalAction@ERCOT",
+  "cause_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "orders, rulings and reports are decisions, not measured quantities",
+   "needs": "not measurable as a series"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "facility shutdown records (e.g. RRC, plant operators)",
+   "not measurable as a series"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GasSupplyDisruption->FacilityShutdown@multi-region",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "facility shutdown records (e.g. RRC, plant operators)",
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GasSupplyDisruption->GridEmergency@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "ercot_frequency/frequency covering Feb 14-19 (has 2021-02-15 01:23 to 02:05 only)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GasSupplyDisruption->InstitutionalAction@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "orders, rulings and reports are decisions, not measured quantities",
+   "needs": "not measurable as a series"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "not measurable as a series"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GasSupplyDisruption->LoadShed@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_proxy",
+  "cap": "G2",
+  "needs": [],
+  "test": {
+   "test": "generic_timing",
+   "ran": true,
+   "passed": true,
+   "summary": "cause onset 02/14 05:00 vs effect onset 02/15 02:00 (first hour \u2265 10% of the storm range from the Feb 14 00:00 value): timing evidence only, capped at G2.",
+   "metrics": {
+    "cause_onset": "2021-02-14 05:00:00",
+    "effect_onset": "2021-02-15 02:00:00"
+   },
+   "chart": null,
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "ercot_gen_load_shed",
+    "noaa_zone_temp_hourly"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->LoadShed@ERCOT",
+    "description": "LoadShed is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->LoadShed@ERCOT",
+    "description": "GridEmergency is also claimed to cause LoadShed (2 dated cause events in the window)",
+    "n_events": 2
+   },
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->LoadShed@ERCOT",
+    "description": "WeatherCondition is also claimed to cause LoadShed (2 dated cause events in the window)",
+    "n_events": 2
+   },
+   {
+    "type": "competing_cause",
+    "family": "GenerationOutage->LoadShed@ERCOT",
+    "description": "GenerationOutage is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GenerationOutage",
+    "n_events": 40,
+    "description": "40 GenerationOutage events in the window (graph)",
+    "examples": [
+     "February 14: As early as 1:00 AM, power generation reported output limitations or significant capacity was forced offlin",
+     "as early as 01:00 AM on Saturday, Feb. 14, a cascade of power generation reported output limitations or were forced offl",
+     "As early as 01:00 on 2/14/2021, two units at NRG\u2019s WA Parish Power Plant reported output restrictions (capacity derates)"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GridEmergency",
+    "n_events": 31,
+    "description": "31 GridEmergency events in the window (graph)",
+    "examples": [
+     "February 15: ERCOT enters Emergency Operations Level 3 at 01:20 AM",
+     "ERCOT entered Emergency Operations Level 3 at 01:20 AM Monday, Feb. 15 and did not return to normal operations until 10:",
+     "12:15 am EMERGENCY OPERATIONS LEVEL 1: Reserves Below 2,300"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "WeatherCondition",
+    "n_events": 10,
+    "description": "10 WeatherCondition events in the window (graph)",
+    "examples": [
+     "On Tuesday, Feb. 16, Dallas recorded temperatures as low as -2\u00b0 F.",
+     "Moderating temperatures",
+     "extreme weather"
+    ]
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G3",
+  "grade": "G2"
+ },
+ {
+  "id": "GasSupplyDisruption->MarketAction@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "price caps and market actions are decisions; Henry Hub (below) measures gas price, not the actions",
+   "needs": "ERCOT settlement prices or action log"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "ERCOT settlement prices or action log"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GenerationOutage->GasSupplyDisruption@ERCOT",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "tested_proxy",
+  "cap": "G2",
+  "needs": [],
+  "test": {
+   "test": "generic_timing",
+   "ran": true,
+   "passed": false,
+   "summary": "cause onset 02/14 23:00 vs effect onset 02/14 05:00 (first hour \u2265 10% of the storm range from the Feb 14 00:00 value): timing evidence only, capped at G2.",
+   "metrics": {
+    "cause_onset": "2021-02-14 23:00:00",
+    "effect_onset": "2021-02-14 05:00:00"
+   },
+   "chart": null,
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "ercot_gen_load_shed",
+    "noaa_zone_temp_hourly"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "InstitutionalAction->GasSupplyDisruption@ERCOT",
+    "description": "InstitutionalAction is also claimed to cause GasSupplyDisruption (2 dated cause events in the window)",
+    "n_events": 2
+   },
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->GasSupplyDisruption@ERCOT",
+    "description": "LoadShed is also claimed to cause GasSupplyDisruption (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "LoadShed",
+    "n_events": 28,
+    "description": "28 LoadShed events in the window (graph)",
+    "examples": [
+     "At least 4.5 million customers were without power and more than 13 million customers had water service interruptions.",
+     "ERCOT ordered firm-load shed, cutting off customers\u2019 power from 01:20 AM Monday, Feb. 15 through the evening of Thursday",
+     "20,000 MW peak load shed"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "WeatherCondition",
+    "n_events": 10,
+    "description": "10 WeatherCondition events in the window (graph)",
+    "examples": [
+     "On Tuesday, Feb. 16, Dallas recorded temperatures as low as -2\u00b0 F.",
+     "Moderating temperatures",
+     "extreme weather"
+    ]
+   },
+   {
+    "type": "named_confounder",
+    "description": "firm load shed in progress",
+    "start": "2021-02-15 01:20",
+    "end": "2021-02-18 23:59"
+   }
+  ],
+  "independent_docs": [
+   "enverus_txoga_2021_04"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GenerationOutage->GenerationOutage:gas@multi-region",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute MW out, all fuels -> hourly mean (hour start)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/gas",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute -> hourly mean",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [],
+  "earned": "G0",
+  "grade": "G0"
+ },
+ {
+  "id": "GenerationOutage:gas->FacilityShutdown@multi-region",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/gas",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute -> hourly mean",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "facility shutdown records (e.g. RRC, plant operators)",
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GenerationOutage:gas->GasSupplyDisruption@ERCOT",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/gas",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute -> hourly mean",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "tested_proxy",
+  "cap": "G2",
+  "needs": [],
+  "test": {
+   "test": "generic_timing",
+   "ran": true,
+   "passed": false,
+   "summary": "cause onset 02/15 01:00 vs effect onset 02/14 05:00 (first hour \u2265 10% of the storm range from the Feb 14 00:00 value): timing evidence only, capped at G2.",
+   "metrics": {
+    "cause_onset": "2021-02-15 01:00:00",
+    "effect_onset": "2021-02-14 05:00:00"
+   },
+   "chart": null,
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "ercot_gen_load_shed",
+    "noaa_zone_temp_hourly"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "InstitutionalAction->GasSupplyDisruption@ERCOT",
+    "description": "InstitutionalAction is also claimed to cause GasSupplyDisruption (2 dated cause events in the window)",
+    "n_events": 2
+   },
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->GasSupplyDisruption@ERCOT",
+    "description": "LoadShed is also claimed to cause GasSupplyDisruption (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "LoadShed",
+    "n_events": 28,
+    "description": "28 LoadShed events in the window (graph)",
+    "examples": [
+     "At least 4.5 million customers were without power and more than 13 million customers had water service interruptions.",
+     "ERCOT ordered firm-load shed, cutting off customers\u2019 power from 01:20 AM Monday, Feb. 15 through the evening of Thursday",
+     "20,000 MW peak load shed"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "WeatherCondition",
+    "n_events": 10,
+    "description": "10 WeatherCondition events in the window (graph)",
+    "examples": [
+     "On Tuesday, Feb. 16, Dallas recorded temperatures as low as -2\u00b0 F.",
+     "Moderating temperatures",
+     "extreme weather"
+    ]
+   },
+   {
+    "type": "named_confounder",
+    "description": "firm load shed in progress",
+    "start": "2021-02-15 01:20",
+    "end": "2021-02-18 23:59"
+   }
+  ],
+  "independent_docs": [
+   "enverus_txoga_2021_04"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GenerationOutage:wind->GridEmergency@ERCOT",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/wind",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute -> hourly mean",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "ercot_frequency/frequency covering Feb 14-19 (has 2021-02-15 01:23 to 02:05 only)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GridEmergency->GasSupplyDisruption@multi-region",
+  "cause_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "noaa_zone_temp_hourly/Far West",
+   "kind": "proxy",
+   "tier": "0a",
+   "available": true,
+   "transform": "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "why_proxy": "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+   "unavailable_alternatives": [
+    {
+     "series": "ferc_final_2021_11/figure_35_daily_production",
+     "kind": "text_derived",
+     "tier": "2",
+     "available": false,
+     "reason": "FERC's daily production series is only in Figure 35, a chart; charts are skipped, so it was never extracted",
+     "needs": "FERC Fig. 35 daily production (chart reading)"
+    }
+   ]
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GridEmergency->GridEmergency@ERCOT",
+  "cause_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "event-level data that separates cause and effect (both ends are the same series)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GridEmergency->MarketAction@ERCOT",
+  "cause_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "price caps and market actions are decisions; Henry Hub (below) measures gas price, not the actions",
+   "needs": "ERCOT settlement prices or action log"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "ERCOT settlement prices or action log"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GridEmergency->Restoration@ERCOT",
+  "cause_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "decrease in MW out (or in load shed)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "ercot_frequency/frequency covering Feb 14-19 (has 2021-02-15 01:23 to 02:05 only)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "InstitutionalAction->InstitutionalAction@ERCOT",
+  "cause_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "orders, rulings and reports are decisions, not measured quantities",
+   "needs": "not measurable as a series"
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "orders, rulings and reports are decisions, not measured quantities",
+   "needs": "not measurable as a series"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "not measurable as a series",
+   "not measurable as a series"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "InstitutionalAction->InstitutionalAction@multi-region",
+  "cause_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "orders, rulings and reports are decisions, not measured quantities",
+   "needs": "not measurable as a series"
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "orders, rulings and reports are decisions, not measured quantities",
+   "needs": "not measurable as a series"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "not measurable as a series",
+   "not measurable as a series"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "LoadShed->FacilityShutdown@ERCOT",
+  "cause_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "facility shutdown records (e.g. RRC, plant operators)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [],
+  "earned": "G0",
+  "grade": "G0"
+ },
+ {
+  "id": "LoadShed->GenerationOutage:gas@ERCOT",
+  "cause_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/gas",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute -> hourly mean",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_direct",
+  "cap": "G3",
+  "needs": [],
+  "test": {
+   "test": "generic_timing",
+   "ran": true,
+   "passed": false,
+   "summary": "cause onset 02/15 02:00 vs effect onset 02/15 01:00 (first hour \u2265 10% of the storm range from the Feb 14 00:00 value): timing evidence only, capped at G2.",
+   "metrics": {
+    "cause_onset": "2021-02-15 02:00:00",
+    "effect_onset": "2021-02-15 01:00:00"
+   },
+   "chart": null,
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "ercot_gen_load_shed",
+    "noaa_zone_temp_hourly"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->GenerationOutage@ERCOT",
+    "description": "WeatherCondition is also claimed to cause GenerationOutage (2 dated cause events in the window)",
+    "n_events": 2
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->GenerationOutage@ERCOT",
+    "description": "GridEmergency is also claimed to cause GenerationOutage (4 dated cause events in the window)",
+    "n_events": 4
+   },
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->GenerationOutage:wind@ERCOT",
+    "description": "WeatherCondition is also claimed to cause GenerationOutage:wind (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->GenerationOutage:coal@ERCOT",
+    "description": "GridEmergency is also claimed to cause GenerationOutage:coal (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->GenerationOutage:gas@multi-region",
+    "description": "WeatherCondition is also claimed to cause GenerationOutage:gas (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GasSupplyDisruption",
+    "n_events": 6,
+    "description": "6 GasSupplyDisruption events in the window (graph)",
+    "examples": [
+     "2/15-2/23: lack of supply volumes",
+     "Limited gas availability for gas-fired power plants",
+     "which resulted in curtailment of natural gas deliveries"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GridEmergency",
+    "n_events": 31,
+    "description": "31 GridEmergency events in the window (graph)",
+    "examples": [
+     "February 15: ERCOT enters Emergency Operations Level 3 at 01:20 AM",
+     "ERCOT entered Emergency Operations Level 3 at 01:20 AM Monday, Feb. 15 and did not return to normal operations until 10:",
+     "12:15 am EMERGENCY OPERATIONS LEVEL 1: Reserves Below 2,300"
+    ]
+   },
+   {
+    "type": "named_confounder",
+    "description": "South Texas Project unit 1 trip (1,353 MW nuclear)",
+    "start": "2021-02-15 05:27",
+    "end": "2021-02-17 21:07"
+   },
+   {
+    "type": "named_confounder",
+    "description": "frequency-related trips (FERC: up to 1,800 MW, mostly coal)",
+    "start": "2021-02-15 01:50",
+    "end": "2021-02-15 02:10"
+   },
+   {
+    "type": "named_confounder",
+    "description": "firm load shed in progress",
+    "start": "2021-02-15 01:20",
+    "end": "2021-02-18 23:59"
+   },
+   {
+    "type": "pretrend",
+    "description": "effect moved +6,759 in the 3 h before the cause's onset (44% of its storm range)",
+    "change": 6758.616666666667,
+    "share_of_range": 0.43780890955063584
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "LoadShed->GridEmergency@ERCOT",
+  "cause_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_frequency/frequency",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "1-second frequency; excursion = minimum and its time",
+   "resolution": "second",
+   "regions": [
+    "ERCOT"
+   ],
+   "coverage": "2021-02-15 01:23 to 02:05 only",
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "ercot_frequency/frequency covering Feb 14-19 (has 2021-02-15 01:23 to 02:05 only)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "LoadShed->InstitutionalAction@ERCOT",
+  "cause_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "orders, rulings and reports are decisions, not measured quantities",
+   "needs": "not measurable as a series"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "not measurable as a series"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "LoadShed->Restoration@ERCOT",
+  "cause_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "decrease in MW out (or in load shed)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_direct",
+  "cap": "G3",
+  "needs": [],
+  "test": {
+   "test": "generic_timing",
+   "ran": true,
+   "passed": false,
+   "summary": "cause onset 02/15 02:00 vs effect onset 02/14 23:00 (first hour \u2265 10% of the storm range from the Feb 14 00:00 value): timing evidence only, capped at G2.",
+   "metrics": {
+    "cause_onset": "2021-02-15 02:00:00",
+    "effect_onset": "2021-02-14 23:00:00"
+   },
+   "chart": null,
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "ercot_gen_load_shed",
+    "noaa_zone_temp_hourly"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->Restoration@ERCOT",
+    "description": "WeatherCondition is also claimed to cause Restoration (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->Restoration@ERCOT",
+    "description": "GridEmergency is also claimed to cause Restoration (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "pretrend",
+    "description": "effect moved -9,859 in the 3 h before the cause's onset (40% of its storm range)",
+    "change": -9858.68333333333,
+    "share_of_range": 0.39917037592889
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "MarketAction->FacilityShutdown@ERCOT",
+  "cause_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "price caps and market actions are decisions; Henry Hub (below) measures gas price, not the actions",
+   "needs": "ERCOT settlement prices or action log"
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "no Tier 0 series of industrial or gas-facility shutdowns",
+   "needs": "facility shutdown records (e.g. RRC, plant operators)"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "ERCOT settlement prices or action log",
+   "facility shutdown records (e.g. RRC, plant operators)"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [],
+  "earned": "G0",
+  "grade": "G0"
+ },
+ {
+  "id": "Restoration->LoadShed@ERCOT",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/total",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "decrease in MW out (or in load shed)",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_direct",
+  "cap": "G3",
+  "needs": [],
+  "test": {
+   "test": "generic_timing",
+   "ran": true,
+   "passed": true,
+   "summary": "cause onset 02/14 23:00 vs effect onset 02/15 02:00 (first hour \u2265 10% of the storm range from the Feb 14 00:00 value): timing evidence only, capped at G2.",
+   "metrics": {
+    "cause_onset": "2021-02-14 23:00:00",
+    "effect_onset": "2021-02-15 02:00:00"
+   },
+   "chart": null,
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "ercot_gen_load_shed",
+    "noaa_zone_temp_hourly"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-20 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->LoadShed@ERCOT",
+    "description": "LoadShed is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->LoadShed@ERCOT",
+    "description": "GridEmergency is also claimed to cause LoadShed (2 dated cause events in the window)",
+    "n_events": 2
+   },
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->LoadShed@ERCOT",
+    "description": "WeatherCondition is also claimed to cause LoadShed (2 dated cause events in the window)",
+    "n_events": 2
+   },
+   {
+    "type": "competing_cause",
+    "family": "GenerationOutage->LoadShed@ERCOT",
+    "description": "GenerationOutage is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GenerationOutage",
+    "n_events": 40,
+    "description": "40 GenerationOutage events in the window (graph)",
+    "examples": [
+     "February 14: As early as 1:00 AM, power generation reported output limitations or significant capacity was forced offlin",
+     "as early as 01:00 AM on Saturday, Feb. 14, a cascade of power generation reported output limitations or were forced offl",
+     "As early as 01:00 on 2/14/2021, two units at NRG\u2019s WA Parish Power Plant reported output restrictions (capacity derates)"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GridEmergency",
+    "n_events": 31,
+    "description": "31 GridEmergency events in the window (graph)",
+    "examples": [
+     "February 15: ERCOT enters Emergency Operations Level 3 at 01:20 AM",
+     "ERCOT entered Emergency Operations Level 3 at 01:20 AM Monday, Feb. 15 and did not return to normal operations until 10:",
+     "12:15 am EMERGENCY OPERATIONS LEVEL 1: Reserves Below 2,300"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "WeatherCondition",
+    "n_events": 10,
+    "description": "10 WeatherCondition events in the window (graph)",
+    "examples": [
+     "On Tuesday, Feb. 16, Dallas recorded temperatures as low as -2\u00b0 F.",
+     "Moderating temperatures",
+     "extreme weather"
+    ]
+   }
+  ],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G3",
+  "grade": "G3"
+ },
+ {
+  "id": "WeatherCondition->GenerationOutage:gas@multi-region",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_mw_out_by_fuel/gas",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute -> hourly mean",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "series for ERCOT, SPP and MISO together"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "ferc_final_2021_11"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "WeatherCondition->InstitutionalAction@ERCOT",
+  "cause_measure": {
+   "series": "noaa_zone_temp_hourly",
+   "kind": "direct",
+   "tier": "0a",
+   "available": true,
+   "transform": "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT",
+    "gas_basin"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "none",
+   "kind": "none",
+   "reason": "orders, rulings and reports are decisions, not measured quantities",
+   "needs": "not measurable as a series"
+  },
+  "status": "untestable",
+  "cap": "G1",
+  "needs": [
+   "not measurable as a series"
+  ],
+  "test": null,
+  "threats": [],
+  "independent_docs": [
+   "enverus_txoga_2021_04"
+  ],
+  "earned": "G1",
+  "grade": "G1"
+ },
+ {
+  "id": "GenerationOutage:gas->LoadShed@ERCOT",
+  "cause_measure": {
+   "series": "ercot_mw_out_by_fuel/gas",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute -> hourly mean",
+   "resolution": "hour",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "effect_measure": {
+   "series": "ercot_gen_load_shed/load_shed",
+   "kind": "direct",
+   "tier": "0b",
+   "available": true,
+   "transform": "minute load shed MW (minute-ending labels, A1); hourly mean for accounting",
+   "resolution": "minute",
+   "regions": [
+    "ERCOT"
+   ],
+   "unavailable_alternatives": []
+  },
+  "status": "tested_direct",
+  "cap": "G3",
+  "needs": [],
+  "test": {
+   "test": "outage_to_shed",
+   "ran": true,
+   "passed": true,
+   "summary": "Accounting relationship plus timing, not an estimated effect. MW out (gas) was 2,000 MW above its Feb 14 morning level from 02/15 00:59, 0 h before the first shed (02/15 01:20); hourly changes correlate most at lag +0 h (r = 0.56). Shed \u2248 max(0, load \u2212 available generation): R\u00b2 0.79, RMSE 3,590 MW.",
+   "metrics": {
+    "cause_onset": "2021-02-15 00:59:00",
+    "shed_onset": "2021-02-15 01:20:00",
+    "lead_hours": 0.35,
+    "xcorr": {
+     "-6": 0.20779533914857626,
+     "-5": 0.1526361927929613,
+     "-4": 0.16045470699272554,
+     "-3": 0.28498231101302285,
+     "-2": 0.19632459371589345,
+     "-1": 0.20988566982451826,
+     "0": 0.5630022062871469,
+     "1": 0.3720096892694351,
+     "2": 0.27036217557079256,
+     "3": 0.28178996660750655,
+     "4": 0.2605655131611636,
+     "5": 0.202519484217099,
+     "6": 0.20110398906626215
+    },
+    "peak_lag_h": 0,
+    "accounting_r2": 0.7869063487696941,
+    "accounting_rmse": 3590.1186207658257,
+    "baseline_mw": 11344.744326777609
+   },
+   "chart": "hyp_outage_to_shed_gas.png",
+   "data_sources": [
+    "ercot_mw_out_by_fuel",
+    "ercot_gen_load_shed"
+   ],
+   "window": [
+    "2021-02-14 00:00:00",
+    "2021-02-16 00:00:00"
+   ],
+   "input_documents": [
+    "ercot_board_2021_02_24"
+   ]
+  },
+  "threats": [
+   {
+    "type": "competing_cause",
+    "family": "LoadShed->LoadShed@ERCOT",
+    "description": "LoadShed is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "GridEmergency->LoadShed@ERCOT",
+    "description": "GridEmergency is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "WeatherCondition->LoadShed@ERCOT",
+    "description": "WeatherCondition is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "competing_cause",
+    "family": "GenerationOutage->LoadShed@ERCOT",
+    "description": "GenerationOutage is also claimed to cause LoadShed (1 dated cause events in the window)",
+    "n_events": 1
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "GridEmergency",
+    "n_events": 27,
+    "description": "27 GridEmergency events in the window (graph)",
+    "examples": [
+     "February 15: ERCOT enters Emergency Operations Level 3 at 01:20 AM",
+     "ERCOT entered Emergency Operations Level 3 at 01:20 AM Monday, Feb. 15 and did not return to normal operations until 10:",
+     "12:15 am EMERGENCY OPERATIONS LEVEL 1: Reserves Below 2,300"
+    ]
+   },
+   {
+    "type": "confounder_events",
+    "event_type": "WeatherCondition",
+    "n_events": 6,
+    "description": "6 WeatherCondition events in the window (graph)",
+    "examples": [
+     "Temperatures in Dallas fell to four degrees by the morning of February 15",
+     "primarily resulted from by freezing precipitation",
+     "the low temperature on February 15 was 13 degrees lower than the next-day temperature forecasted"
+    ]
+   }
+  ],
+  "independent_docs": [],
+  "earned": "G2",
+  "grade": "G2"
+ }
+]

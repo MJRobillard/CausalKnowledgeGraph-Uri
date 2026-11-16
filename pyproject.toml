@@ -1,0 +1,37 @@
+[project]
+name = "causal-kg"
+version = "0.1.0"
+description = "Winter Storm Uri (Texas, February 2021): a tiered causal knowledge graph checked against measured data"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Matthew Robillard" }]
+requires-python = ">=3.10"
+dependencies = [
+    "requests",
+    "pyyaml",
+    "jsonschema",
+    "pandas",
+    "rapidfuzz",
+    "openpyxl",
+    "pypdf>=7.1.0",
+    "pyarrow>=25.0.1",
+    "networkx>=3.4.2",
+    "scipy>=1.15.3",
+    "matplotlib>=3.10.9",
+    "econml>=0.17.0",
+    "scikit-learn>=1.7.2",
+    "shapely>=2.1.2",
+    "pyproj>=3.7.1",
+    "pyshp>=3.1.8",
+    "statsmodels>=0.14",
+]
+
+[dependency-groups]
+dev = ["pytest"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

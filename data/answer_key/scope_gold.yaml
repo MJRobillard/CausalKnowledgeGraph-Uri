@@ -1,0 +1,257 @@
+# Gold scope labels for the scope-fix 2x2 (kg/scope_eval.py). Written by Claude (not the user) on 2026-11-15,
+# before any 2x2 results existed; revised the same day (see "Revision" below). 20 prose cause-share sentences.
+#
+# Grading principle: a label is right if the model's INPUT supports it (the chunk text plus the document card,
+# and the section card in A1 cells). Knowledge outside that input, e.g. FERC Appendix I, is not required.
+#
+# Matching: a claim matches an item if it comes from `chunk`, its value equals `value` (or its range matches
+# value_low/value_high), and its quote lies inside the sentence containing `anchor`.
+# Scoring (each field right/wrong; "all four" = test 3's definition):
+#   metric       in `metric` (list)
+#   denominator  matches regex `denominator` (case-insensitive)
+#   region       matches regex `region`
+#   window       (window_start[:10], window_end[:10]) is one of `window`; or `as_of` matches `as_of` when given
+#
+# Why each label is what it is goes in `basis`.
+#
+# Revision (2026-11-15, at the user's request): the first version required TX/OK/LA for every FERC gas share,
+# from FERC Appendix I (the producer sample), which the model never sees. Now each gas item accepts what its
+# own chunk supports:
+#   c025 (g09, g10): only "Texas and South Central U.S." (section heading); Lower 48 isn't mentioned. Unchanged.
+#   c040 (g12-g14): the chunk says "total U.S. Lower 48 natural gas production fell ..." and "largest ... impacts
+#     ... in Texas, Oklahoma, and Louisiana": either is accepted. The electric footprint is not, because the
+#     chunk scopes production otherwise.
+#   c041 (g15, g16): the chunk states no region for production or processing, so the document default
+#     (ERCOT+SPP+MISO) is what the input supports and is accepted too. Region is effectively untestable here.
+
+defaults:
+  event_window: &event [["2021-02-08", "2021-02-20"]]
+  event_area: &event_area "ercot.*spp.*miso|ercot.*miso.*spp|event area|ercot, miso( south)?,? and spp|south central united states"
+  gas_region: &gas_region "texas.*oklahoma|oklahoma.*louisiana|south central|tx.*ok.*la"
+  gas_region_c040: &gas_region_c040 "texas.*oklahoma|oklahoma.*louisiana|south central|tx.*ok.*la|lower 48"
+  gas_region_c041: &gas_region_c041 "texas.*oklahoma|oklahoma.*louisiana|south central|tx.*ok.*la|ercot.*spp.*miso|ercot.*miso.*spp|event area|ercot, miso( south)?,? and (all of )?spp"
+
+items:
+  - id: g01_fuel_314
+    chunk: ferc_final_2021_11:c003
+    anchor: "75 percent were caused by either freezing issues"
+    value: 31.4
+    metric: [share_of_events]
+    denominator: "outage|derate|failure"
+    region: *event_area
+    window: *event
+    tests: control (run 1 had this right)
+    basis: "Previous sentence: 'From February 8 through 20, in the Event Area ... 4,124 outages, derates or failures to start.'"
+
+  - id: g02_other_fuel_13
+    chunk: ferc_final_2021_11:c038
+    anchor: "and 13 percent other fuel issues"
+    value: 13
+    metric: [share_of_events]
+    denominator: "fuel issue"
+    region: *event_area
+    window: *event
+    tests: previous sentence across a chunk boundary
+    basis: "Sentence begins in c037: 'Fuel issues included 87 percent natural gas fuel supply issues (...) and 13 percent other fuel issues.' Share OF fuel issues."
+
+  - id: g03_gas_supply_273
+    chunk: ferc_final_2021_11:c039
+    anchor: "Natural gas fuel supply issues alone caused 27.3 percent"
+    value: 27.3
+    metric: [share_of_events]
+    denominator: "outage|derate|failure"
+    region: *event_area
+    window: *event
+    tests: control
+    basis: "Share of all generating unit outages during the Event (IV.B, Causes of Generating Unit Outages)."
+
+  - id: g04_ercot_freezing_48
+    chunk: ferc_final_2021_11:c038
+    anchor: "about 48 percent of ERCOT"
+    value: 48
+    metric: [share_of_events]
+    denominator: "outage|derate|failure"
+    region: "^ercot$|ercot( footprint)?$"
+    window: *event
+    tests: region from the sentence
+    basis: "'about 48 percent of ERCOT's ... generating unit outages, derates and failures to start during the Event'"
+
+  - id: g05_units_freezing_60
+    chunk: ferc_final_2021_11:c038
+    anchor: "Sixty percent of all generating units that reported"
+    value: 60
+    metric: [share_of_units]
+    denominator: "generating unit"
+    region: *event_area
+    window: *event
+    tests: metric (units, not events)
+    basis: "Share of generating units, not of outage events."
+
+  - id: g06_blackstart_fuel_39
+    chunk: ferc_final_2021_11:c062
+    anchor: "Forty-six percent of ERCOT"
+    value: 39
+    metric: [share_of_units]
+    denominator: "black start"
+    region: "ercot"
+    window: *event
+    tests: denominator from the sentence
+    basis: "'... ERCOT's primary and alternate black start resources ... fuel limitations (39 percent)'. Previous sentence: 'Over the course of the Event'."
+
+  - id: g07_spp_wind_52
+    chunk: ferc_final_2021_11:c021
+    anchor: "accounted for 6,810 MW (nameplate), or 52 percent"
+    value: 52
+    metric: [share_of_mw]
+    denominator: "outag"
+    region: "^spp|spp( footprint)?$"
+    window: [["2021-02-08", "2021-02-09"]]
+    tests: previous sentence gives region and window
+    basis: "Previous sentence: 'From approximately February 8 at 3:15 a.m. to February 9 at 4:15 a.m., 102 distinct generating units in SPP ...'. 6,810 MW => share of MW."
+
+  - id: g08_ercot_freezing_range
+    chunk: ferc_final_2021_11:c029
+    anchor: "52 to 60 percent of the outages during that period"
+    value: 56
+    value_low: 52
+    value_high: 60
+    metric: [share_of_events, share_of_mw]
+    denominator: "outag"
+    region: "ercot"
+    window: [["2021-02-14", "2021-02-15"]]
+    tests: range; window from the two previous sentences
+    basis: "'At approximately 10:00 p.m. on February 14, and continuing into the early morning hours of February 15 ... Over a three-hour period ...'. Figure 70 is 'ERCOT Causes of Incremental Generator Outages/Derates, February 14, 10 p.m. - February 15'. Count vs MW is not stated, so either metric is accepted."
+
+  - id: g09_gas_cold_884
+    chunk: ferc_final_2021_11:c025
+    anchor: "88.4 percent of the volumetric contribution"
+    value: 88.4
+    metric: [share_of_volume]
+    denominator: "production"
+    region: *gas_region
+    window: [["2021-02-14", "2021-02-14"], ["2021-02-14", "2021-02-15"]]
+    tests: section region; date in the sentence
+    basis: "Section III.C.2.a 'Additional Natural Gas Production Declines in Texas and South Central U.S.' 'On February 14' (a gas day runs to 9 a.m. the next day, so 2/14-2/15 is accepted)."
+
+  - id: g10_gas_power_181_c025
+    chunk: ferc_final_2021_11:c025
+    anchor: "while 18.1 percent resulted from loss of power"
+    value: 18.1
+    metric: [share_of_volume]
+    denominator: "production"
+    region: *gas_region
+    window: [["2021-02-14", "2021-02-14"], ["2021-02-14", "2021-02-15"]]
+    tests: section region; date in the previous sentence
+    basis: "Previous sentence: 'On February 14, 88.4 percent of the volumetric contribution ...'. This sentence continues the Feb 14 breakdown."
+
+  - id: g11_haynesville_77
+    chunk: ferc_final_2021_11:c025
+    anchor: "77 percent of Haynesville Basin outages"
+    value: 77
+    metric: [share_of_volume, share_of_events]
+    denominator: "outage|loss|decline"
+    region: "haynesville"
+    window: [["2021-02-19", "2021-02-19"], ["2021-02-19", "2021-02-20"]]
+    tests: date after the number
+    basis: "'77 percent of Haynesville Basin outages on February 19'. Previous sentence: processing losses analysed by basin and day; volume vs count isn't stated."
+
+  - id: g12_gas_weather_58
+    chunk: ferc_final_2021_11:c040
+    anchor: "The majority (58 percent) of the decline in natural gas production"
+    value: 58
+    metric: [share_of_volume]
+    denominator: "production"
+    region: *gas_region_c040
+    window: *event
+    tests: section region
+    basis: "Section IV.C. The chunk scopes production to the U.S. Lower 48 and to TX, OK and LA (both accepted). Figure 97: 'Natural Gas Production Event Causes, February 8-20, 2021'."
+
+  - id: g13_gas_power_181_c040
+    chunk: ferc_final_2021_11:c040
+    anchor: "varied little between the overall Event"
+    value: 18.1
+    metric: [share_of_volume]
+    denominator: "production"
+    region: *gas_region_c040
+    window: [["2021-02-14", "2021-02-14"], ["2021-02-14", "2021-02-15"]]
+    tests: multi-date sentence (run 1's one conflict)
+    basis: "'... the overall Event (21.5 percent), February 14 (18.1 percent), and February 17 ... (21.6 percent)'."
+
+  - id: g14_gas_power_216
+    chunk: ferc_final_2021_11:c040
+    anchor: "varied little between the overall Event"
+    value: 21.6
+    metric: [share_of_volume]
+    denominator: "production"
+    region: *gas_region_c040
+    window: [["2021-02-17", "2021-02-17"], ["2021-02-17", "2021-02-18"]]
+    tests: multi-date sentence
+    basis: "'February 17, the day of maximum production losses (21.6 percent)'."
+
+  - id: g15_gas_power_21_gasday
+    chunk: ferc_final_2021_11:c041
+    anchor: "Even during this period, loss of power supply only caused 21 percent"
+    value: 21
+    metric: [share_of_volume]
+    denominator: "production"
+    region: *gas_region_c041
+    window: [["2021-02-17", "2021-02-18"], ["2021-02-17", "2021-02-17"]]
+    tests: previous sentence gives the window
+    basis: "Previous sentence: 'the peak day for natural gas production loss, which occurred on the February 17 gas day (9 a.m. February 17, to 9 a.m. February 18).'"
+
+  - id: g16_processing_61
+    chunk: ferc_final_2021_11:c041
+    anchor: "the majority (61 percent) of processing declines"
+    value: 61
+    metric: [share_of_volume]
+    denominator: "processing"
+    region: *gas_region_c041
+    window: *event
+    tests: section region and metric
+    basis: "Processing declines are volumes. Chunk c041 states no region for processing, so the document default is accepted."
+
+  - id: g17_ercot_fuel_12
+    chunk: ercot_causes_2021_04_27:c000
+    anchor: "Fuel Limitations (6,130 MW, 12%)"
+    value: 12
+    metric: [share_of_mw]
+    denominator: "52,037|unavailab|outage|derate"
+    region: "^ercot$"
+    window: [["2021-02-16", "2021-02-16"]]
+    as_of: "2021-02-16|2/16|max|peak"
+    tests: point in time named in the sentence
+    basis: "'Generator Outages and Derates at time of Max Unavailability: 2/16/2021 at 8:00 a.m.'"
+
+  - id: g18_ercot_existing_15
+    chunk: ercot_causes_2021_04_27:c000
+    anchor: "Existing Outages (7,650 MW 15%)"
+    value: 15
+    metric: [share_of_mw]
+    denominator: "52,037|unavailab|outage|derate"
+    region: "^ercot$"
+    window: [["2021-02-16", "2021-02-16"]]
+    as_of: "2021-02-16|2/16|max|peak"
+    tests: point in time from the previous sentence
+    basis: "Previous sentence: 'The highest amount of unavailable capacity during the period of February 14-19, 2021 occurred on February 16 at ~8:00 AM and was 52,037 MW.'"
+
+  - id: g19_enverus_survey_power_65
+    chunk: enverus_txoga_2021_04:c001
+    anchor: "Upstream survey responses focused on loss of power (65%)"
+    value: 65
+    metric: [share_of_responses]
+    denominator: "survey|respon"
+    region: "texas"
+    window: [["2021-02-08", "2021-02-28"]]
+    tests: new v0.2 metric (share_of_responses)
+    basis: "TXOGA member survey about the storm; Enverus document window 2/8-2/28."
+
+  - id: g20_news_wind_half
+    chunk: news_aljazeera_2021_02_15:c000b
+    anchor: "knocked out nearly half the wind power generation capacity"
+    value: 50
+    metric: [share_of_mw]
+    denominator: "wind"
+    region: "texas|ercot"
+    window: [["2021-02-14", "2021-02-14"]]
+    tests: approximate number; relative date ('Sunday', published Mon 2/15)
+    basis: "'nearly half the wind power generation capacity of Texas on Sunday' = Feb 14."

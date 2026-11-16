@@ -1,0 +1,36 @@
+{
+ "causal_edges": 186,
+ "cause_before_effect": {
+  "time_unverifiable": 175,
+  "ok": 6,
+  "violation": 3,
+  "not_event_to_event": 2
+ },
+ "into_weather": 0,
+ "tier0_overrides": 0,
+ "instance_cycles": 0,
+ "class_cycles": 150,
+ "loop": {
+  "entity_has_cycle": true,
+  "entity_cycles": [
+   [
+    "GasGeneration",
+    "LoadShed",
+    "GasProduction"
+   ]
+  ],
+  "unrolled_nodes": 480,
+  "unrolled_edges": 477,
+  "unrolled_is_dag": true
+ },
+ "instance_grades": {
+  "G1": 168,
+  "G0": 18
+ },
+ "hedged_instances": 15,
+ "class_grades": {
+  "G1": 44,
+  "G3": 3,
+  "G0": 2
+ }
+}

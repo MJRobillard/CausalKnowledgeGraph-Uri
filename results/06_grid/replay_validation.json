@@ -1,0 +1,12 @@
+{
+ "shed_mwh_sim": 919060.6687655587,
+ "shed_mwh_actual": 999791.6666666667,
+ "peak_shed_sim": 24320.12299482498,
+ "peak_shed_actual": 20000.0,
+ "corr_hourly": 0.9252319532053783,
+ "mae_mw": 1919.9155622790836,
+ "first_shed_hour_sim": "2021-02-15 01:00:00",
+ "first_shed_hour_actual": "2021-02-15 01:00:00",
+ "tamu_corr_with_actual": 0.874716144669249,
+ "tamu_shed_mwh": 932060.3118006754
+}

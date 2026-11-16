@@ -1,0 +1,108 @@
+{
+ "arcgis/ercot_load_zones.geojson": {
+  "bytes": 12447759,
+  "copyright": "",
+  "description": "",
+  "features": 4,
+  "layer_name": "ERCOT Load Zones",
+  "retrieved_at": "2026-11-16T02:41:12+00:00",
+  "sha256": "25e5b56fec3f7f7469ec26f546b5a1750e979de6b18504d10424074b2f8b86e9",
+  "url": "https://services3.arcgis.com/fwwoCWVtaahwlvxO/arcgis/rest/services/ERCOT_Load_Zones/FeatureServer/7/query?where=1%3D1&bbox=texas"
+ },
+ "arcgis/ercot_weather_zones.geojson": {
+  "bytes": 59031,
+  "copyright": "",
+  "description": "",
+  "features": 8,
+  "layer_name": "tmp1gm_bujb",
+  "retrieved_at": "2026-11-16T02:40:30+00:00",
+  "sha256": "9a43c1b8e7c262a2385a07020e153630867ee9f6fa8a7459aca841c20eb189d5",
+  "url": "https://services.arcgis.com/l483wZ43iEK8alrh/arcgis/rest/services/ERCOT_Weather_Zone_Peak_Forecast_v1/FeatureServer/0/query?where=1%3D1&bbox=texas"
+ },
+ "arcgis/gas_pipelines.geojson": {
+  "bytes": 5867159,
+  "copyright": "",
+  "description": "",
+  "features": 11822,
+  "layer_name": "NaturalGas_InterIntrastate_Pipelines_US_EIA",
+  "retrieved_at": "2026-11-16T02:40:27+00:00",
+  "sha256": "186acc4916cfeb99fe095d9155a01d33571f454ab572c6b6e79d08af65ffae2b",
+  "url": "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Natural_Gas_Interstate_and_Intrastate_Pipelines_1/FeatureServer/0/query?where=1%3D1&bbox=texas"
+ },
+ "arcgis/gas_processing_plants.geojson": {
+  "bytes": 138561,
+  "copyright": "",
+  "description": "",
+  "features": 264,
+  "layer_name": "NaturalGas_ProcessingPlants_US_EIA",
+  "retrieved_at": "2026-11-16T02:41:07+00:00",
+  "sha256": "cedb64f448e779647c5305c27b9ec5ceb65864eafaf3178279da3152c9b485fa",
+  "url": "https://services2.arcgis.com/wdQEqhSQSuYA89VW/arcgis/rest/services/NaturalGas_ProcessingPlants_US_EIA/FeatureServer/0/query?where=1%3D1&bbox=texas"
+ },
+ "arcgis/power_plants.geojson": {
+  "bytes": 989248,
+  "copyright": "",
+  "description": "",
+  "features": 1168,
+  "layer_name": "PowerPlants_US_EIA",
+  "retrieved_at": "2026-11-16T02:40:28+00:00",
+  "sha256": "1d3bf361c22da6cba3e79688289dfb2ba2c5148e7da3481799172c21f8e1bb20",
+  "url": "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Power_Plants_in_the_US/FeatureServer/0/query?where=1%3D1&bbox=texas"
+ },
+ "arcgis/sedimentary_basins.geojson": {
+  "bytes": 153036,
+  "copyright": "",
+  "description": "",
+  "features": 12,
+  "layer_name": "Lower 48 Sedimentary Basins",
+  "retrieved_at": "2026-11-16T02:41:07+00:00",
+  "sha256": "0e86ff58aa1b27c515a909924f2d8c0a85cc79f83997755d03bcfe441ff1d22f",
+  "url": "https://services7.arcgis.com/FGr1D95XCGALKXqM/arcgis/rest/services/SedimentaryBasins_US_EIA/FeatureServer/109/query?where=1%3D1&bbox=texas"
+ },
+ "arcgis/shale_plays.geojson": {
+  "bytes": 229035,
+  "copyright": "",
+  "description": "",
+  "features": 17,
+  "layer_name": "TightOil_ShaleGas_Plays_Lower48_EIA",
+  "retrieved_at": "2026-11-16T02:40:20+00:00",
+  "sha256": "b933f4c3b487e189ec37194e750ef9a96af8ab35746f89fb8e07f2a9d50ce5cb",
+  "url": "https://services7.arcgis.com/FGr1D95XCGALKXqM/arcgis/rest/services/TightOil_ShaleGas_Plays_Lower48_EIA/FeatureServer/0/query?where=1%3D1&bbox=texas"
+ },
+ "arcgis/transmission_lines_230kv.geojson": {
+  "bytes": 3833351,
+  "copyright": "",
+  "description": "",
+  "features": 836,
+  "layer_name": "Electric_Power_Transmission_Lines_A",
+  "retrieved_at": "2026-11-16T02:40:29+00:00",
+  "sha256": "9b72e6e24202e75badef6e0a924e02c5c4e03107b3fa91d496f63db113ce8fdf",
+  "url": "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/US_Electric_Power_Transmission_Lines/FeatureServer/0/query?where=VOLTAGE%20%3E%3D%20230&bbox=texas"
+ },
+ "census_counties/cb_2020_us_county_5m.zip": {
+  "bytes": 2770726,
+  "retrieved_at": "2026-11-15T23:40:38+00:00",
+  "sha256": "187e7118304428e5450083beb375e67c2c516c58a01ce52db95aaf24f18df3ba",
+  "url": "https://www2.census.gov/geo/tiger/GENZ2020/shp/cb_2020_us_county_5m.zip"
+ },
+ "eia860_2020/eia8602020.zip": {
+  "bytes": 19670508,
+  "retrieved_at": "2026-11-15T23:40:38+00:00",
+  "sha256": "ce519fd0b02c74b8c4231dc023bf07f922ae5f2a018fcaf88914502f61aa89ea",
+  "url": "https://www.eia.gov/electricity/data/eia860/archive/xls/eia8602020.zip"
+ },
+ "ghcnd_stations/ghcnd-stations.txt": {
+  "bytes": 11441526,
+  "retrieved_at": "2026-11-15T23:40:39+00:00",
+  "sha256": "437ee87f0343bcad408a492cf7a02163fb69255364c541b4006d5d76055d0dc3",
+  "url": "https://www.ncei.noaa.gov/pub/data/ghcn/daily/ghcnd-stations.txt"
+ },
+ "ghcnd_tx_feb2021/daily_tmin_tmax.csv": {
+  "bytes": 942691,
+  "retrieved_at": "2026-11-16T02:40:18+00:00",
+  "rows": 26980,
+  "sha256": "76691550fff6d130bfce0d741755e106814317937dd097b3736cdc0533ee4ee2",
+  "stations_requested": 3211,
+  "url": "https://www.ncei.noaa.gov/access/services/data/v1?dataset=daily-summaries&dataTypes=TMIN,TMAX&2021-02-01..28"
+ }
+}

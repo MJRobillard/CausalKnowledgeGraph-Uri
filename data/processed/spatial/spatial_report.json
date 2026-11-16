@@ -1,0 +1,45 @@
+{
+ "plays_features": 17,
+ "plays_grouped": {
+  "Barnett": 1,
+  "Anadarko": 1,
+  "Haynesville": 1,
+  "Permian": 7,
+  "Eagle Ford": 1
+ },
+ "basin_centroids": {
+  "barnett": [
+   -98.3723486025946,
+   32.40814776280373
+  ],
+  "anadarko": [
+   -98.10210976998692,
+   35.48743033858694
+  ],
+  "haynesville": [
+   -94.07155512801721,
+   32.02489862484165
+  ],
+  "permian": [
+   -102.75611032652486,
+   32.00095471592508
+  ],
+  "eagle_ford": [
+   -98.70481957743343,
+   28.782447021880255
+  ]
+ },
+ "gas_processing_plants_features": 264,
+ "gas_pipelines_features": 11822,
+ "transmission_lines_230kv_features": 836,
+ "power_plants_features": 1168,
+ "ercot_weather_zones_features": 8,
+ "ercot_weather_zones_label_field": "ZONE_NAME",
+ "ercot_load_zones_features": 4,
+ "ercot_load_zones_label_field": "NAME",
+ "plants": 444,
+ "weather_rows": 12432,
+ "weather_fallback_share": 0.00040218790218790216,
+ "median_nearest_station_km": 15.085657150669785,
+ "stations_reporting": 758
+}

@@ -1,0 +1,11 @@
+cell,date_rule,metric,denominator,region,window,all4,found,n
+A0B0,False,18,19,18,17,12,20,20
+A0B0,True,18,19,18,17,12,20,20
+A0B1,False,19,20,17,20,16,20,20
+A0B1,True,19,20,17,20,16,20,20
+A1B0,False,18,20,18,20,16,20,20
+A1B0,True,18,20,18,20,16,20,20
+A1B1,False,20,20,18,20,18,20,20
+A1B1,True,20,20,18,20,18,20,20
+run1_v0,False,17,19,18,16,12,20,20
+run1_v0,True,17,19,18,18,13,20,20

@@ -1,0 +1,32 @@
+{
+ "eia_plant_fuel_rows": 458,
+ "eia_capacity_by_fuel_mw": {
+  "coal": 14475.0,
+  "gas": 61065.0,
+  "hydro": 540.0,
+  "nuclear": 5120.0,
+  "other": 496.0,
+  "solar": 4857.0,
+  "storage": 228.0,
+  "wind": 27759.0
+ },
+ "ercot_stations": 285,
+ "matched": 249,
+ "match_how": {
+  "name": 138,
+  "lmp_code": 68,
+  "NaN": 36,
+  "only_plant_capacity": 19,
+  "capacity_county": 16,
+  "name_statewide": 8
+ },
+ "matched_share_of_outage_mwh": 0.8758308057809987,
+ "unmatched_hsl_by_fuel": {
+  "gas": 4571,
+  "hydro": 50,
+  "solar": 576,
+  "storage": 12,
+  "wind": 3756
+ },
+ "plants_shared_by_several_stations": 29
+}

@@ -1,0 +1,13 @@
+{
+ "shed_gwh_replay": 919.0606687655587,
+ "shed_gwh_no_coal_outages": 650.3361374391058,
+ "share_avoided": 0.29239041606185995,
+ "peak_shed_replay_mw": 24320.12299482498,
+ "peak_shed_no_coal_mw": 19515.745344023333,
+ "shed_hours_replay": 78,
+ "shed_hours_no_coal": 74,
+ "first_shed_replay": "2021-02-15 01:00:00",
+ "first_shed_no_coal": "2021-02-15 03:00:00",
+ "coal_mw_restored_mean": 3460.296279173489,
+ "coal_mw_restored_max": 5607.49022412209
+}

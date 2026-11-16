@@ -1,0 +1,170 @@
+# How each concept at a hypothesis-family end is measured. PRE-REGISTRATION (2026-11-16):
+# written by hand and committed on its own before any hypothesis test ran. Changes after the tests must be
+# made in a separate, explained commit; never fitted, never chosen by a model.
+#
+# kind: direct       measured in Tier 0
+#       proxy        a Tier 0 series standing in for the concept
+#       text_derived numbers extracted from a Tier 1-2 document
+#       none         nothing measures it (reason given)
+# A concept may list several measures; the first one with available: true is used for testing.
+# regions: the region classes (config/hypotheses.yaml) the series can speak for. A family whose region class is
+# not covered by both ends is untestable (needs: a series for that region).
+
+concepts:
+  WeatherCondition:
+    measures:
+      - {series: noaa_zone_temp_hourly, kind: direct, tier: 0a, available: true,
+         transform: "freezing degree-hours max(0, 32 - T); T = zone stations weighted by the effect fuel's HSL per zone (C-M1); all-capacity weights for total",
+         resolution: hour, regions: [ERCOT, gas_basin]}
+
+  GenerationOutage:
+    measures:
+      - {series: ercot_mw_out_by_fuel/total, kind: direct, tier: 0b, available: true,
+         transform: "minute MW out, all fuels -> hourly mean (hour start)", resolution: hour, regions: [ERCOT]}
+  "GenerationOutage:gas":
+    measures:
+      - {series: ercot_mw_out_by_fuel/gas, kind: direct, tier: 0b, available: true, transform: "minute -> hourly mean", resolution: hour, regions: [ERCOT]}
+  "GenerationOutage:coal":
+    measures:
+      - {series: ercot_mw_out_by_fuel/coal, kind: direct, tier: 0b, available: true,
+         transform: "minute (for timing tests) or hourly mean", resolution: minute, regions: [ERCOT]}
+  "GenerationOutage:wind":
+    measures:
+      - {series: ercot_mw_out_by_fuel/wind, kind: direct, tier: 0b, available: true, transform: "minute -> hourly mean", resolution: hour, regions: [ERCOT]}
+  "GenerationOutage:solar":
+    measures:
+      - {series: ercot_mw_out_by_fuel/solar, kind: direct, tier: 0b, available: true, transform: "minute -> hourly mean", resolution: hour, regions: [ERCOT]}
+  "GenerationOutage:nuclear":
+    measures:
+      - {series: ercot_mw_out_by_fuel/nuclear, kind: direct, tier: 0b, available: true, transform: "minute", resolution: minute, regions: [ERCOT]}
+
+  LoadShed:
+    measures:
+      - {series: ercot_gen_load_shed/load_shed, kind: direct, tier: 0b, available: true,
+         transform: "minute load shed MW (minute-ending labels, A1); hourly mean for accounting", resolution: minute, regions: [ERCOT]}
+
+  GridEmergency:
+    measures:
+      - {series: ercot_frequency/frequency, kind: direct, tier: 0b, available: true,
+         transform: "1-second frequency; excursion = minimum and its time",
+         resolution: second, regions: [ERCOT], coverage: "2021-02-15 01:23 to 02:05 only"}
+    note: "EEA levels themselves have no Tier 0 series; only the frequency side of a grid emergency is measured."
+
+  GasSupplyDisruption:
+    measures:
+      # AMENDMENT 2 (2026-11-16, before any test using it): Figure 35 read off the chart (scripts/digitize_fig35.py, H13)
+      - {series: ferc_fig35_daily_production/texas, kind: text_derived, tier: "2", available: true,
+         transform: "Texas daily dry gas production (Bcf/d) read off FERC Fig. 35; disruption = max(0, January mean - value)",
+         resolution: day, regions: [ERCOT, gas_basin], usable_as_effect: true,
+         caveat: "a Tier 2 chart read (0.26 Bcf/d resolution), statewide, all causes of production loss together"}
+      - {series: noaa_zone_temp_hourly/Far West, kind: proxy, tier: 0a, available: true,
+         transform: "Permian freezing degree-hours from the MAF (Midland) station, max(0, 32 - T)",
+         resolution: hour, regions: [ERCOT, gas_basin],
+         why_proxy: "wellhead freeze-offs are driven by basin cold; the Permian is the largest Texas basin supplying ERCOT gas plants",
+         # AMENDMENT 2026-11-16, after the first test run (see hypotheses_report.md): a temperature series can't
+         # respond to a cause, so this proxy may stand for gas supply only as a CAUSE, never as an EFFECT.
+         usable_as_effect: false,
+         effect_reason: "as an effect, Permian temperature can't register the cause (cold vs cold, or power loss it doesn't measure)",
+         effect_needs: "daily Texas gas production (FERC Fig. 35, chart reading)"}
+
+  Restoration:
+    measures:
+      - {series: ercot_mw_out_by_fuel/total, kind: direct, tier: 0b, available: true,
+         transform: "decrease in MW out (or in load shed)", resolution: hour, regions: [ERCOT]}
+
+  FacilityShutdown:
+    measures:
+      - {series: none, kind: none, reason: "no Tier 0 series of industrial or gas-facility shutdowns", needs: "facility shutdown records (e.g. RRC, plant operators)"}
+  InstitutionalAction:
+    measures:
+      - {series: none, kind: none, reason: "orders, rulings and reports are decisions, not measured quantities", needs: "not measurable as a series"}
+  MarketAction:
+    measures:
+      - {series: none, kind: none, reason: "price caps and market actions are decisions; Henry Hub (below) measures gas price, not the actions",
+         needs: "ERCOT settlement prices or action log"}
+
+  PowerLoss:
+    label: loss of power at gas facilities
+    measures:
+      - {series: none, kind: none,
+         reason: "no public series measures electricity delivered to gas production, processing or compression; FERC says the extent is unknown",
+         needs: "metered load at gas production and processing facilities, by hour"}
+
+  # concepts not at a family end in run 1, kept so the table is complete
+  GasPrice:
+    measures:
+      - {series: eia_henry_hub_daily, kind: proxy, tier: 0b, available: false, transform: "daily $/MMBtu; a lower bound for Texas hubs (O2)",
+         resolution: day, regions: [multi-region], reason: "not registered yet (needs xlrd); no family uses it"}
+  Demand:
+    measures:
+      - {series: eia_ercot_hourly/demand, kind: direct, tier: 0b, available: true, transform: "hour-start MWh", resolution: hour, regions: [ERCOT]}
+
+# A family-specific mechanism can override an end: the concept is measured only if its mechanism is.
+family_overrides:
+  "LoadShed->GasSupplyDisruption":
+    effect:
+      measures:
+        - {series: none, kind: none,
+           reason: "the claim is that shed circuits cut power to gas facilities (power_supply_loss); no public series measures electricity delivered to gas facilities, and FERC says the extent is unknown",
+           needs: "metered load at gas production and processing facilities, by hour"}
+
+# Pre-registered tests and pass rules (analysis/hypothesis_tests.py). Thresholds are fixed here, before running.
+tests:
+  cold_outage:
+    families: ["WeatherCondition->GenerationOutage*@ERCOT"]
+    method: "fail-restart with temperature vs weather-free tent and hours drivers (step 1, analysis/cold_baselines.py)"
+    pass: "placebo ratios >= 1.25 and both weather-free test RMSEs >= 1.25 x the temperature model's (H2)"
+  gas_supply_to_gas_outage:
+    families: ["GasSupplyDisruption->GenerationOutage:gas@ERCOT", "GasSupplyDisruption->GenerationOutage@ERCOT"]
+    a: "blocked: needs FERC Fig. 35 daily production"
+    b: "gas fail-restart driven by Permian FDH vs plant-weighted FDH vs the weather-free tent and hours drivers"
+    pass: "Permian-driven test RMSE <= plant-driven test RMSE AND both weather-free test RMSEs >= 1.25 x the Permian-driven one"
+  outage_to_shed:
+    families: ["GenerationOutage->LoadShed@ERCOT", "GenerationOutage:gas->LoadShed@ERCOT"]
+    method: "timing: onset of the MW-out rise vs first nonzero shed; cross-correlation of hourly changes at lags -6..+6; accounting fit shed ~ max(0, estimated load without shed - available generation)"
+    pass: "MW out rising (>= 2,000 MW above its Feb 14 00:00-11:00 mean) before the first shed AND the cross-correlation peak at lag >= 0 (outages lead)"
+    label: "accounting relationship plus timing, not an estimated effect"
+  frequency_to_coal:
+    families: ["GridEmergency->GenerationOutage:coal@ERCOT", "GridEmergency->GenerationOutage@ERCOT"]
+    method: "coal (or total) MW out change in the 15 minutes after the 01:55 frequency low vs all 15-minute changes, 2/14-2/19"
+    pass: "the change exceeds the 99th percentile of 15-minute changes and begins within 10 minutes after the low"
+  generic_timing:
+    families: "any other ERCOT family whose two ends are both direct"
+    method: "onset of the cause series (first hour >= 10% of its storm range above its Feb 14 00:00 value) vs onset of the effect series"
+    pass: "cause onset precedes effect onset; timing evidence only, cap G2"
+    # AMENDMENT 2: in a storm almost everything starts in order, so this check passes for wrong claims too
+    # (warming -> restoration stored as cold -> restoration passed). It no longer counts as a pass:
+    amended_result: "order_consistent / order_inconsistent; never a passed test; the family's grade comes from text alone (max G1)"
+  production_term:                     # test 2(a), pre-registered before it ran
+    families: ["GasSupplyDisruption->GenerationOutage:gas@ERCOT", "GasSupplyDisruption->GenerationOutage@ERCOT"]
+    method: >-
+      gas (or total) fail-restart with a second failure driver: O(t) = O(t-1) + [alpha cold(t) + gamma loss(t)] (C - O(t-1)) - rho O(t-1),
+      loss(t) = max(0, 1 - Texas production(day of t) / January mean), from Fig. 35; same split as step 1
+    pass: "test RMSE <= the cold-only model's test RMSE / 1.25 (the H2 margin). About 13 storm days: read as a direction, not an estimate"
+  cold_production:                     # weather -> gas supply on daily data, pre-registered before it ran
+    families: ["WeatherCondition->GasSupplyDisruption@gas_basin", "WeatherCondition->GasSupplyDisruption@ERCOT"]
+    method: >-
+      daily fail-restart on Texas production loss L(d) = max(0, January mean - production(d)), C = January mean, driver = daily mean of
+      max(0, 32 - T) at MAF (Permian); free-run from Feb 1; train Feb 1-16, test Feb 17-28; weather-free tent and days-since-Feb-1 drivers
+    pass: "both weather-free test RMSEs >= 1.25 x the cold-driven one (H2). No placebo: NOAA hourly starts Feb 1"
+
+# AMENDMENT 2 (2026-11-16): status and result rules, fixed before the re-run
+grading:
+  accounting:
+    tests: [outage_to_shed]
+    rule: "families tested by an accounting identity (shed ~ load - available generation) get status `accounting` and no causal grade"
+  failures_label: "not supported by this test"   # a failed test is not a refutation (e.g. no delay term in the Permian model)
+  contrary_evidence: "relations with modality `denied` are contrary evidence, not support; a family with a Tier 1-2 denial and an asserted relation is `contested`"
+
+design_check:
+  pretrend_hours: 3
+  pretrend_threshold_share: 0.1      # effect change in the pre-window >= 10% of its storm range -> threat
+  confounder_event_types: {GenerationOutage: [GridEmergency, LoadShed, GasSupplyDisruption],
+                           "GenerationOutage:gas": [GasSupplyDisruption, GridEmergency, LoadShed],
+                           "GenerationOutage:coal": [WeatherCondition],
+                           LoadShed: [GenerationOutage, GridEmergency, WeatherCondition],
+                           GasSupplyDisruption: [WeatherCondition, LoadShed]}
+  named_confounders:
+    - {name: "South Texas Project unit 1 trip (1,353 MW nuclear)", start: "2021-02-15 05:27", end: "2021-02-17 21:07", affects: [GenerationOutage]}
+    - {name: "frequency-related trips (FERC: up to 1,800 MW, mostly coal)", start: "2021-02-15 01:50", end: "2021-02-15 02:10", affects: [GenerationOutage, "GenerationOutage:coal"]}
+    - {name: "firm load shed in progress", start: "2021-02-15 01:20", end: "2021-02-18 23:59", affects: [GasSupplyDisruption, "GenerationOutage:gas"]}

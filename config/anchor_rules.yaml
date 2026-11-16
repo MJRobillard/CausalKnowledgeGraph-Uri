@@ -1,0 +1,90 @@
+# Tier 0 anchoring rules (kg/anchor.py). Deterministic; every rule is a Choice logged in ASSUMPTIONS.md (A-items).
+# Keyword matching is done on the CONTEXT of a claim's number: the quote text within `context_chars` of the number.
+
+context_chars: 60
+
+regions:
+  ercot: [ercot, ercot ba, ercot region, ercot system, ercot grid, ercot footprint, ercot interconnection,
+          the ercot ba, electric reliability council of texas]
+  texas_as_ercot: [texas, state of texas, texas grid, tx]          # anchored with region_approx: true (A2)
+  # city or zone -> NOAA zone column (one airport station per zone, O1)
+  stations:
+    houston: Coast
+    coast: Coast
+    tyler: East
+    east: East
+    midland: Far West
+    far west: Far West
+    wichita falls: North
+    north: North
+    dallas: North Central
+    fort worth: North Central
+    dallas-fort worth: North Central
+    dfw: North Central
+    north central: North Central
+    austin: South Central
+    austin, texas: South Central
+    south central: South Central
+    san antonio: South Central (extra)
+    corpus christi: Southern
+    southern: Southern
+    abilene: West
+    west: West
+
+units:
+  mw: {mw: 1, megawatt: 1, megawatts: 1, gw: 1000, gigawatt: 1000, gigawatts: 1000}
+  temperature: {degf: F, "°f": F, fahrenheit: F, degrees: F, degree: F, degc: C, "°c": C, celsius: C}
+  frequency: {hz: 1}
+
+# words near the number that make an MW claim something no series measures -> metric_mismatch
+mw_not_measured: [would have, could have, would be, criteri, criterion, advisory, watch, reserve, responsive,
+                  capability, prc, installed, nameplate, rated, capacity of, total capacity, forecast, projected,
+                  expected, anticipated, ers, emergency response service, load resource, minimum, threshold,
+                  "mw unit", "mw coal", "mw natural gas", "mw gas", "mw wind", "mw nuclear", "mw generating",
+                  "mw combustion", "mw combined", "unit", trip at, tripped, ramped, interchange, import, export,
+                  dc tie, price, cumulative generation, cumulative number, throughout the event, ufls, underfrequency,
+                  units, decreased by, increased by, reduction, reduced by, additional, more, totaling, averaged,
+                  average, increase, decrease, change]
+# MW claims with a cause category are MW by cause; no series splits outages by cause (ERCOT keeps causes confidential)
+mw_cause_categories_not_measured: true
+temperature_not_measured: [normal, average, forecast, forecasted, lower than, higher than, warmer than, colder than,
+                           below normal, above normal, degrees lower, degrees higher, difference, departure]
+ghcnd_stations: {Coast: USW00012960, East: USW00013972, Far West: USW00023023, North: USW00013966,
+                 North Central: USW00003927, South Central: USW00013904, South Central (extra): USW00012921,
+                 Southern: USW00012924, West: USW00013962}
+
+load_shed_words: [load shed, load-shed, shed, rotating outage, rolling outage, rotating blackout, blackout,
+                  load dropped, firm load, curtail]
+demand_words: [demand, system load, load was, load of, load reached, peak load, peaked at, load from, load to]
+demand_estimate_words: [without load shed, would have been, estimated load, potential load]
+out_words: [out, outage, outages, offline, off line, forced, unavailable, derate, derates, de-rate, lost, loss of generation,
+            loss of, off the system, down]
+
+fuels:          # context keyword -> MW-out column. A context naming more than one fuel is "total".
+  gas: [natural gas, gas-fired, gas fired, " gas ", thermal]
+  coal: [coal]
+  wind: [wind]
+  solar: [solar]
+  nuclear: [nuclear]
+
+extreme_words:
+  max: [peak, peaked, highest, maximum, max, record, high of, at most, worst point, highest point]
+  min: [lowest, low of, as low as, minimum, min, fell to, dropped to, declined to, bottomed, coldest, nadir,
+        reached a low]
+
+# looked for only just before the number (prefix_chars), not anywhere near it
+prefix_chars: 25
+approximate_words: [about, approximately, approx, nearly, roughly, around, almost, near, some, close to, "~", "∼", estimated,
+                    just above, just below, just short of, just over, just under]
+lower_bound_words: [more than, over, at least, upwards of, above, exceeding, in excess of]
+upper_bound_words: [less than, under, below, up to, at most, no more than]
+
+# time windows by precision (A4)
+windows:
+  minute_minutes: 5
+  hour_hours: 1
+
+# named-unit matching: entity name vs unit-list STATION LONG NAME, after dropping these words
+unit_name_stopwords: [power, plant, generating, generation, station, electric, energy, center, facility, unit,
+                      units, the, project, nuclear, steam, wind, farm, solar]
+unit_name_min_score: 90      # fuzz.token_sort_ratio (token_set scores subsets as 100)

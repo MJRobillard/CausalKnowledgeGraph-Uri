@@ -1,0 +1,2399 @@
+{
+ "nodes": [
+  {
+   "id": "FacilityShutdown",
+   "label": "facility shutdowns",
+   "measured_kind": "none",
+   "series": "none"
+  },
+  {
+   "id": "GasSupplyDisruption",
+   "label": "gas supply disruption",
+   "measured_kind": "text_derived",
+   "series": "ferc_fig35_daily_production/texas"
+  },
+  {
+   "id": "GasSupplyDisruption:delivery",
+   "label": "gas delivery shortfall",
+   "measured_kind": "text_derived",
+   "series": "ferc_fig35_daily_production/texas"
+  },
+  {
+   "id": "GasSupplyDisruption:pipeline",
+   "label": "pipeline and midstream disruption",
+   "measured_kind": "text_derived",
+   "series": "ferc_fig35_daily_production/texas"
+  },
+  {
+   "id": "GasSupplyDisruption:processing",
+   "label": "gas processing loss",
+   "measured_kind": "text_derived",
+   "series": "ferc_fig35_daily_production/texas"
+  },
+  {
+   "id": "GasSupplyDisruption:production",
+   "label": "gas production loss",
+   "measured_kind": "text_derived",
+   "series": "ferc_fig35_daily_production/texas"
+  },
+  {
+   "id": "GenerationOutage",
+   "label": "generation outages",
+   "measured_kind": "direct",
+   "series": "ercot_mw_out_by_fuel/total"
+  },
+  {
+   "id": "GenerationOutage:coal",
+   "label": "coal generation outages",
+   "measured_kind": "direct",
+   "series": "ercot_mw_out_by_fuel/coal"
+  },
+  {
+   "id": "GenerationOutage:gas",
+   "label": "gas-fired generation outages",
+   "measured_kind": "direct",
+   "series": "ercot_mw_out_by_fuel/gas"
+  },
+  {
+   "id": "GenerationOutage:wind",
+   "label": "wind generation outages",
+   "measured_kind": "direct",
+   "series": "ercot_mw_out_by_fuel/wind"
+  },
+  {
+   "id": "GridEmergency",
+   "label": "grid emergencies (EEA, low frequency)",
+   "measured_kind": "direct",
+   "series": "ercot_frequency/frequency"
+  },
+  {
+   "id": "InstitutionalAction",
+   "label": "institutional actions",
+   "measured_kind": "none",
+   "series": "none"
+  },
+  {
+   "id": "LoadShed",
+   "label": "load shed",
+   "measured_kind": "direct",
+   "series": "ercot_gen_load_shed/load_shed"
+  },
+  {
+   "id": "MarketAction",
+   "label": "market actions (prices, caps)",
+   "measured_kind": "none",
+   "series": "none"
+  },
+  {
+   "id": "PowerLoss",
+   "label": "loss of power at gas facilities",
+   "measured_kind": "none",
+   "series": "none"
+  },
+  {
+   "id": "Restoration",
+   "label": "restoration",
+   "measured_kind": "direct",
+   "series": "ercot_mw_out_by_fuel/total"
+  },
+  {
+   "id": "WeatherCondition",
+   "label": "cold weather",
+   "measured_kind": "direct",
+   "series": "noaa_zone_temp_hourly"
+  },
+  {
+   "id": "WeatherCondition:warming",
+   "label": "warming weather",
+   "measured_kind": "direct",
+   "series": "noaa_zone_temp_hourly"
+  }
+ ],
+ "edges": [
+  {
+   "id": "GridEmergency->GenerationOutage@ERCOT",
+   "src": "GridEmergency",
+   "dst": "GenerationOutage",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G3",
+   "status": "tested_direct",
+   "headline": true,
+   "n_support": 5,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 5
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Grid emergencies (EEA, low frequency) caused generation outages (ERCOT).",
+   "tested": true,
+   "passed": true,
+   "result_label": "frequency_to_coal: supported by this test"
+  },
+  {
+   "id": "GridEmergency->GenerationOutage:coal@ERCOT",
+   "src": "GridEmergency",
+   "dst": "GenerationOutage:coal",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G3",
+   "status": "tested_direct",
+   "headline": true,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Grid emergencies (EEA, low frequency) caused coal generation outages (ERCOT).",
+   "tested": true,
+   "passed": true,
+   "result_label": "frequency_to_coal: supported by this test"
+  },
+  {
+   "id": "WeatherCondition->GenerationOutage@ERCOT",
+   "src": "WeatherCondition",
+   "dst": "GenerationOutage",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "tested_direct",
+   "headline": true,
+   "n_support": 15,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 10,
+    "1": 3,
+    "3": 2
+   },
+   "first_appeared": "2021-02-15",
+   "claim": "Cold weather caused generation outages (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "cold_outage: not supported by this test"
+  },
+  {
+   "id": "PowerLoss->GasSupplyDisruption@ERCOT",
+   "src": "PowerLoss",
+   "dst": "GasSupplyDisruption",
+   "region": "ERCOT",
+   "origin": "both",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 11,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 11
+   },
+   "first_appeared": "2021-04-22",
+   "claim": "Loss of power at gas facilities caused gas supply disruption (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": "untestable"
+  },
+  {
+   "id": "WeatherCondition->GenerationOutage@multi-region",
+   "src": "WeatherCondition",
+   "dst": "GenerationOutage",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 11,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 11
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Cold weather caused generation outages (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GenerationOutage->GridEmergency@ERCOT",
+   "src": "GenerationOutage",
+   "dst": "GridEmergency",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 9,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 7,
+    "1": 1,
+    "3": 1
+   },
+   "first_appeared": "2021-02-16",
+   "claim": "Generation outages caused grid emergencies (EEA, low frequency) (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "PowerLoss->GasSupplyDisruption@multi-region",
+   "src": "PowerLoss",
+   "dst": "GasSupplyDisruption",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 9,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 9
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Loss of power at gas facilities caused gas supply disruption (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": "untestable"
+  },
+  {
+   "id": "LoadShed->LoadShed@ERCOT",
+   "src": "LoadShed",
+   "dst": "LoadShed",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 5,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 4,
+    "3": 1
+   },
+   "first_appeared": "2021-02-15",
+   "claim": "Load shed caused load shed (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "WeatherCondition->GasSupplyDisruption@multi-region",
+   "src": "WeatherCondition",
+   "dst": "GasSupplyDisruption",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 5,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 5
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Cold weather caused gas supply disruption (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "WeatherCondition->GenerationOutage:wind@ERCOT",
+   "src": "WeatherCondition",
+   "dst": "GenerationOutage:wind",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "tested_direct",
+   "headline": true,
+   "n_support": 5,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 4,
+    "3": 1
+   },
+   "first_appeared": "2021-02-15",
+   "claim": "Cold weather caused wind generation outages (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "cold_outage: not supported by this test"
+  },
+  {
+   "id": "GasSupplyDisruption->GenerationOutage@multi-region",
+   "src": "GasSupplyDisruption",
+   "dst": "GenerationOutage",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 4,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 4
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Gas supply disruption caused generation outages (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GenerationOutage->GridEmergency@multi-region",
+   "src": "GenerationOutage",
+   "dst": "GridEmergency",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 4,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 4
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Generation outages caused grid emergencies (EEA, low frequency) (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GridEmergency->LoadShed@ERCOT",
+   "src": "GridEmergency",
+   "dst": "LoadShed",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 4,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 3,
+    "3": 1
+   },
+   "first_appeared": "2021-02-16",
+   "claim": "Grid emergencies (EEA, low frequency) caused load shed (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GasSupplyDisruption->GenerationOutage:gas@ERCOT",
+   "src": "GasSupplyDisruption",
+   "dst": "GenerationOutage:gas",
+   "region": "ERCOT",
+   "origin": "both",
+   "grade": "G1",
+   "status": "tested_proxy",
+   "headline": true,
+   "n_support": 3,
+   "n_contrary": 1,
+   "contested": true,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "1": 1,
+    "2": 2
+   },
+   "first_appeared": "2021-02-24",
+   "claim": "Gas supply disruption caused gas-fired generation outages (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "gas_supply_to_gas_outage: not supported by this test; production_term: not supported by this test"
+  },
+  {
+   "id": "InstitutionalAction->GasSupplyDisruption@ERCOT",
+   "src": "InstitutionalAction",
+   "dst": "GasSupplyDisruption",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 3,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 3
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Institutional actions caused gas supply disruption (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GasSupplyDisruption->GenerationOutage:gas@multi-region",
+   "src": "GasSupplyDisruption",
+   "dst": "GenerationOutage:gas",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Gas supply disruption caused gas-fired generation outages (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GasSupplyDisruption->InstitutionalAction@ERCOT",
+   "src": "GasSupplyDisruption",
+   "dst": "InstitutionalAction",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Gas supply disruption contributed to institutional actions (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GasSupplyDisruption:pipeline->GasSupplyDisruption:production@ERCOT",
+   "src": "GasSupplyDisruption:pipeline",
+   "dst": "GasSupplyDisruption:production",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": true,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-04-22",
+   "claim": "Pipeline and midstream disruption caused gas production loss (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GasSupplyDisruption:production->GasSupplyDisruption:delivery@multi-region",
+   "src": "GasSupplyDisruption:production",
+   "dst": "GasSupplyDisruption:delivery",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": true,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Gas production loss contributed to gas delivery shortfall (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GasSupplyDisruption:production->GasSupplyDisruption:production@ERCOT",
+   "src": "GasSupplyDisruption:production",
+   "dst": "GasSupplyDisruption:production",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-04-22",
+   "claim": "Gas production loss contributed to gas production loss (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GasSupplyDisruption:production->GasSupplyDisruption:production@multi-region",
+   "src": "GasSupplyDisruption:production",
+   "dst": "GasSupplyDisruption:production",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-04-22",
+   "claim": "Gas production loss caused gas production loss (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GenerationOutage->GenerationOutage@multi-region",
+   "src": "GenerationOutage",
+   "dst": "GenerationOutage",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Generation outages caused generation outages (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "WeatherCondition->FacilityShutdown@ERCOT",
+   "src": "WeatherCondition",
+   "dst": "FacilityShutdown",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1,
+    "3": 1
+   },
+   "first_appeared": "2021-02-15",
+   "claim": "Cold weather caused facility shutdowns (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "WeatherCondition->GridEmergency@ERCOT",
+   "src": "WeatherCondition",
+   "dst": "GridEmergency",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "3": 2
+   },
+   "first_appeared": "2021-02-15",
+   "claim": "Cold weather caused grid emergencies (EEA, low frequency) (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "WeatherCondition->LoadShed@ERCOT",
+   "src": "WeatherCondition",
+   "dst": "LoadShed",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "tested_direct",
+   "headline": true,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "3": 2
+   },
+   "first_appeared": "2021-02-15",
+   "claim": "Cold weather caused load shed (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "generic_timing: order consistent"
+  },
+  {
+   "id": "WeatherCondition:warming->Restoration@ERCOT",
+   "src": "WeatherCondition:warming",
+   "dst": "Restoration",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "tested_direct",
+   "headline": true,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "1": 1,
+    "2": 1
+   },
+   "first_appeared": "2021-02-24",
+   "claim": "Warming weather caused restoration (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "generic_timing: order consistent"
+  },
+  {
+   "id": "GasSupplyDisruption->FacilityShutdown@ERCOT",
+   "src": "GasSupplyDisruption",
+   "dst": "FacilityShutdown",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Gas supply disruption caused facility shutdowns (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GasSupplyDisruption->GenerationOutage@ERCOT",
+   "src": "GasSupplyDisruption",
+   "dst": "GenerationOutage",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "tested_proxy",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 1,
+   "contested": true,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "claim": "Gas supply disruption caused generation outages (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "gas_supply_to_gas_outage: not supported by this test; production_term: not supported by this test"
+  },
+  {
+   "id": "GasSupplyDisruption->GridEmergency@ERCOT",
+   "src": "GasSupplyDisruption",
+   "dst": "GridEmergency",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Gas supply disruption contributed to grid emergencies (EEA, low frequency) (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GasSupplyDisruption->LoadShed@ERCOT",
+   "src": "GasSupplyDisruption",
+   "dst": "LoadShed",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "tested_proxy",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Gas supply disruption caused load shed (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "generic_timing: order consistent"
+  },
+  {
+   "id": "GasSupplyDisruption->MarketAction@ERCOT",
+   "src": "GasSupplyDisruption",
+   "dst": "MarketAction",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "claim": "Gas supply disruption caused market actions (prices, caps) (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GasSupplyDisruption:processing->GasSupplyDisruption:processing@multi-region",
+   "src": "GasSupplyDisruption:processing",
+   "dst": "GasSupplyDisruption:processing",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Gas processing loss contributed to gas processing loss (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GasSupplyDisruption:processing->GasSupplyDisruption:production@ERCOT",
+   "src": "GasSupplyDisruption:processing",
+   "dst": "GasSupplyDisruption:production",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": true,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "claim": "Gas processing loss contributed to gas production loss (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GenerationOutage:gas->GasSupplyDisruption@ERCOT",
+   "src": "GenerationOutage:gas",
+   "dst": "GasSupplyDisruption",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "tested_proxy",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "claim": "Gas-fired generation outages contributed to gas supply disruption (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "generic_timing: order inconsistent"
+  },
+  {
+   "id": "GenerationOutage:wind->GridEmergency@ERCOT",
+   "src": "GenerationOutage:wind",
+   "dst": "GridEmergency",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "claim": "Wind generation outages contributed to grid emergencies (EEA, low frequency) (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GridEmergency->FacilityShutdown@ERCOT",
+   "src": "GridEmergency",
+   "dst": "FacilityShutdown",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "3": 1
+   },
+   "first_appeared": "2021-02-16",
+   "claim": "Grid emergencies (EEA, low frequency) caused facility shutdowns (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GridEmergency->GridEmergency@ERCOT",
+   "src": "GridEmergency",
+   "dst": "GridEmergency",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Grid emergencies (EEA, low frequency) caused grid emergencies (EEA, low frequency) (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GridEmergency->MarketAction@ERCOT",
+   "src": "GridEmergency",
+   "dst": "MarketAction",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Grid emergencies (EEA, low frequency) contributed to market actions (prices, caps) (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GridEmergency->Restoration@ERCOT",
+   "src": "GridEmergency",
+   "dst": "Restoration",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Grid emergencies (EEA, low frequency) contributed to restoration (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "InstitutionalAction->InstitutionalAction@ERCOT",
+   "src": "InstitutionalAction",
+   "dst": "InstitutionalAction",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Institutional actions contributed to institutional actions (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "InstitutionalAction->InstitutionalAction@multi-region",
+   "src": "InstitutionalAction",
+   "dst": "InstitutionalAction",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Institutional actions caused institutional actions (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "LoadShed->GenerationOutage:gas@ERCOT",
+   "src": "LoadShed",
+   "dst": "GenerationOutage:gas",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "tested_direct",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Load shed contributed to gas-fired generation outages (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "generic_timing: order inconsistent"
+  },
+  {
+   "id": "LoadShed->GridEmergency@ERCOT",
+   "src": "LoadShed",
+   "dst": "GridEmergency",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Load shed contributed to grid emergencies (EEA, low frequency) (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "LoadShed->InstitutionalAction@ERCOT",
+   "src": "LoadShed",
+   "dst": "InstitutionalAction",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Load shed contributed to institutional actions (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "LoadShed->PowerLoss@multi-region",
+   "src": "LoadShed",
+   "dst": "PowerLoss",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Load shed contributed to loss of power at gas facilities (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "LoadShed->Restoration@ERCOT",
+   "src": "LoadShed",
+   "dst": "Restoration",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "tested_direct",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Load shed contributed to restoration (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "generic_timing: order consistent"
+  },
+  {
+   "id": "Restoration->LoadShed@ERCOT",
+   "src": "Restoration",
+   "dst": "LoadShed",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "tested_direct",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Restoration contributed to load shed (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "generic_timing: order inconsistent"
+  },
+  {
+   "id": "WeatherCondition->GasSupplyDisruption@gas_basin",
+   "src": "WeatherCondition",
+   "dst": "GasSupplyDisruption",
+   "region": "gas_basin",
+   "origin": "both",
+   "grade": "G1",
+   "status": "tested_proxy",
+   "headline": true,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "claim": "Cold weather caused gas supply disruption (Texas gas basins).",
+   "tested": true,
+   "passed": false,
+   "result_label": "cold_production: inconclusive (design): the training days (Feb 1\u201316) contain no recovery, so the restart rate can't be fitted and every model carries the loss flat into the test"
+  },
+  {
+   "id": "WeatherCondition->GenerationOutage:gas@multi-region",
+   "src": "WeatherCondition",
+   "dst": "GenerationOutage:gas",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Cold weather caused gas-fired generation outages (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "WeatherCondition->InstitutionalAction@ERCOT",
+   "src": "WeatherCondition",
+   "dst": "InstitutionalAction",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "claim": "Cold weather caused institutional actions (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "WeatherCondition->PowerLoss@multi-region",
+   "src": "WeatherCondition",
+   "dst": "PowerLoss",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Cold weather contributed to loss of power at gas facilities (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "WeatherCondition:warming->LoadShed@ERCOT",
+   "src": "WeatherCondition:warming",
+   "dst": "LoadShed",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G1",
+   "status": "tested_direct",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Warming weather contributed to load shed (ERCOT).",
+   "tested": true,
+   "passed": false,
+   "result_label": "generic_timing: order consistent"
+  },
+  {
+   "id": "GenerationOutage->GenerationOutage:gas@multi-region",
+   "src": "GenerationOutage",
+   "dst": "GenerationOutage:gas",
+   "region": "multi-region",
+   "origin": "documents",
+   "grade": "G0",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": true,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Generation outages contributed to gas-fired generation outages (ERCOT, SPP and MISO together).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "LoadShed->PowerLoss@ERCOT",
+   "src": "LoadShed",
+   "dst": "PowerLoss",
+   "region": "ERCOT",
+   "origin": "both",
+   "grade": "G0",
+   "status": "untestable",
+   "headline": true,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Load shed contributed to loss of power at gas facilities (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": "untestable"
+  },
+  {
+   "id": "MarketAction->FacilityShutdown@ERCOT",
+   "src": "MarketAction",
+   "dst": "FacilityShutdown",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": "G0",
+   "status": "untestable",
+   "headline": false,
+   "n_support": 1,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Market actions (prices, caps) caused facility shutdowns (ERCOT).",
+   "tested": false,
+   "passed": null,
+   "result_label": null
+  },
+  {
+   "id": "GenerationOutage->LoadShed@ERCOT",
+   "src": "GenerationOutage",
+   "dst": "LoadShed",
+   "region": "ERCOT",
+   "origin": "documents",
+   "grade": null,
+   "status": "accounting",
+   "headline": true,
+   "n_support": 2,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-11-16",
+   "claim": "Generation outages caused load shed (ERCOT).",
+   "tested": true,
+   "passed": true,
+   "result_label": "outage_to_shed: supported by this test"
+  },
+  {
+   "id": "GenerationOutage:gas->LoadShed@ERCOT",
+   "src": "GenerationOutage:gas",
+   "dst": "LoadShed",
+   "region": "ERCOT",
+   "origin": "system_knowledge",
+   "grade": null,
+   "status": "accounting",
+   "headline": true,
+   "n_support": 0,
+   "n_contrary": 0,
+   "contested": false,
+   "supply_chain": false,
+   "within_type": false,
+   "support_by_tier": {},
+   "first_appeared": null,
+   "claim": "Gas-fired generation outages contributed to load shed (ERCOT).",
+   "tested": true,
+   "passed": true,
+   "result_label": "outage_to_shed: supported by this test"
+  }
+ ],
+ "pairs": [
+  {
+   "src": "GridEmergency",
+   "dst": "GenerationOutage",
+   "families": [
+    "GridEmergency->GenerationOutage@ERCOT"
+   ],
+   "n_support": 5,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 5
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": true,
+   "status": "tested_direct",
+   "grade": "G3",
+   "result_label": "frequency_to_coal: supported by this test",
+   "best_family": "GridEmergency->GenerationOutage@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GridEmergency",
+   "dst": "GenerationOutage:coal",
+   "families": [
+    "GridEmergency->GenerationOutage:coal@ERCOT"
+   ],
+   "n_support": 2,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": true,
+   "status": "tested_direct",
+   "grade": "G3",
+   "result_label": "frequency_to_coal: supported by this test",
+   "best_family": "GridEmergency->GenerationOutage:coal@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "WeatherCondition",
+   "dst": "GenerationOutage",
+   "families": [
+    "WeatherCondition->GenerationOutage@ERCOT",
+    "WeatherCondition->GenerationOutage@multi-region"
+   ],
+   "n_support": 26,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 21,
+    "1": 3,
+    "3": 2
+   },
+   "first_appeared": "2021-02-15",
+   "contested": false,
+   "headline": true,
+   "status": "tested_direct",
+   "grade": "G1",
+   "result_label": "cold_outage: not supported by this test",
+   "best_family": "WeatherCondition->GenerationOutage@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT",
+    "multi-region"
+   ]
+  },
+  {
+   "src": "PowerLoss",
+   "dst": "GasSupplyDisruption",
+   "families": [
+    "PowerLoss->GasSupplyDisruption@ERCOT",
+    "PowerLoss->GasSupplyDisruption@multi-region"
+   ],
+   "n_support": 20,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 20
+   },
+   "first_appeared": "2021-04-22",
+   "contested": false,
+   "headline": true,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": "untestable",
+   "best_family": "PowerLoss->GasSupplyDisruption@ERCOT",
+   "origin": "both",
+   "regions": [
+    "ERCOT",
+    "multi-region"
+   ]
+  },
+  {
+   "src": "GenerationOutage",
+   "dst": "GridEmergency",
+   "families": [
+    "GenerationOutage->GridEmergency@ERCOT",
+    "GenerationOutage->GridEmergency@multi-region"
+   ],
+   "n_support": 13,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 11,
+    "1": 1,
+    "3": 1
+   },
+   "first_appeared": "2021-02-16",
+   "contested": false,
+   "headline": true,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GenerationOutage->GridEmergency@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT",
+    "multi-region"
+   ]
+  },
+  {
+   "src": "WeatherCondition",
+   "dst": "GasSupplyDisruption",
+   "families": [
+    "WeatherCondition->GasSupplyDisruption@multi-region",
+    "WeatherCondition->GasSupplyDisruption@gas_basin"
+   ],
+   "n_support": 6,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 6
+   },
+   "first_appeared": "2021-04-22",
+   "contested": false,
+   "headline": true,
+   "status": "tested_proxy",
+   "grade": "G1",
+   "result_label": "cold_production: inconclusive (design): the training days (Feb 1\u201316) contain no recovery, so the restart rate can't be fitted and every model carries the loss flat into the test",
+   "best_family": "WeatherCondition->GasSupplyDisruption@gas_basin",
+   "origin": "both",
+   "regions": [
+    "gas_basin",
+    "multi-region"
+   ]
+  },
+  {
+   "src": "WeatherCondition",
+   "dst": "GenerationOutage:wind",
+   "families": [
+    "WeatherCondition->GenerationOutage:wind@ERCOT"
+   ],
+   "n_support": 5,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 4,
+    "3": 1
+   },
+   "first_appeared": "2021-02-15",
+   "contested": false,
+   "headline": true,
+   "status": "tested_direct",
+   "grade": "G1",
+   "result_label": "cold_outage: not supported by this test",
+   "best_family": "WeatherCondition->GenerationOutage:wind@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GasSupplyDisruption",
+   "dst": "GenerationOutage",
+   "families": [
+    "GasSupplyDisruption->GenerationOutage@multi-region",
+    "GasSupplyDisruption->GenerationOutage@ERCOT"
+   ],
+   "n_support": 5,
+   "n_contrary": 1,
+   "support_by_tier": {
+    "2": 5
+   },
+   "first_appeared": "2021-04-22",
+   "contested": true,
+   "headline": true,
+   "status": "tested_proxy",
+   "grade": "G1",
+   "result_label": "gas_supply_to_gas_outage: not supported by this test; production_term: not supported by this test",
+   "best_family": "GasSupplyDisruption->GenerationOutage@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT",
+    "multi-region"
+   ]
+  },
+  {
+   "src": "GridEmergency",
+   "dst": "LoadShed",
+   "families": [
+    "GridEmergency->LoadShed@ERCOT"
+   ],
+   "n_support": 4,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 3,
+    "3": 1
+   },
+   "first_appeared": "2021-02-16",
+   "contested": false,
+   "headline": true,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GridEmergency->LoadShed@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GasSupplyDisruption",
+   "dst": "GenerationOutage:gas",
+   "families": [
+    "GasSupplyDisruption->GenerationOutage:gas@ERCOT",
+    "GasSupplyDisruption->GenerationOutage:gas@multi-region"
+   ],
+   "n_support": 5,
+   "n_contrary": 1,
+   "support_by_tier": {
+    "1": 1,
+    "2": 4
+   },
+   "first_appeared": "2021-02-24",
+   "contested": true,
+   "headline": true,
+   "status": "tested_proxy",
+   "grade": "G1",
+   "result_label": "gas_supply_to_gas_outage: not supported by this test; production_term: not supported by this test",
+   "best_family": "GasSupplyDisruption->GenerationOutage:gas@ERCOT",
+   "origin": "both",
+   "regions": [
+    "ERCOT",
+    "multi-region"
+   ]
+  },
+  {
+   "src": "InstitutionalAction",
+   "dst": "GasSupplyDisruption",
+   "families": [
+    "InstitutionalAction->GasSupplyDisruption@ERCOT"
+   ],
+   "n_support": 3,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 3
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": true,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "InstitutionalAction->GasSupplyDisruption@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GasSupplyDisruption",
+   "dst": "InstitutionalAction",
+   "families": [
+    "GasSupplyDisruption->InstitutionalAction@ERCOT"
+   ],
+   "n_support": 2,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": true,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GasSupplyDisruption->InstitutionalAction@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GasSupplyDisruption:pipeline",
+   "dst": "GasSupplyDisruption:production",
+   "families": [
+    "GasSupplyDisruption:pipeline->GasSupplyDisruption:production@ERCOT"
+   ],
+   "n_support": 2,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-04-22",
+   "contested": false,
+   "headline": true,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GasSupplyDisruption:pipeline->GasSupplyDisruption:production@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GasSupplyDisruption:production",
+   "dst": "GasSupplyDisruption:delivery",
+   "families": [
+    "GasSupplyDisruption:production->GasSupplyDisruption:delivery@multi-region"
+   ],
+   "n_support": 2,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": true,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GasSupplyDisruption:production->GasSupplyDisruption:delivery@multi-region",
+   "origin": "documents",
+   "regions": [
+    "multi-region"
+   ]
+  },
+  {
+   "src": "WeatherCondition",
+   "dst": "FacilityShutdown",
+   "families": [
+    "WeatherCondition->FacilityShutdown@ERCOT"
+   ],
+   "n_support": 2,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1,
+    "3": 1
+   },
+   "first_appeared": "2021-02-15",
+   "contested": false,
+   "headline": true,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "WeatherCondition->FacilityShutdown@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "WeatherCondition",
+   "dst": "GridEmergency",
+   "families": [
+    "WeatherCondition->GridEmergency@ERCOT"
+   ],
+   "n_support": 2,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "3": 2
+   },
+   "first_appeared": "2021-02-15",
+   "contested": false,
+   "headline": true,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "WeatherCondition->GridEmergency@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "WeatherCondition",
+   "dst": "LoadShed",
+   "families": [
+    "WeatherCondition->LoadShed@ERCOT"
+   ],
+   "n_support": 2,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "3": 2
+   },
+   "first_appeared": "2021-02-15",
+   "contested": false,
+   "headline": true,
+   "status": "tested_direct",
+   "grade": "G1",
+   "result_label": "generic_timing: order consistent",
+   "best_family": "WeatherCondition->LoadShed@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "WeatherCondition:warming",
+   "dst": "Restoration",
+   "families": [
+    "WeatherCondition:warming->Restoration@ERCOT"
+   ],
+   "n_support": 2,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "1": 1,
+    "2": 1
+   },
+   "first_appeared": "2021-02-24",
+   "contested": false,
+   "headline": true,
+   "status": "tested_direct",
+   "grade": "G1",
+   "result_label": "generic_timing: order consistent",
+   "best_family": "WeatherCondition:warming->Restoration@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GasSupplyDisruption",
+   "dst": "FacilityShutdown",
+   "families": [
+    "GasSupplyDisruption->FacilityShutdown@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GasSupplyDisruption->FacilityShutdown@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GasSupplyDisruption",
+   "dst": "GridEmergency",
+   "families": [
+    "GasSupplyDisruption->GridEmergency@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GasSupplyDisruption->GridEmergency@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GasSupplyDisruption",
+   "dst": "LoadShed",
+   "families": [
+    "GasSupplyDisruption->LoadShed@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "tested_proxy",
+   "grade": "G1",
+   "result_label": "generic_timing: order consistent",
+   "best_family": "GasSupplyDisruption->LoadShed@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GasSupplyDisruption",
+   "dst": "MarketAction",
+   "families": [
+    "GasSupplyDisruption->MarketAction@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GasSupplyDisruption->MarketAction@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GasSupplyDisruption:processing",
+   "dst": "GasSupplyDisruption:production",
+   "families": [
+    "GasSupplyDisruption:processing->GasSupplyDisruption:production@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GasSupplyDisruption:processing->GasSupplyDisruption:production@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GenerationOutage:gas",
+   "dst": "GasSupplyDisruption",
+   "families": [
+    "GenerationOutage:gas->GasSupplyDisruption@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "contested": false,
+   "headline": false,
+   "status": "tested_proxy",
+   "grade": "G1",
+   "result_label": "generic_timing: order inconsistent",
+   "best_family": "GenerationOutage:gas->GasSupplyDisruption@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GenerationOutage:wind",
+   "dst": "GridEmergency",
+   "families": [
+    "GenerationOutage:wind->GridEmergency@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GenerationOutage:wind->GridEmergency@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GridEmergency",
+   "dst": "FacilityShutdown",
+   "families": [
+    "GridEmergency->FacilityShutdown@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "3": 1
+   },
+   "first_appeared": "2021-02-16",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GridEmergency->FacilityShutdown@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GridEmergency",
+   "dst": "MarketAction",
+   "families": [
+    "GridEmergency->MarketAction@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GridEmergency->MarketAction@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GridEmergency",
+   "dst": "Restoration",
+   "families": [
+    "GridEmergency->Restoration@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "GridEmergency->Restoration@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "LoadShed",
+   "dst": "GenerationOutage:gas",
+   "families": [
+    "LoadShed->GenerationOutage:gas@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "tested_direct",
+   "grade": "G1",
+   "result_label": "generic_timing: order inconsistent",
+   "best_family": "LoadShed->GenerationOutage:gas@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "LoadShed",
+   "dst": "GridEmergency",
+   "families": [
+    "LoadShed->GridEmergency@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "LoadShed->GridEmergency@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "LoadShed",
+   "dst": "InstitutionalAction",
+   "families": [
+    "LoadShed->InstitutionalAction@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "LoadShed->InstitutionalAction@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "LoadShed",
+   "dst": "PowerLoss",
+   "families": [
+    "LoadShed->PowerLoss@multi-region",
+    "LoadShed->PowerLoss@ERCOT"
+   ],
+   "n_support": 2,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": true,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "LoadShed->PowerLoss@multi-region",
+   "origin": "both",
+   "regions": [
+    "ERCOT",
+    "multi-region"
+   ]
+  },
+  {
+   "src": "LoadShed",
+   "dst": "Restoration",
+   "families": [
+    "LoadShed->Restoration@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "tested_direct",
+   "grade": "G1",
+   "result_label": "generic_timing: order consistent",
+   "best_family": "LoadShed->Restoration@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "Restoration",
+   "dst": "LoadShed",
+   "families": [
+    "Restoration->LoadShed@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "tested_direct",
+   "grade": "G1",
+   "result_label": "generic_timing: order inconsistent",
+   "best_family": "Restoration->LoadShed@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "WeatherCondition",
+   "dst": "GenerationOutage:gas",
+   "families": [
+    "WeatherCondition->GenerationOutage:gas@multi-region"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "WeatherCondition->GenerationOutage:gas@multi-region",
+   "origin": "documents",
+   "regions": [
+    "multi-region"
+   ]
+  },
+  {
+   "src": "WeatherCondition",
+   "dst": "InstitutionalAction",
+   "families": [
+    "WeatherCondition->InstitutionalAction@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-04-22",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "WeatherCondition->InstitutionalAction@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "WeatherCondition",
+   "dst": "PowerLoss",
+   "families": [
+    "WeatherCondition->PowerLoss@multi-region"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G1",
+   "result_label": null,
+   "best_family": "WeatherCondition->PowerLoss@multi-region",
+   "origin": "documents",
+   "regions": [
+    "multi-region"
+   ]
+  },
+  {
+   "src": "WeatherCondition:warming",
+   "dst": "LoadShed",
+   "families": [
+    "WeatherCondition:warming->LoadShed@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "tested_direct",
+   "grade": "G1",
+   "result_label": "generic_timing: order consistent",
+   "best_family": "WeatherCondition:warming->LoadShed@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "MarketAction",
+   "dst": "FacilityShutdown",
+   "families": [
+    "MarketAction->FacilityShutdown@ERCOT"
+   ],
+   "n_support": 1,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 1
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": false,
+   "status": "untestable",
+   "grade": "G0",
+   "result_label": null,
+   "best_family": "MarketAction->FacilityShutdown@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GenerationOutage",
+   "dst": "LoadShed",
+   "families": [
+    "GenerationOutage->LoadShed@ERCOT"
+   ],
+   "n_support": 2,
+   "n_contrary": 0,
+   "support_by_tier": {
+    "2": 2
+   },
+   "first_appeared": "2021-11-16",
+   "contested": false,
+   "headline": true,
+   "status": "accounting",
+   "grade": null,
+   "result_label": "outage_to_shed: supported by this test",
+   "best_family": "GenerationOutage->LoadShed@ERCOT",
+   "origin": "documents",
+   "regions": [
+    "ERCOT"
+   ]
+  },
+  {
+   "src": "GenerationOutage:gas",
+   "dst": "LoadShed",
+   "families": [
+    "GenerationOutage:gas->LoadShed@ERCOT"
+   ],
+   "n_support": 0,
+   "n_contrary": 0,
+   "support_by_tier": {},
+   "first_appeared": null,
+   "contested": false,
+   "headline": true,
+   "status": "accounting",
+   "grade": null,
+   "result_label": "outage_to_shed: supported by this test",
+   "best_family": "GenerationOutage:gas->LoadShed@ERCOT",
+   "origin": "system_knowledge",
+   "regions": [
+    "ERCOT"
+   ]
+  }
+ ]
+}
