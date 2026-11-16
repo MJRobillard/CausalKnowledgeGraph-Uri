@@ -1,5 +1,9 @@
 # Data
 
+The MIT License in `LICENSE` covers this repository's code. Third-party material here is not covered by it unless
+its own terms allow; the cleaned TAMU data in `external/tamu/` are redistributed under TAMU's MIT License (Copyright (c)
+Wu, Zheng, Xu, Olsen, Xia, Singh and Xie) with attribution.
+
 Every input to the pipeline, where it came from, and whether it is in git. Copyright in each source stays with its
 publisher. Public reports and datasets are included unmodified so the results can be reproduced. Copyrighted
 third-party documents (news articles, the Enverus and UT Austin reports) are **not** in git; their citations are below

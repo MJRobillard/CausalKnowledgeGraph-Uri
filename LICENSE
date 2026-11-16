@@ -19,10 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----------------------------------------------------------------------------
-Third-party material in this repository is not covered by the license above
-unless its own terms allow it. See data/README.md for each source, its terms
-and how to cite it. In particular, data/external/tamu/ is derived from the
-TAMU 2021TXPowerOutage repository (MIT License, Copyright (c) Wu, Zheng, Xu,
-Olsen, Xia, Singh and Xie), redistributed under that license with attribution.
